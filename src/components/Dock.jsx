@@ -1,12 +1,17 @@
-import { dockApps } from "#constants";
-import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
+import gsap from "gsap";
+
+import { dockApps } from "#constants";
+import { useGSAP } from "@gsap/react";
+import useWindowStore from "#store/window";
+
 
 const Dock = () => {
+    const { windows, openWindow, closeWindow } = useWindowStore()
     const dockRef = useRef(null);
     useGSAP(() => {
-        const dockRef = useRef.current
+        const dock = dockRef.current
         if (!dock) return
         const icons = dock.querySelectorAll('.dock-icon')
 
@@ -16,7 +21,7 @@ const Dock = () => {
                 const { left: iconLeft, width } = icon.getBoundingClientRect()
                 const center = iconLeft - left + width / 2
                 const distance = Math.abs(mouseX - center)
-                const intensity = Math.exp(-(distance ** 2) / 10000)
+                const intensity = Math.exp(-(distance ** 2.8) / 8000)
 
                 gsap.to(icon, {
                     scale: 1 + 0.25 * intensity,
@@ -42,11 +47,14 @@ const Dock = () => {
                 })
             })
         }
+        dock.addEventListener("mousemove", handleMouseMove)
+        dock.addEventListener("mouseleave", resetIcons)
 
-    })
-
-    dock.addEventListener("mousemove", handleMouseMove)
-    dock.addEventListener("mouseleave", resetIcons)
+        return () => {
+            dock.removeEventListener("mousemove", handleMouseMove)
+            dock.removeEventListener("mouseleave", resetIcons)
+        }
+    }, [])
 
     const toggleApp = (app) => {
         if (!app.canOpen) return
