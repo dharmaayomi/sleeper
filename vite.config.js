@@ -28,10 +28,12 @@ export default defineConfig({
 		chunkSizeWarningLimit: 1600,
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					vendor: ["react", "react-dom"],
-					gsap: ["gsap", "@gsap/react"],
-					pdf: ["react-pdf"],
+				manualChunks(id) {
+					if (id.includes("node_modules")) {
+						if (id.includes("react-pdf")) return "pdf";
+						if (id.includes("gsap")) return "gsap";
+						if (id.includes("react/") || id.includes("react-dom/")) return "vendor";
+					}
 				},
 			},
 		},
