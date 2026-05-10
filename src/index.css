@@ -242,15 +242,18 @@ body {
     @apply max-w-3xl absolute top-96 left-1/2 -translate-y-1/2 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     .sidebar {
-      @apply w-3/12 flex-none bg-gray-50 border-r border-gray-200 flex flex-col p-5;
+      @apply w-3/12 flex-none bg-gray-50 border-r font-inter border-gray-200 flex flex-col p-5;
 
       h2 {
+        @apply text-xs font-medium font-inter  text-gray-400 mb-1;
+      }
+      h3 {
         @apply text-xs font-medium font-inter  text-gray-400 mb-1;
       }
 
       ul {
         li {
-          @apply flex space-y-1 items-center gap-2 px-3 py-2 rounded-md cursor-pointer transition-colors;
+          @apply flex space-y-1 items-center font-inter gap-2 px-3 py-2 rounded-md cursor-pointer transition-colors;
 
           &:first-child {
             @apply bg-blue-100 text-blue-700;
@@ -261,7 +264,7 @@ body {
           }
 
           p {
-            @apply text-sm font-medium;
+            @apply text-sm font-inter font-medium;
           }
         }
       }
