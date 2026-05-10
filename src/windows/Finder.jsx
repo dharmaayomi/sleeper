@@ -62,7 +62,7 @@ const Finder = () => {
               onClick={() => openItem(item)}
             >
               <img src={item.icon} alt={item.name} />
-              <p>{item.name}</p>
+              <p className="font-inter">{item.name}</p>
             </li>
           ))}
         </ul>
