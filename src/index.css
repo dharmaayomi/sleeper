@@ -135,7 +135,7 @@ body {
       @apply bg-white p-10 max-w-3xl mx-auto;
 
       h2 {
-        @apply text-xl font-bold text-pink-600 mb-10;
+        @apply text-xl font-inter font-bold text-pink-600 mb-10;
       }
 
       .blog-post {
@@ -214,7 +214,7 @@ body {
     @apply max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
     h2 {
-      @apply font-bold text-sm text-center w-full;
+      @apply font-bold font-inter  text-sm text-center w-full;
     }
 
     h3 {
@@ -245,7 +245,7 @@ body {
       @apply w-3/12 flex-none bg-gray-50 border-r border-gray-200 flex flex-col p-5;
 
       h2 {
-        @apply text-xs font-medium text-gray-400 mb-1;
+        @apply text-xs font-medium font-inter  text-gray-400 mb-1;
       }
 
       ul {
@@ -303,7 +303,7 @@ body {
 
     #window-header {
       h2 {
-        @apply font-bold text-sm text-center flex-1;
+        @apply font-bold text-sm font-inter  text-center flex-1;
       }
     }
   }

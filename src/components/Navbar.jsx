@@ -1,36 +1,39 @@
 import { navIcons, navLinks } from "#constants";
 import React from "react";
 import dayjs from "dayjs";
+import useWindowStore from "#store/window";
 
 const Navbar = () => {
-	return (
-		<nav>
-			<div>
-				<img src="/images/logo.svg" />
-				<p className="font-bold ">Omi's Portfolio</p>
+  const { openWindow } = useWindowStore();
 
-				<ul>
-					{navLinks.map(({ id, name }) => (
-						<li key={id}>
-							<p>{name}</p>
-						</li>
-					))}
-				</ul>
-			</div>
+  return (
+    <nav>
+      <div>
+        <img src="/images/logo.svg" />
+        <p className="font-bold ">Omi's Portfolio</p>
 
-			<div>
-				<ul>
-					{navIcons.map(({ id, img }) => (
-						<li key={id}>
-							<img src={img} className="icon-hover" alt={`${id}`} />
-						</li>
-					))}
-				</ul>
+        <ul>
+          {navLinks.map(({ id, name, type }) => (
+            <li key={id} onClick={() => openWindow(type)}>
+              <p>{name}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-				<time>{dayjs().format("ddd MMM D h:mm A")}</time>
-			</div>
-		</nav>
-	);
+      <div>
+        <ul>
+          {navIcons.map(({ id, img }) => (
+            <li key={id}>
+              <img src={img} className="icon-hover" alt={`${id}`} />
+            </li>
+          ))}
+        </ul>
+
+        <time>{dayjs().format("ddd MMM D h:mm A")}</time>
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
