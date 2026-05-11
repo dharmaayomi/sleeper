@@ -11,7 +11,7 @@ const Terminal = () => {
             </div>
             <div className="techstack">
                 <p>
-                    <span className="font-bold">@omi %</span>show tech stack
+                    <span className="font-bold">@omi % </span>show tech stack
                 </p>
 
                 <div className="label">

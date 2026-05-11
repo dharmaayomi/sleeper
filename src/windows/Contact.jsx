@@ -11,12 +11,12 @@ const Contact = () => {
       </div>
       <div className="p-5 space-y-5">
         <img src="/images/adrian.jpg" alt="omi" className="w-20 rounded-full" />
-        <h3>Let's Connect!</h3>
-        <p>
+        <h3 className="font-inter">Let's Connect!</h3>
+        <p className="font-inter">
           Got an Idea? A Bug to solve? Or just wanna say hi? Shoot me a message!
         </p>
 
-        <p className="text-sm font-bold">officialomicumi@gmail.com</p>
+        <p className="text-sm font-bold font-inter">officialomicumi@gmail.com</p>
 
         <ul>
           {socials.map(({ id, bg, link, icon, text }) => (
@@ -28,7 +28,7 @@ const Contact = () => {
                 title={text}
               >
                 <img src={icon} alt={text} className="size-5" />
-                <p>{text}</p>
+                <p className="font-inter">{text}</p>
               </a>
             </li>
           ))}
