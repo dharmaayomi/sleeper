@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import useWindowStore from "#store/Window";
 
 const Dock = () => {
-  const { windows, openWindow, closeWindow } = useWindowStore();
+  const { windows, openWindow, closeWindow, restoreWindow } = useWindowStore();
   const dockRef = useRef(null);
   useGSAP(() => {
     const dock = dockRef.current;
@@ -61,7 +61,11 @@ const Dock = () => {
     const window = windows[app.id];
 
     if (window.isOpen) {
-      closeWindow(app.id);
+      if (window.isMinimized) {
+        restoreWindow(app.id);
+      } else {
+        closeWindow(app.id);
+      }
     } else {
       openWindow(app.id);
     }
@@ -74,7 +78,7 @@ const Dock = () => {
           <div key={id} className="relative flex justify-center">
             <button
               type="button"
-              className="dock-icon"
+              className="dock-icon relative"
               aria-label={name}
               data-tooltip-id="dock-tooltip"
               onClick={() => toggleApp({ id, canOpen })}
@@ -88,6 +92,14 @@ const Dock = () => {
                 loading="lazy"
                 className={canOpen ? "" : "opacity-60"}
               />
+              {windows[id]?.isOpen && (
+                <span
+                  className={`absolute  left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
+                    windows[id]?.isMinimized ? "bg-gray-200" : "bg-white"
+                  }`}
+                  aria-hidden="true"
+                />
+              )}
             </button>
           </div>
         ))}
