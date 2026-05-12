@@ -8,14 +8,15 @@ const WindowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowStore();
 
-    const { isOpen, zIndex } = windows[windowKey];
+    const { isOpen, zIndex, isMinimized } = windows[windowKey];
     const ref = useRef(null);
+    const dockTargetRef = useRef(null);
 
     useGSAP(() => {
       const el = ref.current;
-      if (!el || !isOpen) return;
+      if (!el || !isOpen || isMinimized) return;
 
-      el.style.display = "block";
+      el.style.visibility = "visible";
 
       gsap.fromTo(
         el,
@@ -32,7 +33,42 @@ const WindowWrapper = (Component, windowKey) => {
           ease: "power3.out",
         },
       );
-    }, [isOpen]);
+    }, [isOpen, isMinimized]);
+
+    useGSAP(() => {
+      const el = ref.current;
+      if (!el || !isOpen) return;
+
+      if (isMinimized) {
+        const dock = document.getElementById("dock");
+        if (dock) {
+          const dockRect = dock.getBoundingClientRect();
+          const dockCenterX = dockRect.left + dockRect.width / 2;
+          const dockCenterY = dockRect.top + dockRect.height / 2;
+          const elRect = el.getBoundingClientRect();
+          const offsetX = dockCenterX - (elRect.left + elRect.width / 2);
+          const offsetY = dockCenterY - (elRect.top + elRect.height / 2);
+
+          gsap.to(el, {
+            scale: 0.3,
+            opacity: 0,
+            x: offsetX,
+            y: offsetY,
+            duration: 0.4,
+            ease: "power3.in",
+          });
+        }
+      } else {
+        gsap.to(el, {
+          scale: 1,
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.4,
+          ease: "power3.out",
+        });
+      }
+    }, [isMinimized]);
 
     useGSAP(() => {
       const el = ref.current;
@@ -49,8 +85,13 @@ const WindowWrapper = (Component, windowKey) => {
       const el = ref.current;
       if (!el) return;
 
-      el.style.display = isOpen ? "block" : "none";
-    }, [isOpen]);
+      if (!isOpen) {
+        el.style.visibility = "hidden";
+        el.style.display = "none";
+      } else if (!isMinimized) {
+        el.style.display = "block";
+      }
+    }, [isOpen, isMinimized]);
 
     return (
       <section id={windowKey} ref={ref} className="absolute" style={{ zIndex }}>
