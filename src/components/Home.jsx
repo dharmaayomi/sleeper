@@ -30,7 +30,7 @@ const Home = () => {
             onClick={() => handleOpenProjectFinder(project)}
           >
             <img src="/images/folder.png" alt={project.name} />
-            <p className="font-inter">{project.name}</p>
+            <p className="font-inter text-xs">{project.name}</p>
           </li>
         ))}
       </ul>
