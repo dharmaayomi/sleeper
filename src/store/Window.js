@@ -1,4 +1,5 @@
 import { INITIAL_Z_INDEX, WINDOW_CONFIG } from "#constants";
+import { Maximize } from "lucide-react";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -38,6 +39,18 @@ const useWindowStore = create(
         const win = state.windows[windowKey];
         if (!win) return;
         win.isMinimized = true;
+      });
+    },
+
+    maximizeWindow: (windowKey) => {
+      set((state) => {
+        const win = state.windows[windowKey];
+        if (!win) return;
+        win.isMaximized = !win.isMaximized;
+        if (win.isMaximized) {
+          win.isMinimized = false;
+          win.zIndex = state.nextZIndex++;
+        }
       });
     },
     restoreWindow: (windowKey) => {

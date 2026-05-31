@@ -23,11 +23,13 @@ export function useWindow(windowKey) {
   const isMinimized = useWindowStore(
     (state) => state.windows[windowKey]?.isMinimized ?? false,
   );
+  const isMaximized = useWindowStore(
+    (state) => state.windows[windowKey]?.isMaximized ?? false,
+  );
   const zIndex = useWindowStore(
     (state) => state.windows[windowKey]?.zIndex ?? 0,
   );
   const focusWindow = useWindowStore((state) => state.focusWindow);
-
   useLayoutEffect(() => {
     focusWindowRef.current = focusWindow;
   }, [focusWindow]);
@@ -70,76 +72,123 @@ export function useWindow(windowKey) {
       };
 
       // --- CASE 1: Jendela Dibuka ATAU Di-restore ---
+      // --- CASE 1: Jendela Dibuka ATAU Di-restore dari Minimize ---
       if (isOpen && !isMinimized) {
         el.style.display = "block";
         el.style.visibility = "visible";
 
-        if (!wasOpen || wasMinimized) {
-          const targetRect = getTargetRect();
+        // Tambahkan pengecekan detail mikro untuk kondisi MAXIMIZE
+        if (isMaximized) {
+          // Kunci posisi koordinat drag terakhir sebelum diubah menjadi maximize
+          if (draggableInstanceRef.current) {
+            lastPositionRef.current = {
+              x: draggableInstanceRef.current.x,
+              y: draggableInstanceRef.current.y,
+            };
+            // MATIKAN fungsi drag total saat full screen (perilaku native OS)
+            draggableInstanceRef.current.disable();
+          }
 
-          if (wasMinimized && targetRect) {
-            // Mengambil koordinat sebelum di-minimize dari memori Ref
-            const savedX = lastPositionRef.current.x;
-            const savedY = lastPositionRef.current.y;
+          gsap.to(el, {
+            x: 0,
+            y: 0,
+            width: "100vw",
+            height: "100vh",
+            top: 0,
+            left: 0,
+            duration: 0.35,
+            ease: "power3.inOut", // Transisi inOut agar akselerasi pembesaran lebih natural
+          });
+        } else {
+          // KONDISI NORMAL ATAU JENDELA BARU DIRESORE DARI MAXIMIZE
+          const wasMaximized = el.style.width === "100vw";
 
-            // Atur posisi awal element di koordinat Target (Ikon/Folder)
-            const elRect = el.getBoundingClientRect();
-            const startX =
-              targetRect.left +
-              targetRect.width / 2 -
-              (elRect.left + elRect.width / 2);
-            const startY =
-              targetRect.top +
-              targetRect.height / 2 -
-              (elRect.top + elRect.height / 2);
+          if (wasMaximized) {
+            // JANGAN langsung mengaktifkan Draggable di sini agar koordinat tidak bertabrakan secara instan
 
-            gsap.fromTo(
-              el,
-              {
-                scale: 0.1,
-                opacity: 0,
-                x: startX,
-                y: startY,
-                transformOrigin: "center center",
+            gsap.to(el, {
+              x: lastPositionRef.current.x,
+              y: lastPositionRef.current.y,
+              duration: 0.4, // Sedikit dinaikkan agar kurva perlambatan terbaca smooth
+              ease: "power4.out", // Menggunakan kurva power4 untuk rem animasi yang jauh lebih halus
+              clearProps: "width,height,top,left",
+              onComplete: () => {
+                // SAKLAR UTAMA: Aktifkan dan perbarui Draggable HANYA setelah transisi penyusutan selesai total!
+                if (draggableInstanceRef.current) {
+                  draggableInstanceRef.current.enable();
+                  draggableInstanceRef.current.update();
+                }
               },
-              {
-                scale: 1,
-                opacity: 1,
-                // Kembalikan ke koordinat aslinya sebelum di-minimize, bukan ke 0
-                x: savedX,
-                y: savedY,
-                duration: 0.45,
-                ease: "power3.out",
-                onComplete: () => {
-                  // Beritahu Draggable bahwa posisi elemen telah diperbarui secara manual
-                  if (draggableInstanceRef.current) {
-                    draggableInstanceRef.current.update();
-                  }
-                },
-              },
-            );
+            });
           } else {
-            // Default Open (Pertama kali dibuka)
-            gsap.fromTo(
-              el,
-              { scale: 0.8, opacity: 0, y: 40 },
-              {
-                scale: 1,
-                opacity: 1,
-                y: 0,
-                duration: 0.45,
-                ease: "power3.out",
-                onComplete: () => {
-                  if (draggableInstanceRef.current) {
-                    draggableInstanceRef.current.update();
-                  }
-                },
-              },
-            );
+            // Jika jendela dalam kondisi normal, pastikan Draggable tetap aktif
+            if (draggableInstanceRef.current) {
+              draggableInstanceRef.current.enable();
+            }
+
+            if (!wasOpen || wasMinimized) {
+              // Kode bawaan restore dari minimize atau default open tetap di sini
+              const targetRect = getTargetRect();
+
+              if (wasMinimized && targetRect) {
+                const savedX = lastPositionRef.current.x;
+                const savedY = lastPositionRef.current.y;
+
+                const elRect = el.getBoundingClientRect();
+                const startX =
+                  targetRect.left +
+                  targetRect.width / 2 -
+                  (elRect.left + elRect.width / 2);
+                const startY =
+                  targetRect.top +
+                  targetRect.height / 2 -
+                  (elRect.top + elRect.height / 2);
+
+                gsap.fromTo(
+                  el,
+                  {
+                    scale: 0.1,
+                    opacity: 0,
+                    x: startX,
+                    y: startY,
+                    transformOrigin: "center center",
+                  },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    x: savedX,
+                    y: savedY,
+                    duration: 0.45,
+                    ease: "power3.out",
+                    onComplete: () => {
+                      if (draggableInstanceRef.current) {
+                        draggableInstanceRef.current.update();
+                      }
+                    },
+                  },
+                );
+              } else {
+                gsap.fromTo(
+                  el,
+                  { scale: 0.8, opacity: 0, y: 40 },
+                  {
+                    scale: 1,
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.45,
+                    ease: "power3.out",
+                    onComplete: () => {
+                      if (draggableInstanceRef.current) {
+                        draggableInstanceRef.current.update();
+                      }
+                    },
+                  },
+                );
+              }
+            }
           }
         }
       }
-
       // --- CASE 2: Jendela Di-minimize ---
       else if (isOpen && isMinimized) {
         // AMBIL & SIMPAN koordinat Draggable saat ini tepat sebelum animasi minimize merusaknya
@@ -206,7 +255,7 @@ export function useWindow(windowKey) {
 
       previousStateRef.current = { isOpen, isMinimized };
     },
-    { dependencies: [isOpen, isMinimized] },
+    { dependencies: [isOpen, isMinimized, isMaximized] },
   );
 
   useGSAP(
