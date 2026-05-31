@@ -1,11 +1,13 @@
 import { WindowControls } from "#components";
 import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
+import useDevice from "#hooks/useDevice";
 import { FileItem } from "../types";
 
 const Image = () => {
   const { containerRef, headerRef } = useWindow("imgfile");
   const data = useWindowStore((state) => state.windows.imgfile.data) as FileItem | null;
+  const { isMobile } = useDevice();
 
   if (!data) return null;
 
@@ -13,18 +15,24 @@ const Image = () => {
 
   return (
     <section ref={containerRef} id="imgfile" className="window">
-      <div ref={headerRef} id="window-header">
+      {/* Responsive Header */}
+      <div ref={headerRef} id="window-header" className="relative flex items-center justify-between select-none">
         <WindowControls target="imgfile" />
-        <h2>{name}</h2>
+        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2 truncate max-w-[50%]">
+          {name}
+        </h2>
+        <div className="w-[30px]" />
       </div>
 
-      <div className="p-5 bg-white">
+      <div className={`bg-white h-[calc(100%-2.75rem)] flex items-center justify-center overflow-y-auto pb-10 ${isMobile ? "p-4" : "p-5"}`}>
         {imageUrl && (
-          <div className="w-full">
+          <div className="w-full flex justify-center">
             <img
               src={imageUrl}
               alt={name}
-              className="w-full h-auto max-h-[70vh] object-contain rounded drop-shadow-2xl"
+              className={`object-contain rounded drop-shadow-2xl ${
+                isMobile ? "w-full h-auto max-h-[65vh]" : "w-full h-auto max-h-[70vh]"
+              }`}
             />
           </div>
         )}

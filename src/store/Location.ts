@@ -6,8 +6,8 @@ import { immer } from "zustand/middleware/immer";
 const DEFAULT_LOCATION = locations.work;
 
 export interface LocationStoreState {
-  activeLocation: FolderItem;
-  setActiveLocation: (location?: FolderItem) => void;
+  activeLocation: FolderItem | null;
+  setActiveLocation: (location: FolderItem | null) => void;
   resetActiveLocation: () => void;
 }
 
@@ -17,7 +17,6 @@ const useLocationStore = create<LocationStoreState>()(
 
     setActiveLocation: (location) => {
       set((state) => {
-        if (location === undefined) return;
         state.activeLocation = location;
       });
     },
