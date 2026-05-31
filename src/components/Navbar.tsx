@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <img src="/images/logo.svg" />
+        <img src="/images/logo.svg" alt="logo" />
         <p className="font-bold font-inter">Omi's Portfolio</p>
 
         <ul>

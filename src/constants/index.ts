@@ -1,4 +1,12 @@
-const navLinks = [
+import { FolderItem, WindowConfig } from "../types";
+
+interface NavLink {
+  id: number;
+  name: string;
+  type: string;
+}
+
+const navLinks: NavLink[] = [
   {
     id: 1,
     name: "Projects",
@@ -16,7 +24,12 @@ const navLinks = [
   },
 ];
 
-const navIcons = [
+interface NavIcon {
+  id: number;
+  img: string;
+}
+
+const navIcons: NavIcon[] = [
   {
     id: 1,
     img: "/icons/wifi.svg",
@@ -35,7 +48,14 @@ const navIcons = [
   },
 ];
 
-const dockApps = [
+interface DockApp {
+  id: string;
+  name: string;
+  icon: string;
+  canOpen: boolean;
+}
+
+const dockApps: DockApp[] = [
   {
     id: "finder",
     name: "Portfolio", // was "Finder"
@@ -74,7 +94,15 @@ const dockApps = [
   },
 ];
 
-const blogPosts = [
+interface BlogPost {
+  id: number;
+  date: string;
+  title: string;
+  image: string;
+  link: string;
+}
+
+const blogPosts: BlogPost[] = [
   {
     id: 1,
     date: "Sep 2, 2025",
@@ -99,7 +127,12 @@ const blogPosts = [
   },
 ];
 
-const techStack = [
+interface TechStackItem {
+  category: string;
+  items: string[];
+}
+
+const techStack: TechStackItem[] = [
   {
     category: "Frontend",
     items: ["React.js", "Next.js", "TypeScript"],
@@ -126,7 +159,15 @@ const techStack = [
   },
 ];
 
-const socials = [
+interface Social {
+  id: number;
+  text: string;
+  icon: string;
+  bg: string;
+  link: string;
+}
+
+const socials: Social[] = [
   {
     id: 1,
     text: "Github",
@@ -157,7 +198,13 @@ const socials = [
   },
 ];
 
-const photosLinks = [
+interface PhotosLink {
+  id: number;
+  icon: string;
+  title: string;
+}
+
+const photosLinks: PhotosLink[] = [
   {
     id: 1,
     icon: "/icons/gicon1.svg",
@@ -185,7 +232,12 @@ const photosLinks = [
   },
 ];
 
-const gallery = [
+interface GalleryImage {
+  id: number;
+  img: string;
+}
+
+const gallery: GalleryImage[] = [
   {
     id: 1,
     img: "/images/gal1.png",
@@ -215,7 +267,7 @@ export {
   gallery,
 };
 
-const WORK_LOCATION = {
+const WORK_LOCATION: FolderItem = {
   id: 1,
   type: "work",
   name: "Work",
@@ -382,7 +434,7 @@ const WORK_LOCATION = {
   ],
 };
 
-const ABOUT_LOCATION = {
+const ABOUT_LOCATION: FolderItem = {
   id: 2,
   type: "about",
   name: "About me",
@@ -433,7 +485,7 @@ const ABOUT_LOCATION = {
   ],
 };
 
-const RESUME_LOCATION = {
+const RESUME_LOCATION: FolderItem = {
   id: 3,
   type: "resume",
   name: "Resume",
@@ -452,7 +504,7 @@ const RESUME_LOCATION = {
   ],
 };
 
-const TRASH_LOCATION = {
+const TRASH_LOCATION: FolderItem = {
   id: 4,
   type: "trash",
   name: "Trash",
@@ -489,7 +541,7 @@ export const locations = {
 
 const INITIAL_Z_INDEX = 1000;
 
-const WINDOW_CONFIG = {
+const WINDOW_CONFIG: WindowConfig = {
   finder: {
     isOpen: false,
     isMinimized: false,

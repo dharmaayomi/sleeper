@@ -6,16 +6,16 @@ import useWindowStore from "#store/Window";
 
 gsap.registerPlugin(Draggable);
 
-export function useWindow(windowKey) {
-  const containerRef = useRef(null);
-  const headerRef = useRef(null);
-  const focusWindowRef = useRef(null);
-  const previousStateRef = useRef({ isOpen: false, isMinimized: false });
+export function useWindow(windowKey: string) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const focusWindowRef = useRef<((windowKey: string) => void) | null>(null);
+  const previousStateRef = useRef<{ isOpen: boolean; isMinimized: boolean }>({ isOpen: false, isMinimized: false });
 
   // Ref baru untuk mencatat posisi terakhir sebelum di-minimize
-  const lastPositionRef = useRef({ x: 0, y: 0 });
+  const lastPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   // Ref untuk menyimpan instance Draggable agar bisa diakses di effect animasi
-  const draggableInstanceRef = useRef(null);
+  const draggableInstanceRef = useRef<any>(null);
 
   const isOpen = useWindowStore(
     (state) => state.windows[windowKey]?.isOpen ?? false,
@@ -30,6 +30,7 @@ export function useWindow(windowKey) {
     (state) => state.windows[windowKey]?.zIndex ?? 0,
   );
   const focusWindow = useWindowStore((state) => state.focusWindow);
+
   useLayoutEffect(() => {
     focusWindowRef.current = focusWindow;
   }, [focusWindow]);

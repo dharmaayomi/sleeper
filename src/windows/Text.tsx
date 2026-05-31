@@ -1,10 +1,11 @@
 import { WindowControls } from "#components";
 import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
+import { FileItem } from "../types";
 
 const Text = () => {
   const { containerRef, headerRef } = useWindow("txtfile");
-  const data = useWindowStore((state) => state.windows.txtfile.data);
+  const data = useWindowStore((state) => state.windows.txtfile.data) as FileItem | null;
 
   if (!data) return null;
 

@@ -2,11 +2,14 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-const FONT_WEIGHTS = {
+type FontWeightType = "subtitle" | "title";
+
+const FONT_WEIGHTS: Record<FontWeightType, { min: number; max: number; default: number }> = {
   subtitle: { min: 100, max: 400, default: 100 },
   title: { min: 400, max: 900, default: 400 },
 };
-const renderText = (text, className, baseWeight = 400) => {
+
+const renderText = (text: string, className: string, baseWeight: number = 400) => {
   return [...text].map((char, index) => (
     <span
       key={index}
@@ -18,13 +21,13 @@ const renderText = (text, className, baseWeight = 400) => {
   ));
 };
 
-const setupTextHovered = (container, type) => {
-  if (!container) return;
+const setupTextHovered = (container: HTMLElement | null, type: FontWeightType) => {
+  if (!container) return () => {};
 
   const letters = container.querySelectorAll("span");
   const { min, max, default: base } = FONT_WEIGHTS[type];
 
-  const animateLetters = (letter, weight, duration = 0.5) => {
+  const animateLetters = (letter: HTMLElement, weight: number, duration = 0.5) => {
     return gsap.to(letter, {
       duration,
       ease: "power2.out",
@@ -32,7 +35,7 @@ const setupTextHovered = (container, type) => {
     });
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent) => {
     const { left } = container.getBoundingClientRect();
     const mouseX = e.clientX - left;
 
@@ -43,6 +46,7 @@ const setupTextHovered = (container, type) => {
       animateLetters(letter, min + (max - min) * intensity);
     });
   };
+
   const handleMouseLeave = () => {
     letters.forEach((letter) => {
       gsap.killTweensOf(letter);
@@ -58,9 +62,11 @@ const setupTextHovered = (container, type) => {
     container.removeEventListener("mouseleave", handleMouseLeave);
   };
 };
+
 const Welcome = () => {
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+
   useGSAP(() => {
     const titleCleanUp = setupTextHovered(titleRef.current, "title");
     const subtitleCleanUp = setupTextHovered(subtitleRef.current, "subtitle");

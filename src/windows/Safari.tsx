@@ -11,6 +11,7 @@ import {
   ShieldHalf,
 } from "lucide-react";
 import { blogPosts } from "#constants";
+
 const Safari = () => {
   const { containerRef, headerRef } = useWindow("safari");
 

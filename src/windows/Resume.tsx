@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 
 const Resume = () => {
   const { containerRef, headerRef } = useWindow("resume");
-  const [numPages, setNumPages] = useState(0);
+  const [numPages, setNumPages] = useState<number>(0);
 
   return (
     <section ref={containerRef} id="resume" className="window">
@@ -32,7 +32,7 @@ const Resume = () => {
       <div className="max-h-[calc(85vh-2.5rem)] overflow-auto">
         <Document
           file="/files/resume.pdf"
-          onLoadSuccess={({ numPages: totalPages }) => setNumPages(totalPages)}
+          onLoadSuccess={({ numPages: totalPages }: { numPages: number }) => setNumPages(totalPages)}
         >
           {Array.from({ length: numPages }, (_, index) => (
             <Page

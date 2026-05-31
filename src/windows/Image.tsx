@@ -1,10 +1,11 @@
 import { WindowControls } from "#components";
 import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
+import { FileItem } from "../types";
 
 const Image = () => {
   const { containerRef, headerRef } = useWindow("imgfile");
-  const data = useWindowStore((state) => state.windows.imgfile.data);
+  const data = useWindowStore((state) => state.windows.imgfile.data) as FileItem | null;
 
   if (!data) return null;
 
@@ -23,7 +24,7 @@ const Image = () => {
             <img
               src={imageUrl}
               alt={name}
-              className="w-full h-auto  max-h-[70vh] object-contain rounded drop-shadow-2xl"
+              className="w-full h-auto max-h-[70vh] object-contain rounded drop-shadow-2xl"
             />
           </div>
         )}

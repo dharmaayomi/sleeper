@@ -1,6 +1,10 @@
 import useWindowStore from "#store/Window";
 
-const WindowControls = ({ target }) => {
+interface WindowControlsProps {
+  target: string;
+}
+
+const WindowControls = ({ target }: WindowControlsProps) => {
   const { closeWindow, minimizeWindow, maximizeWindow, windows } =
     useWindowStore();
 

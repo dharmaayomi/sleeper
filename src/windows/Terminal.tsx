@@ -1,4 +1,4 @@
-import WindowControls from "#components/WindowControls.jsx";
+import { WindowControls } from "#components";
 import { techStack } from "#constants";
 import { useWindow } from "#hooks/useWindow";
 import { Check, Flag } from "lucide-react";

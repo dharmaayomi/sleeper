@@ -8,13 +8,14 @@ import useWindowStore from "#store/Window";
 
 const Dock = () => {
   const { windows, openWindow, closeWindow, restoreWindow } = useWindowStore();
-  const dockRef = useRef(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+
   useGSAP(() => {
     const dock = dockRef.current;
     if (!dock) return;
-    const icons = dock.querySelectorAll(".dock-icon");
+    const icons = dock.querySelectorAll<HTMLElement>(".dock-icon");
 
-    const animateIcons = (mouseX) => {
+    const animateIcons = (mouseX: number) => {
       const { left } = dock.getBoundingClientRect();
       icons.forEach((icon) => {
         const { left: iconLeft, width } = icon.getBoundingClientRect();
@@ -31,7 +32,7 @@ const Dock = () => {
       });
     };
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const { left } = dock.getBoundingClientRect();
       animateIcons(e.clientX - left);
     };
@@ -55,10 +56,11 @@ const Dock = () => {
     };
   }, []);
 
-  const toggleApp = (app) => {
+  const toggleApp = (app: { id: string; canOpen: boolean }) => {
     if (!app.canOpen) return;
 
     const window = windows[app.id];
+    if (!window) return;
 
     if (window.isOpen) {
       if (window.isMinimized) {
@@ -94,7 +96,7 @@ const Dock = () => {
               />
               {windows[id]?.isOpen && (
                 <span
-                  className={`absolute  left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
+                  className={`absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
                     windows[id]?.isMinimized ? "bg-gray-200" : "bg-white"
                   }`}
                   aria-hidden="true"
