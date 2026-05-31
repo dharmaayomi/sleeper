@@ -1,19 +1,18 @@
-import React from "react";
-import WindowWrapper from "#hoc/WindowWrapper";
 import { WindowControls } from "#components";
+import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
 
 const Text = () => {
-  const { windows } = useWindowStore();
-  const data = windows.txtfile.data;
+  const { containerRef, headerRef } = useWindow("txtfile");
+  const data = useWindowStore((state) => state.windows.txtfile.data);
 
   if (!data) return null;
 
   const { name, image, subtitle, description } = data;
 
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="txtfile" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="txtfile" />
         <h2>{name}</h2>
       </div>
@@ -38,9 +37,8 @@ const Text = () => {
           ))}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-const TextWindow = WindowWrapper(Text, "txtfile");
-export default TextWindow;
+export default Text;

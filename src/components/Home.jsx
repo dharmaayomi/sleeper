@@ -4,7 +4,6 @@ import useWindowStore from "#store/Window";
 import { useGSAP } from "@gsap/react";
 import clsx from "clsx";
 import { Draggable } from "gsap/Draggable";
-import React from "react";
 
 const projects = locations.work?.children ?? [];
 const Home = () => {

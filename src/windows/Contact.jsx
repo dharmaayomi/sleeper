@@ -1,11 +1,13 @@
 import { WindowControls } from "#components";
 import { socials } from "#constants";
-import WindowWrapper from "#hoc/WindowWrapper";
+import { useWindow } from "#hooks/useWindow";
 
 const Contact = () => {
+  const { containerRef, headerRef } = useWindow("contact");
+
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="contact" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="contact" />
         <h2>Contact</h2>
       </div>
@@ -40,9 +42,8 @@ const Contact = () => {
           ))}
         </ul>
       </div>
-    </>
+    </section>
   );
 };
 
-const ContactWindow = WindowWrapper(Contact, "contact");
-export default ContactWindow;
+export default Contact;

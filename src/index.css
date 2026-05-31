@@ -120,6 +120,11 @@ body {
     @apply flex items-center font-inter justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
   }
 
+  .window {
+    visibility: hidden;
+    opacity: 0;
+  }
+
   #safari {
     @apply w-4xl absolute top-10 left-2/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 

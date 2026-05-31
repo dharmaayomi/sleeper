@@ -1,5 +1,4 @@
 import useWindowStore from "#store/Window";
-import React from "react";
 
 const WindowControls = ({ target }) => {
   const { closeWindow, minimizeWindow } = useWindowStore();

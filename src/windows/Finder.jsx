@@ -1,5 +1,5 @@
-import WindowWrapper from "#hoc/WindowWrapper.jsx";
 import { WindowControls } from "#components";
+import { useWindow } from "#hooks/useWindow";
 import { Search } from "lucide-react";
 import useLocationStore from "#store/Location.js";
 import { locations } from "#constants";
@@ -7,6 +7,7 @@ import clsx from "clsx";
 import useWindowStore from "#store/Window";
 
 const Finder = () => {
+  const { containerRef, headerRef } = useWindow("finder");
   const { openWindow } = useWindowStore();
   const { activeLocation, setActiveLocation } = useLocationStore();
 
@@ -43,8 +44,8 @@ const Finder = () => {
   );
 
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="finder" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="finder" />
         <Search className="icon" />
       </div>
@@ -67,9 +68,8 @@ const Finder = () => {
           ))}
         </ul>
       </div>
-    </>
+    </section>
   );
 };
 
-const FinderWindow = WindowWrapper(Finder, "finder");
-export default FinderWindow;
+export default Finder;
