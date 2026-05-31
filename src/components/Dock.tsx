@@ -5,12 +5,16 @@ import gsap from "gsap";
 import { dockApps } from "#constants";
 import { useGSAP } from "@gsap/react";
 import useWindowStore from "#store/Window";
+import useDevice from "#hooks/useDevice";
 
 const Dock = () => {
   const { windows, openWindow, closeWindow, restoreWindow } = useWindowStore();
+  const { isMobile } = useDevice();
   const dockRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (isMobile) return; // Disable hover zoom animations on mobile
+
     const dock = dockRef.current;
     if (!dock) return;
     const icons = dock.querySelectorAll<HTMLElement>(".dock-icon");
@@ -47,6 +51,7 @@ const Dock = () => {
         });
       });
     };
+
     dock.addEventListener("mousemove", handleMouseMove);
     dock.addEventListener("mouseleave", resetIcons);
 
@@ -54,7 +59,7 @@ const Dock = () => {
       dock.removeEventListener("mousemove", handleMouseMove);
       dock.removeEventListener("mouseleave", resetIcons);
     };
-  }, []);
+  }, [isMobile]);
 
   const toggleApp = (app: { id: string; canOpen: boolean }) => {
     if (!app.canOpen) return;
@@ -73,14 +78,22 @@ const Dock = () => {
     }
   };
 
+  // Filter dock apps on mobile: only Finder, Safari, Photos, and Contact
+  const filteredApps = isMobile
+    ? dockApps.filter((app) => ["finder", "safari", "photos", "contact"].includes(app.id))
+    : dockApps;
+
   return (
-    <section id="dock">
-      <div ref={dockRef} className="dock-container">
-        {dockApps.map(({ id, name, icon, canOpen }) => (
+    <section id="dock" className={isMobile ? "!block" : ""}>
+      <div
+        ref={dockRef}
+        className={`dock-container ${isMobile ? "!gap-3.5 !p-2 !rounded-2xl shadow-xl" : ""}`}
+      >
+        {filteredApps.map(({ id, name, icon, canOpen }) => (
           <div key={id} className="relative flex justify-center">
             <button
               type="button"
-              className="dock-icon relative"
+              className={`dock-icon relative ${isMobile ? "!size-11" : ""}`}
               aria-label={name}
               data-tooltip-id="dock-tooltip"
               onClick={() => toggleApp({ id, canOpen })}
@@ -98,14 +111,14 @@ const Dock = () => {
                 <span
                   className={`absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
                     windows[id]?.isMinimized ? "bg-gray-200" : "bg-white"
-                  }`}
+                  } ${isMobile ? "bottom-[-2px]" : "bottom-[-4px]"}`}
                   aria-hidden="true"
                 />
               )}
             </button>
           </div>
         ))}
-        <Tooltip id="dock-tooltip" place="top" className="tooltip" />
+        {!isMobile && <Tooltip id="dock-tooltip" place="top" className="tooltip" />}
       </div>
     </section>
   );

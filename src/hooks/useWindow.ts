@@ -3,10 +3,12 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import useWindowStore from "#store/Window";
+import useDevice from "#hooks/useDevice";
 
 gsap.registerPlugin(Draggable);
 
 export function useWindow(windowKey: string) {
+  const { isMobile } = useDevice();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const focusWindowRef = useRef<((windowKey: string) => void) | null>(null);
@@ -16,6 +18,13 @@ export function useWindow(windowKey: string) {
   const lastPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   // Ref untuk menyimpan instance Draggable agar bisa diakses di effect animasi
   const draggableInstanceRef = useRef<any>(null);
+  // Ref untuk mencatat ukuran sebelum maximize
+  const windowConfigRef = useRef<{
+    width: number;
+    height: number;
+    top: string;
+    left: string;
+  } | null>(null);
 
   const isOpen = useWindowStore(
     (state) => state.windows[windowKey]?.isOpen ?? false,
@@ -73,62 +82,115 @@ export function useWindow(windowKey: string) {
       };
 
       // --- CASE 1: Jendela Dibuka ATAU Di-restore ---
-      // --- CASE 1: Jendela Dibuka ATAU Di-restore dari Minimize ---
       if (isOpen && !isMinimized) {
         el.style.display = "block";
         el.style.visibility = "visible";
 
-        // Tambahkan pengecekan detail mikro untuk kondisi MAXIMIZE
-        if (isMaximized) {
-          // Kunci posisi koordinat drag terakhir sebelum diubah menjadi maximize
+        if (isMobile) {
+          // Mobile: Full screen window under status bar, slide up from bottom
+          if (!wasOpen || wasMinimized) {
+            gsap.fromTo(
+              el,
+              {
+                y: "100dvh",
+                x: 0,
+                opacity: 0,
+                width: "100dvw",
+                height: "calc(100dvh - 2.75rem)",
+                top: "2.75rem",
+                left: 0,
+                borderRadius: "0px",
+                maxWidth: "none",
+                maxHeight: "none",
+              },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.35,
+                ease: "power3.out",
+              }
+            );
+          } else {
+            gsap.to(el, {
+              x: 0,
+              y: 0,
+              width: "100dvw",
+              height: "calc(100dvh - 2.75rem)",
+              top: "2.75rem",
+              left: 0,
+              borderRadius: "0px",
+              maxWidth: "none",
+              maxHeight: "none",
+              opacity: 1,
+              duration: 0.25,
+              ease: "power2.out",
+            });
+          }
+        } else if (isMaximized) {
+          // Desktop / Tablet MAXIMIZE
           if (draggableInstanceRef.current) {
             lastPositionRef.current = {
               x: draggableInstanceRef.current.x,
               y: draggableInstanceRef.current.y,
             };
-            // MATIKAN fungsi drag total saat full screen (perilaku native OS)
             draggableInstanceRef.current.disable();
           }
+
+          const rect = el.getBoundingClientRect();
+          const computedStyle = window.getComputedStyle(el);
+          windowConfigRef.current = {
+            width: rect.width,
+            height: rect.height,
+            top: computedStyle.top,
+            left: computedStyle.left,
+          };
 
           gsap.to(el, {
             x: 0,
             y: 0,
             width: "100vw",
             height: "100vh",
+            maxWidth: "none",
+            maxHeight: "none",
             top: 0,
             left: 0,
+            borderRadius: "12px",
             duration: 0.35,
-            ease: "power3.inOut", // Transisi inOut agar akselerasi pembesaran lebih natural
+            ease: "power3.inOut",
           });
         } else {
-          // KONDISI NORMAL ATAU JENDELA BARU DIRESORE DARI MAXIMIZE
-          const wasMaximized = el.style.width === "100vw";
+          // Desktop / Tablet NORMAL WINDOW
+          const wasMaximized =
+            el.style.width === "100vw" ||
+            el.getBoundingClientRect().width === window.innerWidth;
 
           if (wasMaximized) {
-            // JANGAN langsung mengaktifkan Draggable di sini agar koordinat tidak bertabrakan secara instan
+            draggableInstanceRef.current?.enable();
 
             gsap.to(el, {
               x: lastPositionRef.current.x,
               y: lastPositionRef.current.y,
-              duration: 0.4, // Sedikit dinaikkan agar kurva perlambatan terbaca smooth
-              ease: "power4.out", // Menggunakan kurva power4 untuk rem animasi yang jauh lebih halus
-              clearProps: "width,height,top,left",
+              width: windowConfigRef.current?.width ?? "auto",
+              height: windowConfigRef.current?.height ?? "auto",
+              top: windowConfigRef.current?.top ?? "auto",
+              left: windowConfigRef.current?.left ?? "auto",
+              borderRadius: "12px",
+              duration: 0.5,
+              ease: "power4.out",
+              clearProps: "width,height,top,left,maxWidth,maxHeight",
+              onUpdate: () => {
+                draggableInstanceRef.current?.update();
+              },
               onComplete: () => {
-                // SAKLAR UTAMA: Aktifkan dan perbarui Draggable HANYA setelah transisi penyusutan selesai total!
-                if (draggableInstanceRef.current) {
-                  draggableInstanceRef.current.enable();
-                  draggableInstanceRef.current.update();
-                }
+                draggableInstanceRef.current?.update();
               },
             });
           } else {
-            // Jika jendela dalam kondisi normal, pastikan Draggable tetap aktif
             if (draggableInstanceRef.current) {
               draggableInstanceRef.current.enable();
             }
 
             if (!wasOpen || wasMinimized) {
-              // Kode bawaan restore dari minimize atau default open tetap di sini
               const targetRect = getTargetRect();
 
               if (wasMinimized && targetRect) {
@@ -192,7 +254,6 @@ export function useWindow(windowKey: string) {
       }
       // --- CASE 2: Jendela Di-minimize ---
       else if (isOpen && isMinimized) {
-        // AMBIL & SIMPAN koordinat Draggable saat ini tepat sebelum animasi minimize merusaknya
         if (draggableInstanceRef.current) {
           lastPositionRef.current = {
             x: draggableInstanceRef.current.x,
@@ -204,7 +265,6 @@ export function useWindow(windowKey: string) {
         const elRect = el.getBoundingClientRect();
 
         if (targetRect) {
-          // Hitung target tujuan berdasarkan posisi aktual window saat ini
           const targetX =
             targetRect.left +
             targetRect.width / 2 -
@@ -234,35 +294,59 @@ export function useWindow(windowKey: string) {
           el.style.display = "none";
         }
       }
-
       // --- CASE 3: Jendela Ditutup ---
       else if (wasOpen || wasMinimized) {
-        gsap.to(el, {
-          scale: 0.85,
-          opacity: 0,
-          duration: 0.25,
-          ease: "power2.in",
-          onComplete: () => {
-            el.style.visibility = "hidden";
-            el.style.display = "none";
-            // Reset memori posisi karena jendela benar-benar ditutup
-            lastPositionRef.current = { x: 0, y: 0 };
-            gsap.set(el, { scale: 1, opacity: 1, y: 0, x: 0 });
-            if (draggableInstanceRef.current)
-              draggableInstanceRef.current.update();
-          },
-        });
+        if (isMobile) {
+          // Mobile: Slide down out of view
+          gsap.to(el, {
+            y: "100dvh",
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+              el.style.visibility = "hidden";
+              el.style.display = "none";
+              lastPositionRef.current = { x: 0, y: 0 };
+              gsap.set(el, { scale: 1, opacity: 1, y: 0, x: 0 });
+            },
+          });
+        } else {
+          gsap.to(el, {
+            scale: 0.85,
+            opacity: 0,
+            duration: 0.25,
+            ease: "power2.in",
+            onComplete: () => {
+              el.style.visibility = "hidden";
+              el.style.display = "none";
+              lastPositionRef.current = { x: 0, y: 0 };
+              gsap.set(el, { scale: 1, opacity: 1, y: 0, x: 0 });
+              if (draggableInstanceRef.current)
+                draggableInstanceRef.current.update();
+            },
+          });
+        }
       }
 
       previousStateRef.current = { isOpen, isMinimized };
     },
-    { dependencies: [isOpen, isMinimized, isMaximized] },
+    { dependencies: [isOpen, isMinimized, isMaximized, isMobile] },
   );
 
   useGSAP(
     () => {
       const el = containerRef.current;
       if (!el) return;
+
+      // If mobile, ensure any active/leftover Draggable instance is completely killed
+      if (isMobile) {
+        Draggable.get(el)?.kill();
+        draggableInstanceRef.current = null;
+        return;
+      }
+
+      // Clean up any pre-existing draggable instance on this element to prevent duplicates (e.g. from React Strict Mode double-mounts)
+      Draggable.get(el)?.kill();
 
       const handle = headerRef.current ?? el;
       const focusCurrentWindow = () => focusWindowRef.current?.(windowKey);
@@ -274,7 +358,6 @@ export function useWindow(windowKey: string) {
         onPress: focusCurrentWindow,
       });
 
-      // Simpan instance ke ref agar bisa dibaca oleh effect animasi minimize/restore
       draggableInstanceRef.current = instance;
 
       el.addEventListener("pointerdown", focusCurrentWindow);
@@ -285,7 +368,7 @@ export function useWindow(windowKey: string) {
         draggableInstanceRef.current = null;
       };
     },
-    { dependencies: [] },
+    { dependencies: [isMobile, isOpen] },
   );
 
   return { containerRef, headerRef };

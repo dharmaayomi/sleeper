@@ -4,12 +4,19 @@ import { useGSAP } from "@gsap/react";
 
 type FontWeightType = "subtitle" | "title";
 
-const FONT_WEIGHTS: Record<FontWeightType, { min: number; max: number; default: number }> = {
+const FONT_WEIGHTS: Record<
+  FontWeightType,
+  { min: number; max: number; default: number }
+> = {
   subtitle: { min: 100, max: 400, default: 100 },
   title: { min: 400, max: 900, default: 400 },
 };
 
-const renderText = (text: string, className: string, baseWeight: number = 400) => {
+const renderText = (
+  text: string,
+  className: string,
+  baseWeight: number = 400,
+) => {
   return [...text].map((char, index) => (
     <span
       key={index}
@@ -21,13 +28,20 @@ const renderText = (text: string, className: string, baseWeight: number = 400) =
   ));
 };
 
-const setupTextHovered = (container: HTMLElement | null, type: FontWeightType) => {
+const setupTextHovered = (
+  container: HTMLElement | null,
+  type: FontWeightType,
+) => {
   if (!container) return () => {};
 
   const letters = container.querySelectorAll("span");
   const { min, max, default: base } = FONT_WEIGHTS[type];
 
-  const animateLetters = (letter: HTMLElement, weight: number, duration = 0.5) => {
+  const animateLetters = (
+    letter: HTMLElement,
+    weight: number,
+    duration = 0.5,
+  ) => {
     return gsap.to(letter, {
       duration,
       ease: "power2.out",
@@ -79,14 +93,11 @@ const Welcome = () => {
   return (
     <section id="welcome">
       <p ref={subtitleRef}>
-        {renderText("Hey, Im Omi! Welcome to my", "text-3xl font-georama", 100)}
+        {renderText("Hey, Im Omi! Welcome to my", "text-lg sm:text-2xl md:text-3xl font-georama", 100)}
       </p>
       <h1 ref={titleRef} className="mt-7">
-        {renderText("Portfolio", "text-9xl italic font-georama")}
+        {renderText("Portfolio", "text-5xl sm:text-7xl md:text-8xl lg:text-9xl italic font-georama")}
       </h1>
-      <div className="small-screen">
-        <p>This Portfolio is design for desktop/tablet screens only.</p>
-      </div>
     </section>
   );
 };
