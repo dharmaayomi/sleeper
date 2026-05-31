@@ -35,24 +35,29 @@ const photosLinks: PhotosLink[] = [
 interface GalleryImage {
   id: number;
   img: string;
+  name: string;
 }
 
 const gallery: GalleryImage[] = [
   {
     id: 1,
     img: "/images/gal1.png",
+    name: "Cool Lake",
   },
   {
     id: 2,
     img: "/images/gal2.png",
+    name: "Madagascar",
   },
   {
     id: 3,
     img: "/images/gal3.png",
+    name: "Death Valley",
   },
   {
     id: 4,
     img: "/images/gal4.png",
+    name: "Flowers",
   },
 ];
 

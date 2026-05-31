@@ -16,7 +16,7 @@ const Photos = () => {
       <div ref={headerRef} id="window-header">
         <WindowControls target="photos" />
 
-        <div className="flex items-center w-full justify-end gap-3 text-gray-500">
+        <div className="flex items-center w-full h-full justify-end gap-3 text-gray-500">
           <Mail className="icon" />
           <Search className="icon" />
         </div>
@@ -43,13 +43,13 @@ const Photos = () => {
 
         <div className="gallery">
           <ul>
-            {gallery.map(({ id, img }) => (
+            {gallery.map(({ id, img, name }) => (
               <li
                 key={id}
                 onClick={() =>
                   openWindow("imgfile", {
                     id,
-                    name: "Gallery Image",
+                    name: name,
                     icon: "/images/image.png",
                     kind: "file",
                     fileType: "img",
@@ -57,7 +57,10 @@ const Photos = () => {
                   })
                 }
               >
-                <img src={img} alt={`Gallery Image ${id}`} />
+                <div className="thumbnail-wrapper">
+                  <img src={img} alt={name} />
+                </div>
+                <p className="font-inter">{name}</p>
               </li>
             ))}
           </ul>
