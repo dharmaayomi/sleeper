@@ -3,10 +3,13 @@ import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
 import { Mail, Search } from "lucide-react";
 import { gallery, photosLinks } from "#constants";
+import { useState } from "react";
+import clsx from "clsx";
 
 const Photos = () => {
   const { containerRef, headerRef } = useWindow("photos");
   const { openWindow } = useWindowStore();
+  const [activeCategory, setActiveCategory] = useState<number>(1);
 
   return (
     <section ref={containerRef} id="photos" className="window">
@@ -19,12 +22,18 @@ const Photos = () => {
         </div>
       </div>
 
-      <div className="flex w-full">
+      <div className="bg-white flex w-full h-full">
         <div className="sidebar">
-          <h2>Photos</h2>
+          <h3 className="font-inter">Photos</h3>
           <ul>
             {photosLinks.map(({ id, icon, title }) => (
-              <li key={id}>
+              <li
+                key={id}
+                onClick={() => setActiveCategory(id)}
+                className={clsx(
+                  id === activeCategory ? "active" : "not-active",
+                )}
+              >
                 <img src={icon} alt={title} />
                 <p className="font-inter">{title}</p>
               </li>

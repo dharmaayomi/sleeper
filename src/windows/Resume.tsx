@@ -1,7 +1,8 @@
 import { WindowControls } from "#components";
 import { useWindow } from "#hooks/useWindow";
+import useWindowStore from "#store/Window";
 import { Download } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -12,6 +13,24 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 const Resume = () => {
   const { containerRef, headerRef } = useWindow("resume");
   const [numPages, setNumPages] = useState<number>(0);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  const isMaximized = useWindowStore(
+    (state) => state.windows.resume?.isMaximized ?? false,
+  );
+
+  useEffect(() => {
+    const el = pdfContainerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setContainerWidth(entry.contentRect.width);
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section ref={containerRef} id="resume" className="window">
@@ -29,7 +48,13 @@ const Resume = () => {
         </a>
       </div>
 
-      <div className="max-h-[calc(85vh-2.5rem)] overflow-auto">
+      <div
+        ref={pdfContainerRef}
+        style={{
+          maxHeight: isMaximized ? "calc(100vh - 3rem)" : "calc(85vh - 2.5rem)",
+        }}
+        className="flex flex-col items-center w-full overflow-auto px-4 py-6"
+      >
         <Document
           file="/files/resume.pdf"
           onLoadSuccess={({ numPages: totalPages }: { numPages: number }) => setNumPages(totalPages)}
@@ -38,8 +63,9 @@ const Resume = () => {
             <Page
               key={`resume-page-${index + 1}`}
               pageNumber={index + 1}
-              renderTextLayer={true}
-              renderAnnotationLayer={true}
+              width={isMaximized && containerWidth > 0 ? containerWidth - 32 : undefined}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
             />
           ))}
         </Document>

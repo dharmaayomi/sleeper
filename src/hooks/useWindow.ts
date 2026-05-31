@@ -16,6 +16,13 @@ export function useWindow(windowKey: string) {
   const lastPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   // Ref untuk menyimpan instance Draggable agar bisa diakses di effect animasi
   const draggableInstanceRef = useRef<any>(null);
+  // Ref untuk mencatat ukuran sebelum maximize
+  const windowConfigRef = useRef<{
+    width: number;
+    height: number;
+    top: string;
+    left: string;
+  } | null>(null);
 
   const isOpen = useWindowStore(
     (state) => state.windows[windowKey]?.isOpen ?? false,
@@ -90,11 +97,23 @@ export function useWindow(windowKey: string) {
             draggableInstanceRef.current.disable();
           }
 
+          // Record original dimensions and layout positions before maximizing
+          const rect = el.getBoundingClientRect();
+          const computedStyle = window.getComputedStyle(el);
+          windowConfigRef.current = {
+            width: rect.width,
+            height: rect.height,
+            top: computedStyle.top,
+            left: computedStyle.left,
+          };
+
           gsap.to(el, {
             x: 0,
             y: 0,
             width: "100vw",
             height: "100vh",
+            maxWidth: "none",
+            maxHeight: "none",
             top: 0,
             left: 0,
             duration: 0.35,
@@ -102,23 +121,34 @@ export function useWindow(windowKey: string) {
           });
         } else {
           // KONDISI NORMAL ATAU JENDELA BARU DIRESORE DARI MAXIMIZE
-          const wasMaximized = el.style.width === "100vw";
+          const wasMaximized =
+            el.style.width === "100vw" ||
+            el.getBoundingClientRect().width === window.innerWidth;
 
           if (wasMaximized) {
-            // JANGAN langsung mengaktifkan Draggable di sini agar koordinat tidak bertabrakan secara instan
+            // ✅ 1. Enable Draggable SEBELUM animasi mulai
+            draggableInstanceRef.current?.enable();
 
             gsap.to(el, {
               x: lastPositionRef.current.x,
               y: lastPositionRef.current.y,
-              duration: 0.4, // Sedikit dinaikkan agar kurva perlambatan terbaca smooth
-              ease: "power4.out", // Menggunakan kurva power4 untuk rem animasi yang jauh lebih halus
-              clearProps: "width,height,top,left",
+              width: windowConfigRef.current?.width ?? "auto",
+              height: windowConfigRef.current?.height ?? "auto",
+              top: windowConfigRef.current?.top ?? "auto",
+              left: windowConfigRef.current?.left ?? "auto",
+              borderRadius: "12px",
+              duration: 0.5,
+              ease: "power4.out",
+              clearProps: "width,height,top,left,maxWidth,maxHeight",
+
+              // ✅ 2. Sync koordinat Draggable setiap frame
+              onUpdate: () => {
+                draggableInstanceRef.current?.update();
+              },
+
+              // ✅ 3. Lock koordinat final setelah selesai
               onComplete: () => {
-                // SAKLAR UTAMA: Aktifkan dan perbarui Draggable HANYA setelah transisi penyusutan selesai total!
-                if (draggableInstanceRef.current) {
-                  draggableInstanceRef.current.enable();
-                  draggableInstanceRef.current.update();
-                }
+                draggableInstanceRef.current?.update();
               },
             });
           } else {
