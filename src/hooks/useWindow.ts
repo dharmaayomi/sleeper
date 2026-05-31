@@ -337,7 +337,16 @@ export function useWindow(windowKey: string) {
     () => {
       const el = containerRef.current;
       if (!el) return;
-      if (isMobile) return; // Skip Draggable behavior completely on mobile devices
+
+      // If mobile, ensure any active/leftover Draggable instance is completely killed
+      if (isMobile) {
+        Draggable.get(el)?.kill();
+        draggableInstanceRef.current = null;
+        return;
+      }
+
+      // Clean up any pre-existing draggable instance on this element to prevent duplicates (e.g. from React Strict Mode double-mounts)
+      Draggable.get(el)?.kill();
 
       const handle = headerRef.current ?? el;
       const focusCurrentWindow = () => focusWindowRef.current?.(windowKey);
