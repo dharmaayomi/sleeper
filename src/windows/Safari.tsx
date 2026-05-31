@@ -1,5 +1,5 @@
 import { WindowControls } from "#components";
-import WindowWrapper from "#hoc/WindowWrapper";
+import { useWindow } from "#hooks/useWindow";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,10 +11,13 @@ import {
   ShieldHalf,
 } from "lucide-react";
 import { blogPosts } from "#constants";
+
 const Safari = () => {
+  const { containerRef, headerRef } = useWindow("safari");
+
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="safari" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="safari" />
 
         <PanelLeft className="ml-10 icon" />
@@ -63,9 +66,8 @@ const Safari = () => {
           ))}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-const SafariWindow = WindowWrapper(Safari, "safari");
-export default SafariWindow;
+export default Safari;

@@ -1,10 +1,17 @@
+import { FolderItem } from "../types";
 import { locations } from "#constants";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 const DEFAULT_LOCATION = locations.work;
 
-const useLocationStore = create(
+export interface LocationStoreState {
+  activeLocation: FolderItem;
+  setActiveLocation: (location?: FolderItem) => void;
+  resetActiveLocation: () => void;
+}
+
+const useLocationStore = create<LocationStoreState>()(
   immer((set) => ({
     activeLocation: DEFAULT_LOCATION,
 

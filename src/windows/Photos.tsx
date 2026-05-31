@@ -1,16 +1,16 @@
 import { WindowControls } from "#components";
-import React from "react";
-import WindowWrapper from "#hoc/WindowWrapper";
+import { useWindow } from "#hooks/useWindow";
 import useWindowStore from "#store/Window";
-import { FileType, Mail, Search } from "lucide-react";
+import { Mail, Search } from "lucide-react";
 import { gallery, photosLinks } from "#constants";
 
 const Photos = () => {
+  const { containerRef, headerRef } = useWindow("photos");
   const { openWindow } = useWindowStore();
 
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="photos" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="photos" />
 
         <div className="flex items-center w-full justify-end gap-3 text-gray-500">
@@ -54,9 +54,8 @@ const Photos = () => {
           </ul>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-const PhotosWindow = WindowWrapper(Photos, "photos");
-export default PhotosWindow;
+export default Photos;

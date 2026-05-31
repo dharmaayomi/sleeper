@@ -1,5 +1,4 @@
 import { navIcons, navLinks } from "#constants";
-import React from "react";
 import dayjs from "dayjs";
 import useWindowStore from "#store/Window";
 
@@ -9,7 +8,7 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <img src="/images/logo.svg" />
+        <img src="/images/logo.svg" alt="logo" />
         <p className="font-bold font-inter">Omi's Portfolio</p>
 
         <ul>

@@ -16,8 +16,8 @@ export default defineConfig({
 				dirname(fileURLToPath(import.meta.url)),
 				"src/constants",
 			),
+			"#hooks": resolve(dirname(fileURLToPath(import.meta.url)), "src/hooks"),
 			"#store": resolve(dirname(fileURLToPath(import.meta.url)), "src/store"),
-			"#hoc": resolve(dirname(fileURLToPath(import.meta.url)), "src/hoc"),
 			"#windows": resolve(
 				dirname(fileURLToPath(import.meta.url)),
 				"src/windows",

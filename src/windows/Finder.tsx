@@ -1,25 +1,27 @@
-import WindowWrapper from "#hoc/WindowWrapper.jsx";
 import { WindowControls } from "#components";
+import { useWindow } from "#hooks/useWindow";
 import { Search } from "lucide-react";
 import useLocationStore from "#store/Location.js";
 import { locations } from "#constants";
 import clsx from "clsx";
 import useWindowStore from "#store/Window";
+import { FileItem, FolderItem } from "../types";
 
 const Finder = () => {
+  const { containerRef, headerRef } = useWindow("finder");
   const { openWindow } = useWindowStore();
   const { activeLocation, setActiveLocation } = useLocationStore();
 
-  const openItem = (item) => {
-    if (item.fileType === "pdf") return openWindow("resume");
+  const openItem = (item: FileItem | FolderItem) => {
+    if (item.kind === "file" && item.fileType === "pdf") return openWindow("resume");
     if (item.kind === "folder") return setActiveLocation(item);
-    if (["fig", "url"].includes(item.fileType) && item.href)
+    if (item.kind === "file" && ["fig", "url"].includes(item.fileType) && item.href)
       return window.open(item.href, "_blank");
 
-    openWindow(`${item.fileType}${item.kind}`, item);
+    openWindow(`${(item as FileItem).fileType}${item.kind}`, item);
   };
 
-  const renderList = (name, items) => (
+  const renderList = (name: string, items: FolderItem[]) => (
     <div>
       <h3 className="font-inter">{name}</h3>
 
@@ -29,7 +31,7 @@ const Finder = () => {
             key={item.id}
             onClick={() => setActiveLocation(item)}
             className={clsx(
-              item.id === activeLocation.id ? "active" : "not-active",
+              item.id === activeLocation?.id ? "active" : "not-active",
             )}
           >
             <img src={item.icon} className="w-4" alt={item.name} />
@@ -43,8 +45,8 @@ const Finder = () => {
   );
 
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="finder" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="finder" />
         <Search className="icon" />
       </div>
@@ -52,7 +54,7 @@ const Finder = () => {
       <div className="bg-white flex h-full">
         <div className="sidebar">
           {renderList("Favorites", Object.values(locations))}
-          {renderList("My Projects", locations.work.children)}
+          {renderList("My Projects", locations.work.children as FolderItem[])}
         </div>
         <ul className="content">
           {activeLocation?.children.map((item) => (
@@ -67,9 +69,8 @@ const Finder = () => {
           ))}
         </ul>
       </div>
-    </>
+    </section>
   );
 };
 
-const FinderWindow = WindowWrapper(Finder, "finder");
-export default FinderWindow;
+export default Finder;

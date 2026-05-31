@@ -1,5 +1,5 @@
 import { WindowControls } from "#components";
-import WindowWrapper from "#hoc/WindowWrapper";
+import { useWindow } from "#hooks/useWindow";
 import { Download } from "lucide-react";
 import { useState } from "react";
 
@@ -10,16 +10,17 @@ import "react-pdf/dist/Page/TextLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const Resume = () => {
-  const [numPages, setNumPages] = useState(0);
+  const { containerRef, headerRef } = useWindow("resume");
+  const [numPages, setNumPages] = useState<number>(0);
 
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="resume" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="resume" />
         <h2>Resume PDF</h2>
 
         <a
-          href="files/resume.pdf"
+          href="/files/resume.pdf"
           download
           className="cursor-pointer"
           title="Download Resume"
@@ -30,8 +31,8 @@ const Resume = () => {
 
       <div className="max-h-[calc(85vh-2.5rem)] overflow-auto">
         <Document
-          file="files/resume.pdf"
-          onLoadSuccess={({ numPages: totalPages }) => setNumPages(totalPages)}
+          file="/files/resume.pdf"
+          onLoadSuccess={({ numPages: totalPages }: { numPages: number }) => setNumPages(totalPages)}
         >
           {Array.from({ length: numPages }, (_, index) => (
             <Page
@@ -43,9 +44,8 @@ const Resume = () => {
           ))}
         </Document>
       </div>
-    </>
+    </section>
   );
 };
 
-const ResumeWindow = WindowWrapper(Resume, "resume");
-export default ResumeWindow;
+export default Resume;
