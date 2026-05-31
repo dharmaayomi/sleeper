@@ -6,7 +6,9 @@ import { FileItem } from "../types";
 
 const Text = () => {
   const { containerRef, headerRef } = useWindow("txtfile");
-  const data = useWindowStore((state) => state.windows.txtfile.data) as FileItem | null;
+  const data = useWindowStore(
+    (state) => state.windows.txtfile.data,
+  ) as FileItem | null;
   const { isMobile } = useDevice();
 
   if (!data) return null;
@@ -16,15 +18,21 @@ const Text = () => {
   return (
     <section ref={containerRef} id="txtfile" className="window">
       {/* Responsive Header */}
-      <div ref={headerRef} id="window-header" className="relative flex items-center justify-between select-none">
+      <div
+        ref={headerRef}
+        id="window-header"
+        className="relative flex items-center justify-between select-none"
+      >
         <WindowControls target="txtfile" />
-        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2 truncate max-w-[50%]">
+        <h2 className="text-black font-semibold text-[15px] pointer-events-none font-inter absolute left-1/2 -translate-x-1/2 truncate max-w-[50%]">
           {name}
         </h2>
         <div className="w-[30px]" />
       </div>
 
-      <div className={`bg-white h-[calc(100%-2.75rem)] overflow-y-auto font-inter text-gray-800 rounded-b-xl pb-12 ${isMobile ? "p-5" : "p-8"}`}>
+      <div
+        className={`bg-white h-[calc(100%-2.75rem)] overflow-y-auto font-inter text-gray-800 rounded-b-xl pb-12 ${isMobile ? "p-5" : "p-8"}`}
+      >
         {image && (
           <img
             src={image}
@@ -33,7 +41,9 @@ const Text = () => {
           />
         )}
         {subtitle && (
-          <h3 className={`font-semibold mb-4 text-gray-700 leading-snug ${isMobile ? "text-lg" : "text-xl"}`}>
+          <h3
+            className={`font-semibold mb-4 text-gray-700 leading-snug ${isMobile ? "text-lg" : "text-xl"}`}
+          >
             {subtitle}
           </h3>
         )}

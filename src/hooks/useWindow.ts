@@ -359,7 +359,7 @@ export function useWindow(windowKey: string) {
         draggableInstanceRef.current = null;
       };
     },
-    { dependencies: [isMobile] },
+    { dependencies: [isMobile, isOpen] },
   );
 
   return { containerRef, headerRef };

@@ -6,10 +6,14 @@ import useDevice from "#hooks/useDevice";
 import { Wifi, Battery, Signal } from "lucide-react";
 
 const Navbar = () => {
-  const { openWindow } = useWindowStore();
+  const { openWindow, windows } = useWindowStore();
   const { isMobile } = useDevice();
   const [time, setTime] = useState(dayjs());
   const [islandExpanded, setIslandExpanded] = useState(false);
+
+  const hasOpenWindow = Object.values(windows).some(
+    (win) => win.isOpen && !win.isMinimized,
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -18,7 +22,6 @@ const Navbar = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Auto-collapse Dynamic Island after 3 seconds
   useEffect(() => {
     if (islandExpanded) {
       const timeout = setTimeout(() => setIslandExpanded(false), 3000);
@@ -28,9 +31,14 @@ const Navbar = () => {
 
   if (isMobile) {
     return (
-      <nav id="iphone-status-bar" className="w-full h-11 flex items-center justify-between px-6 select-none z-[9999] absolute top-0 left-0 bg-transparent text-black text-sm font-semibold font-inter">
+      <nav
+        id="iphone-status-bar"
+        className={`w-full h-13 flex items-center justify-between px-6 select-none z-[9999] absolute top-0 left-0 text-black text-sm font-semibold font-inter transition-all duration-300 ${
+          hasOpenWindow ? "bg-white" : "bg-transparent"
+        }`}
+      >
         {/* Left Side: Time */}
-        <div className="flex items-center min-w-[70px]">
+        <div className="flex items-center justify-start min-w-[70px]">
           <span>{time.format("h:mm A")}</span>
         </div>
 
@@ -49,13 +57,16 @@ const Navbar = () => {
                 <div className="flex items-center justify-between w-full px-1 animate-fadeIn">
                   <span>Omi's Portfolio</span>
                   <span className="flex items-center gap-1 text-[#2acb42]">
-                    Online <span className="w-2 h-2 rounded-full bg-[#2acb42] animate-pulse" />
+                    Online{" "}
+                    <span className="w-2 h-2 rounded-full bg-[#2acb42] animate-pulse" />
                   </span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-1.5 animate-fadeIn">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  <span className="text-[10px] uppercase font-bold text-neutral-400">Porto</span>
+                  <span className="text-[10px] uppercase font-bold text-neutral-400">
+                    Porto
+                  </span>
                 </div>
               )}
             </div>

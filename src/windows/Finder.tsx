@@ -23,9 +23,14 @@ const Finder = () => {
   }, [isMobile]);
 
   const openItem = (item: FileItem | FolderItem) => {
-    if (item.kind === "file" && item.fileType === "pdf") return openWindow("resume");
+    if (item.kind === "file" && item.fileType === "pdf")
+      return openWindow("resume");
     if (item.kind === "folder") return setActiveLocation(item);
-    if (item.kind === "file" && ["fig", "url"].includes(item.fileType) && item.href)
+    if (
+      item.kind === "file" &&
+      ["fig", "url"].includes(item.fileType) &&
+      item.href
+    )
       return window.open(item.href, "_blank");
 
     openWindow(`${(item as FileItem).fileType}${item.kind}`, item);
@@ -59,7 +64,11 @@ const Finder = () => {
     return (
       <section ref={containerRef} id="finder" className="window">
         {/* Mobile Header with Center Dynamic Title */}
-        <div ref={headerRef} id="window-header" className="relative flex items-center justify-between w-full px-4 py-2 border-b border-neutral-100 bg-gray-50 h-11 select-none">
+        <div
+          ref={headerRef}
+          id="window-header"
+          className="relative  flex items-center justify-between w-full px-4 py-2 bg-white md:bg-gray-50 border-none md:border-b md:border-gray-200  h-11 select-none"
+        >
           <WindowControls target="finder" />
           <h2 className="text-neutral-800 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
             {activeLocation ? activeLocation.name : "Portfolio"}

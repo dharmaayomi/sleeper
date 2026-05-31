@@ -7,9 +7,17 @@ const Contact = () => {
 
   return (
     <section ref={containerRef} id="contact" className="window">
-      <div ref={headerRef} id="window-header">
+      {/* Responsive Header */}
+      <div
+        ref={headerRef}
+        id="window-header"
+        className="relative flex items-center justify-between select-none"
+      >
         <WindowControls target="contact" />
-        <h2>Contact</h2>
+        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2 pointer-events-none">
+          Contact
+        </h2>
+        <div className="w-[30px]" />
       </div>
       <div className="p-5 space-y-5">
         <img

@@ -109,7 +109,7 @@ body {
   }
 
   #window-header {
-    @apply flex items-center font-inter justify-between px-4 py-1.5 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
+    @apply flex items-center font-inter justify-between px-4 py-1.5 rounded-t-none md:rounded-t-lg bg-white md:bg-gray-50 border-0 md:border-b md:border-gray-200 select-none text-sm text-gray-400;
   }
 
   .window {
@@ -209,10 +209,6 @@ body {
   #contact {
     @apply w-full md:max-w-2xl absolute top-11 md:top-12 left-0 md:left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
 
-    h2 {
-      @apply font-bold font-inter text-sm text-center w-full;
-    }
-
     h3 {
       @apply text-xl font-semibold;
     }
@@ -235,7 +231,7 @@ body {
   }
 
   #photos {
-    @apply w-full md:w-3xl absolute min-h-100 top-11 md:top-55 left-0 md:left-1/3 md:-translate-y-1/2 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
+    @apply w-full md:w-3xl absolute min-h-100 top-11 md:top-24 left-0 md:left-1/3 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
 
     .sidebar {
       @apply w-48 flex-none min-h-90 bg-gray-50 border-r border-gray-200 flex flex-col p-5 space-y-3 overflow-y-auto;
@@ -349,10 +345,10 @@ body {
   }
 
   #txtfile {
-    @apply w-full md:w-md absolute top-11 md:top-36 left-0 md:right-32 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
+    @apply w-full md:w-md absolute top-11 md:top-36 left-0 md:left-auto md:right-32 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
 
     h2 {
-      @apply font-bold text-sm text-center w-full;
+      @apply font-bold text-sm text-center pointer-events-none w-full;
     }
   }
 

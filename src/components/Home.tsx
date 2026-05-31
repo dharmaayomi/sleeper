@@ -38,7 +38,7 @@ const Home = () => {
             className="!relative group flex flex-col items-center cursor-pointer transition-transform active:scale-90"
             onClick={() => openWindow("terminal")}
           >
-            <div className="w-16 h-16 flex items-center justify-center   ">
+            <div className="w-20 h-20 flex items-center justify-center   ">
               <img
                 src="/images/terminal.png"
                 alt="Skills"
@@ -52,7 +52,7 @@ const Home = () => {
             className="!relative group flex flex-col items-center cursor-pointer transition-transform active:scale-90"
             onClick={() => openWindow("resume")}
           >
-            <div className="w-16 h-16 flex items-center justify-center  ">
+            <div className="w-20 h-20 flex items-center justify-center  ">
               <img
                 src="/images/notes.png"
                 alt="Resume"
