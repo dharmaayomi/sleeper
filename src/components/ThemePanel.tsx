@@ -214,7 +214,7 @@ export default function ThemePanel() {
                 />
                 <div
                   className="absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 bg-white rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.35)] pointer-events-none transition-all duration-75"
-                  style={{ left: `calc(${brightness}% - 9px)` }}
+                  style={{ left: `calc(${brightness}% - 15px)` }}
                 />
                 <input
                   type="range"
@@ -245,7 +245,7 @@ export default function ThemePanel() {
                 />
                 <div
                   className="absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 bg-white rounded-full shadow-[0_1.5px_3.5px_rgba(0,0,0,0.3)] pointer-events-none transition-all duration-75"
-                  style={{ left: `calc(${volume}% - 9px)` }}
+                  style={{ left: `calc(${volume}% - 15px)` }}
                 />
                 <input
                   type="range"
@@ -262,11 +262,11 @@ export default function ThemePanel() {
           {/* Row 5: Music Widget */}
           <div className="control-card w-full p-2 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 select-none">
-              <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#242426] dark:bg-neutral-800 border border-black/5 dark:border-white/5 shadow-sm flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 dark:bg-neutral-800 border border-black/5 dark:border-white/5 shadow-sm flex items-center justify-center">
                 <img
                   src="/images/logo.svg"
                   alt="music cover"
-                  className="w-7 h-7 object-cover scale-75 animate-pulse"
+                  className=" h-7 object-cover scale-75 animate-pulse"
                 />
               </div>
               <div className="flex items-start justify-start gap-2 flex-col">

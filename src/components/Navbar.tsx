@@ -5,12 +5,24 @@ import useWindowStore from "#store/Window";
 import useDevice from "#hooks/useDevice";
 import { Wifi, Battery, Signal } from "lucide-react";
 import ThemePanel from "./ThemePanel";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const { openWindow, windows } = useWindowStore();
   const { isMobile } = useDevice();
   const [time, setTime] = useState(dayjs());
   const [islandExpanded, setIslandExpanded] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const logoSrc =
+    mounted && resolvedTheme === "dark"
+      ? "/images/logo_white.svg"
+      : "/images/logo.svg";
 
   const hasOpenWindow = Object.values(windows).some(
     (win) => win.isOpen && !win.isMinimized,
@@ -88,7 +100,11 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <img src="/images/logo.svg" alt="logo" />
+        <img
+          src={logoSrc}
+          alt="logo"
+          className="h-[17px] w-auto object-contain"
+        />
         <p className="font-bold font-inter">Omi's Portfolio</p>
 
         <ul>
