@@ -11,9 +11,10 @@ const Text = () => {
   ) as FileItem | null;
   const { isMobile } = useDevice();
 
-  if (!data) return null;
-
-  const { name, image, subtitle, description } = data;
+  const name = data?.name ?? "";
+  const image = data?.image ?? "";
+  const subtitle = data?.subtitle ?? "";
+  const description = data?.description ?? [];
 
   return (
     <section ref={containerRef} id="txtfile" className="window">
@@ -37,7 +38,7 @@ const Text = () => {
           <img
             src={image}
             alt={name}
-            className={`w-full object-cover rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-48" : "max-h-64"}`}
+            className={`w-full object-cover object-center rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-48" : "max-h-64"}`}
           />
         )}
         {subtitle && (

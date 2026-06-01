@@ -64,23 +64,45 @@ const Dock = () => {
     };
   }, [isMobile]);
 
+  const getActiveWindowKey = (): string | null => {
+    let maxZ = -1;
+    let activeKey: string | null = null;
+    Object.entries(windows).forEach(([key, win]) => {
+      if (win.isOpen && !win.isMinimized && win.zIndex > maxZ) {
+        maxZ = win.zIndex;
+        activeKey = key;
+      }
+    });
+    return activeKey;
+  };
+
   const toggleApp = (app: { id: string; canOpen: boolean }) => {
     if (!app.canOpen) return;
 
-    // --- LOGIKA TRACH CLICK ---
+    const activeWindowKey = getActiveWindowKey();
+
+    // --- LOGIKA TRASH CLICK ---
     if (app.id === "trash") {
       const finderWindow = windows["finder"];
       if (finderWindow) {
         if (finderWindow.isOpen) {
-          if (activeLocation?.type === "trash") {
-            // Jika sudah di Trash dan diklik lagi, minimize atau close sesuai preferensimu
-            if (finderWindow.isMinimized) restoreWindow("finder");
-            else closeWindow("finder");
-          } else {
+          const isFinderActive =
+            activeWindowKey === "finder" && activeLocation?.type === "trash";
+
+          if (activeLocation?.type !== "trash") {
             // Jika Finder lagi buka folder lain, langsung alihkan ke Trash & focus
             setActiveLocation(locations.trash);
             if (finderWindow.isMinimized) restoreWindow("finder");
             else focusWindow("finder");
+          } else {
+            // Jika sudah di Trash dan diklik lagi, toggle minimize/close sesuai preferensimu
+            if (finderWindow.isMinimized) {
+              restoreWindow("finder");
+            } else if (!isFinderActive) {
+              focusWindow("finder");
+            } else {
+              closeWindow("finder");
+            }
           }
         } else {
           // Jika Finder mati, set ke folder Trash baru buka Finder
@@ -95,6 +117,9 @@ const Dock = () => {
       const finderWindow = windows["finder"];
       if (finderWindow) {
         if (finderWindow.isOpen) {
+          const isFinderActive =
+            activeWindowKey === "finder" && activeLocation?.type !== "trash";
+
           // JIKA sedang di dalam Trash, klik Finder akan memindahkan lokasi ke Work (bukan menutup window)
           if (activeLocation?.type === "trash") {
             setActiveLocation(locations.work);
@@ -104,6 +129,8 @@ const Dock = () => {
             // Jika memang sudah di Finder biasa, toggle minimize/close
             if (finderWindow.isMinimized) {
               restoreWindow("finder");
+            } else if (!isFinderActive) {
+              focusWindow("finder");
             } else {
               closeWindow("finder");
             }
@@ -125,6 +152,8 @@ const Dock = () => {
     if (window.isOpen) {
       if (window.isMinimized) {
         restoreWindow(app.id);
+      } else if (activeWindowKey !== app.id) {
+        focusWindow(app.id);
       } else {
         closeWindow(app.id);
       }
