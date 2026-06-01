@@ -2,13 +2,16 @@ import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
 import gsap from "gsap";
 
-import { dockApps } from "#constants";
+import { dockApps, locations } from "#constants";
 import { useGSAP } from "@gsap/react";
 import useWindowStore from "#store/Window";
+import useLocationStore from "#store/Location";
 import useDevice from "#hooks/useDevice";
 
 const Dock = () => {
-  const { windows, openWindow, closeWindow, restoreWindow } = useWindowStore();
+  const { windows, openWindow, closeWindow, restoreWindow, focusWindow } =
+    useWindowStore();
+  const { activeLocation, setActiveLocation } = useLocationStore();
   const { isMobile } = useDevice();
   const dockRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +67,58 @@ const Dock = () => {
   const toggleApp = (app: { id: string; canOpen: boolean }) => {
     if (!app.canOpen) return;
 
+    // --- LOGIKA TRACH CLICK ---
+    if (app.id === "trash") {
+      const finderWindow = windows["finder"];
+      if (finderWindow) {
+        if (finderWindow.isOpen) {
+          if (activeLocation?.type === "trash") {
+            // Jika sudah di Trash dan diklik lagi, minimize atau close sesuai preferensimu
+            if (finderWindow.isMinimized) restoreWindow("finder");
+            else closeWindow("finder");
+          } else {
+            // Jika Finder lagi buka folder lain, langsung alihkan ke Trash & focus
+            setActiveLocation(locations.trash);
+            if (finderWindow.isMinimized) restoreWindow("finder");
+            else focusWindow("finder");
+          }
+        } else {
+          // Jika Finder mati, set ke folder Trash baru buka Finder
+          setActiveLocation(locations.trash);
+          openWindow("finder");
+        }
+      }
+      return;
+    }
+
+    if (app.id === "finder") {
+      const finderWindow = windows["finder"];
+      if (finderWindow) {
+        if (finderWindow.isOpen) {
+          // JIKA sedang di dalam Trash, klik Finder akan memindahkan lokasi ke Work (bukan menutup window)
+          if (activeLocation?.type === "trash") {
+            setActiveLocation(locations.work);
+            if (finderWindow.isMinimized) restoreWindow("finder");
+            else focusWindow("finder");
+          } else {
+            // Jika memang sudah di Finder biasa, toggle minimize/close
+            if (finderWindow.isMinimized) {
+              restoreWindow("finder");
+            } else {
+              closeWindow("finder");
+            }
+          }
+        } else {
+          // Jika Finder mati dan sebelumnya kesimpan di trash, reset ke folder kerja utama
+          if (activeLocation?.type === "trash") {
+            setActiveLocation(locations.work);
+          }
+          openWindow("finder");
+        }
+      }
+      return;
+    }
+
     const window = windows[app.id];
     if (!window) return;
 
@@ -80,8 +135,29 @@ const Dock = () => {
 
   // Filter dock apps on mobile: only Finder, Safari, Photos, and Contact
   const filteredApps = isMobile
-    ? dockApps.filter((app) => ["finder", "safari", "photos", "contact"].includes(app.id))
+    ? dockApps.filter((app) =>
+        ["finder", "safari", "photos", "contact"].includes(app.id),
+      )
     : dockApps;
+
+  const isAppActive = (id: string) => {
+    // Jika app yang dicek adalah trash, aktif hanya jika Finder buka DAN lokasi tipe trash
+    if (id === "trash") {
+      return windows.finder?.isOpen && activeLocation?.type === "trash";
+    }
+    // Jika app yang dicek adalah finder, aktif jika Finder buka DAN lokasi BUKAN trash
+    if (id === "finder") {
+      return windows.finder?.isOpen && activeLocation?.type !== "trash";
+    }
+    return windows[id]?.isOpen;
+  };
+
+  const isAppMinimized = (id: string) => {
+    if (id === "finder" || id === "trash") {
+      return windows.finder?.isMinimized;
+    }
+    return windows[id]?.isMinimized;
+  };
 
   return (
     <section id="dock" className={isMobile ? "!block" : ""}>
@@ -107,10 +183,10 @@ const Dock = () => {
                 loading="lazy"
                 className={canOpen ? "" : "opacity-60"}
               />
-              {windows[id]?.isOpen && (
+              {isAppActive(id) && (
                 <span
                   className={`absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
-                    windows[id]?.isMinimized ? "bg-gray-200" : "bg-white"
+                    isAppMinimized(id) ? "bg-gray-200" : "bg-white"
                   } ${isMobile ? "bottom-[-2px]" : "bottom-[-4px]"}`}
                   aria-hidden="true"
                 />
@@ -118,7 +194,9 @@ const Dock = () => {
             </button>
           </div>
         ))}
-        {!isMobile && <Tooltip id="dock-tooltip" place="top" className="tooltip" />}
+        {!isMobile && (
+          <Tooltip id="dock-tooltip" place="top" className="tooltip" />
+        )}
       </div>
     </section>
   );

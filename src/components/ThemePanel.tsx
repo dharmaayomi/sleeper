@@ -1,7 +1,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import {
-  Sun,
   Moon,
   Wifi,
   Bluetooth,
