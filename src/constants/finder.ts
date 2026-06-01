@@ -65,8 +65,8 @@ const WORK_LOCATION: FolderItem = {
       name: "Eventure Web App",
       icon: "/images/folder.png",
       kind: "folder",
-      position: "top-52 right-80",
-      windowPosition: "top-[20vh] left-7",
+      position: "top-52 left-60",
+      windowPosition: "top-[20vh] left-5",
       children: [
         {
           id: 1,
@@ -114,12 +114,12 @@ const WORK_LOCATION: FolderItem = {
 
     // ▶ Project 3
     {
-      id: 7,
+      id: 8,
       name: "Custom Furniture Web App",
       icon: "/images/folder.png",
       kind: "folder",
       position: "top-10 left-80",
-      windowPosition: "top-[33vh] left-7",
+      windowPosition: "top-[35vh] left-5",
       children: [
         {
           id: 1,
@@ -156,6 +156,67 @@ const WORK_LOCATION: FolderItem = {
         {
           id: 5,
           name: "Design.fig",
+          icon: "/images/plain.png",
+          kind: "file",
+          fileType: "fig",
+          href: "https://google.com",
+          position: "top-60 right-20",
+        },
+      ],
+    },
+
+    // ▶ Project 4
+    {
+      id: 9,
+      name: "Meatlover Webseries",
+      icon: "/images/folder.png",
+      kind: "folder",
+      position: "top-52 left-0",
+      windowPosition: "top-[50vh] left-5",
+      children: [
+        {
+          id: 1,
+          name: "Meatlover Webseries Project.txt",
+          icon: "/images/txt.png",
+          kind: "file",
+          fileType: "txt",
+          position: "top-5 left-10",
+          description: [
+            "Meatlover Webseries is an interactive video streaming and community platform dedicated to meat enthusiasts, featuring recipe webseries, culinary masterclasses, and cooking tutorials.",
+            "Developed the fully responsive video streaming portal, optimized video delivery, and integrated interactive comment sections and live forums for viewers.",
+            "Designed the database schema, user subscription flows, and built a custom admin dashboard for content creators to manage video uploads, analytics, and community moderation.",
+          ],
+        },
+        {
+          id: 2,
+          name: "meatlover-webseries.com",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com",
+          position: "top-10 right-20",
+        },
+        {
+          id: 3,
+          name: "meatlover-webseries.com",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com",
+          position: "top-40 left-50",
+        },
+        {
+          id: 4,
+          name: "meatlover.png",
+          icon: "/images/image.png",
+          kind: "file",
+          fileType: "img",
+          position: "top-52 right-80",
+          imageUrl: "/images/project-4.png",
+        },
+        {
+          id: 5,
+          name: "Script.celtx",
           icon: "/images/plain.png",
           kind: "file",
           fileType: "fig",
