@@ -23,7 +23,7 @@ const Resume = () => {
   );
 
   useEffect(() => {
-    const el = pdfContainerRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
     const observer = new ResizeObserver(([entry]) => {
@@ -73,7 +73,7 @@ const Resume = () => {
             <Page
               key={`resume-page-${index + 1}`}
               pageNumber={index + 1}
-              width={containerWidth > 0 ? containerWidth - 32 : undefined}
+              width={containerWidth > 0 ? containerWidth - 48 : undefined}
               renderTextLayer={false}
               renderAnnotationLayer={false}
             />

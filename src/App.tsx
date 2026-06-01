@@ -11,12 +11,22 @@ import {
   Contact,
   Photos,
 } from "#windows";
+import useWallpaperStore from "#store/Wallpaper";
 
 gsap.registerPlugin(Draggable);
 
 const App = () => {
+  const wallpaper = useWallpaperStore((state) => state.wallpaper);
+
   return (
-    <main>
+    <main
+      style={{
+        backgroundImage: `url(${wallpaper})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Navbar />
       <Welcome />
       <Dock />

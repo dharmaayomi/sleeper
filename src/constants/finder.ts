@@ -212,7 +212,8 @@ const ABOUT_LOCATION: FolderItem = {
       image: "/images/omi.jpeg",
       description: [
         "Hey! I’m omi 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
-        "Full-Stack Web Developer with hands-on experience building scalable web applications using React, Node.js, and modern frameworks. Combines technical expertise with strong design background to deliver user-centric solutions through collaborative development approaches. Eager to grow as a developer while bringing a strong sense of design and detail to every project.",
+        "Full-Stack Web Developer with hands-on experience building scalable web applications using React, Node.js, and modern frameworks. ",
+        "Combines technical expertise with strong design background to deliver user-centric solutions through collaborative development approaches. Eager to grow as a developer while bringing a strong sense of design and detail to every project.",
       ],
     },
   ],

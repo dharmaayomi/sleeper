@@ -7,7 +7,7 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-image: url("/images/wallpaper.png");
+  background-image: url("/images/wallpaper-3.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -109,7 +109,7 @@ body {
   }
 
   #window-header {
-    @apply flex items-center font-inter justify-between px-4 py-1.5 rounded-t-none md:rounded-t-lg bg-white md:bg-gray-50 border-0 md:border-b md:border-gray-200 select-none text-sm text-gray-400;
+    @apply flex items-center font-inter justify-between px-4 py-2 rounded-t-none md:rounded-t-lg bg-white md:bg-gray-50 border-0 md:border-b md:border-gray-200 select-none text-sm text-gray-400;
   }
 
   .window {
@@ -291,7 +291,7 @@ body {
   }
 
   #resume {
-    @apply w-full md:w-fit h-full md:h-fit max-w-full md:max-w-[90vw] max-h-full md:max-h-[85vh] absolute top-11 md:top-16 left-0 md:left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
+    @apply w-full md:w-[640px] h-full md:h-fit max-w-full md:max-w-[90vw] max-h-full md:max-h-[85vh] absolute top-11 md:top-16 left-0 md:left-7/12 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
 
     #window-header {
       h2 {
