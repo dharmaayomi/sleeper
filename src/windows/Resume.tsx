@@ -23,7 +23,7 @@ const Resume = () => {
   );
 
   useEffect(() => {
-    const el = pdfContainerRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
     const observer = new ResizeObserver(([entry]) => {
@@ -39,7 +39,7 @@ const Resume = () => {
       {/* Responsive Header */}
       <div ref={headerRef} id="window-header" className="relative flex items-center justify-between select-none">
         <WindowControls target="resume" />
-        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
+        <h2 className="text-black dark:text-zinc-100 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
           Resume
         </h2>
 
@@ -73,7 +73,7 @@ const Resume = () => {
             <Page
               key={`resume-page-${index + 1}`}
               pageNumber={index + 1}
-              width={containerWidth > 0 ? containerWidth - 32 : undefined}
+              width={containerWidth > 0 ? containerWidth - 48 : undefined}
               renderTextLayer={false}
               renderAnnotationLayer={false}
             />

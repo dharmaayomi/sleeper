@@ -21,15 +21,9 @@ const socials: Social[] = [
     bg: "#4bcb63",
     link: "https://portofoliomi.vercel.app/",
   },
+
   {
     id: 3,
-    text: "Twitter/X",
-    icon: "/icons/twitter.svg",
-    bg: "#ff866b",
-    link: "#",
-  },
-  {
-    id: 4,
     text: "LinkedIn",
     icon: "/icons/linkedin.svg",
     bg: "#05b6f6",

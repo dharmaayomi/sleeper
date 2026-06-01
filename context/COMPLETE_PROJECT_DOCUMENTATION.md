@@ -36,24 +36,24 @@ To create an **innovative portfolio platform** that stands out from conventional
 
 ## 📊 Technology Stack
 
-| Category             | Technology    | Version | Purpose                                    |
-| -------------------- | ------------- | ------- | ------------------------------------------ |
-| **Framework**        | React         | 19.2.5  | Component-based UI rendering               |
-| **Build Tool**       | Vite          | 8.0.10  | Fast HMR development & production bundling |
-| **Styling**          | Tailwind CSS  | 4.2.4   | Utility-first CSS framework                |
-| **CSS Modules**      | CSS           | -       | Component-scoped styling                   |
-| **State Management** | Zustand       | 5.0.13  | Lightweight global state                   |
-| **State Helper**     | Immer         | 11.1.8  | Immutable state updates                    |
-| **Animations**       | GSAP          | 3.15.0  | Advanced animations & interactions         |
-| **GSAP React**       | @gsap/react   | 2.1.2   | React integration for GSAP                 |
-| **Icons**            | Lucide React  | 1.3.0   | Icon library                               |
-| **Tooltips**         | react-tooltip | 6.0.2   | Tooltip functionality                      |
-| **PDF Handling**     | react-pdf     | 10.4.1  | PDF viewing                                |
-| **PDF Export**       | react-to-pdf  | 3.2.2   | PDF download functionality                 |
-| **Date Handling**    | dayjs         | 1.11.20 | Date/time formatting                       |
-| **Class Merging**    | clsx          | 2.1.1   | Conditional CSS classes                    |
-| **Code Quality**     | ESLint        | 10.2.1  | Code linting & standards                   |
-| **Code Formatting**  | Prettier      | 3.8.3   | Code formatting                            |
+| Category             | Technology    | Version | Purpose                                         |
+| -------------------- | ------------- | ------- | ----------------------------------------------- |
+| **Language**         | TypeScript    | 6.0.3   | Type-safe JavaScript                            |
+| **Framework**        | React         | 19.2.5  | Component-based UI rendering                    |
+| **Build Tool**       | Vite          | 8.0.10  | Fast HMR development & production bundling      |
+| **Styling**          | Tailwind CSS  | 4.2.4   | Utility-first CSS framework (@tailwindcss/vite) |
+| **State Management** | Zustand       | 5.0.13  | Lightweight global state with persist           |
+| **State Helper**     | Immer         | 11.1.8  | Immutable state updates (middleware)            |
+| **Animations**       | GSAP          | 3.15.0  | Advanced animations & interactions              |
+| **GSAP React**       | @gsap/react   | 2.1.2   | React integration for GSAP (useGSAP hook)       |
+| **Icons**            | Lucide React  | 1.3.0   | Icon library (Check, Flag, etc.)                |
+| **Tooltips**         | react-tooltip | 6.0.2   | Tooltip functionality                           |
+| **PDF Handling**     | react-pdf     | 10.4.1  | PDF viewing                                     |
+| **PDF Export**       | react-to-pdf  | 3.2.2   | PDF download functionality                      |
+| **Date Handling**    | dayjs         | 1.11.20 | Date/time formatting                            |
+| **Class Merging**    | clsx          | 2.1.1   | Conditional CSS classes                         |
+| **Code Quality**     | ESLint        | 10.2.1  | Code linting & standards                        |
+| **Code Formatting**  | Prettier      | 3.8.3   | Code formatting                                 |
 
 ### Why These Technologies?
 
@@ -73,10 +73,9 @@ macos-porto/
 │
 ├── 📄 index.html                 # Main HTML entry point
 ├── 📄 package.json               # Project dependencies & scripts
+├── 📄 tsconfig.json              # TypeScript configuration
 ├── 📄 vite.config.js             # Vite configuration with path aliases
-├── 📄 jsconfig.json              # JavaScript path config
 ├── 📄 eslint.config.js           # ESLint configuration
-├── 📄 tailwind.config.js         # Tailwind CSS config (if exists)
 ├── 📄 README.md                  # Basic project info
 │
 ├── 📁 context/                   # Documentation & analysis
@@ -100,34 +99,42 @@ macos-porto/
     ├── 📄 index.css              # Global styles & Tailwind imports
     ├── 📄 App.css                # App-specific styles (legacy)
     │
-    ├── 📁 components/            # Shared UI components (layout & shell)
-    │   ├── Navbar.jsx            # Top navigation bar
-    │   ├── Welcome.jsx           # Landing/splash screen
-    │   ├── Dock.jsx              # Application launcher dock
-    │   ├── Home.jsx              # Desktop file browser/folder view
-    │   ├── WindowControls.jsx    # Window control buttons (close, minimize, maximize)
-    │   └── index.js              # Component exports
+    ├── 📁 components/            # Shared UI components (layout & shell) - TSX
+    │   ├── Navbar.tsx            # Top navigation bar
+    │   ├── Welcome.tsx           # Landing/splash screen
+    │   ├── Dock.tsx              # Application launcher dock
+    │   ├── Home.tsx              # Desktop file browser/folder view
+    │   ├── WindowControls.tsx    # Window control buttons (close, minimize, maximize)
+    │   └── index.ts              # Component exports
     │
-    ├── 📁 windows/               # Draggable window applications
-    │   ├── Finder.jsx            # File explorer / project browser
-    │   ├── Safari.jsx            # Blog/articles viewer
-    │   ├── Terminal.jsx          # Tech stack display
-    │   ├── Resume.jsx            # PDF viewer & download
-    │   ├── Contact.jsx           # Contact form & social links
-    │   ├── Photos.jsx            # Photo gallery
-    │   ├── Text.jsx              # Text editor / notes
-    │   ├── Image.jsx             # Image viewer
-    │   └── index.js              # Window exports
+    ├── 📁 windows/               # Draggable window applications - TSX
+    │   ├── Finder.tsx            # File explorer / project browser
+    │   ├── Safari.tsx            # Blog/articles viewer
+    │   ├── Terminal.tsx          # Tech stack display
+    │   ├── Resume.tsx            # PDF viewer & download
+    │   ├── Contact.tsx           # Contact form & social links
+    │   ├── Photos.tsx            # Photo gallery
+    │   ├── Text.tsx              # Text editor / notes
+    │   ├── Image.tsx             # Image viewer
+    │   └── index.ts              # Window exports
     │
-    ├── 📁 store/                 # Zustand state management
-    │   ├── Window.js             # Window state (open/close/focus/minimize)
-    │   └── Location.js           # Navigation/location state
+    ├── 📁 store/                 # Zustand state management - TypeScript
+    │   ├── Window.ts             # Window state (open/close/focus/minimize/maximize)
+    │   ├── Location.ts           # Navigation/location state
+    │   └── Wallpaper.ts          # Wallpaper selection state (with persist middleware)
     │
-    ├── 📁 hoc/                   # Higher-Order Components
-    │   └── WindowWrapper.jsx     # HOC that wraps windows with animation & drag behavior
+    ├── 📁 hooks/                 # Custom React hooks - TypeScript
+    │   ├── useWindow.ts          # Animation & drag behavior hook (replaces HOC pattern)
+    │   └── useDevice.ts          # Mobile detection and screen size detection
     │
-    ├── 📁 constants/             # Configuration & data
-    │   └── index.js              # Window config, navigation links, dock apps, blog posts, tech stack, socials, gallery
+    ├── 📁 constants/             # Configuration & data modules - TypeScript
+    │   ├── system.ts             # Navigation links, dock apps, window config, INITIAL_Z_INDEX
+    │   ├── finder.ts             # Finder folder structure & project data
+    │   ├── safari.ts             # Blog posts
+    │   ├── photos.ts             # Photo gallery data
+    │   ├── terminal.ts           # Tech stack categories & technologies
+    │   ├── contact.ts            # Contact information & social links
+    │   └── index.ts              # Unified export of all constants
     │
     └── 📁 assets/                # Project assets (bundled into app)
         └── (images, fonts, etc.)
@@ -138,10 +145,10 @@ macos-porto/
 | Directory         | Responsibility                                            | Owner              |
 | ----------------- | --------------------------------------------------------- | ------------------ |
 | `src/components/` | Shared UI layout components (Navbar, Dock, Welcome, Home) | Layout Shell       |
-| `src/windows/`    | Individual draggable application windows                  | Window Features    |
-| `src/store/`      | Global Zustand stores (Window & Location)                 | State Management   |
-| `src/hoc/`        | WindowWrapper HOC for animation + drag behavior           | Window Behavior    |
-| `src/constants/`  | Configuration, window definitions, navigation data        | Data Configuration |
+| `src/windows/`    | Individual draggable application windows (TSX)            | Window Features    |
+| `src/store/`      | Global Zustand stores (Window, Location, Wallpaper)       | State Management   |
+| `src/hooks/`      | Custom React hooks (useWindow for animations, useDevice)  | Window Behavior    |
+| `src/constants/`  | Configuration split into modules (system.ts, finder.ts)   | Data Configuration |
 | `src/assets/`     | Bundled static assets                                     | Static Content     |
 | `public/`         | Served static files (icons, images, documents)            | Public Assets      |
 | `context/`        | Documentation & architectural notes                       | Documentation      |
@@ -302,31 +309,32 @@ App.jsx (Main Entry Point)
 
 ---
 
-## 💾 State Management (Zustand)
+## 💾 State Management (Zustand + TypeScript)
 
-### Window Store (`src/store/Window.js`)
+### Window Store (`src/store/Window.ts`)
 
-```javascript
+```typescript
 useWindowStore provides:
-- windows: {}                          // Object of all windows with their state
+- windows: WindowConfig                // Object of all windows with their state
 - nextZIndex: number                   // Counter for z-index stacking
-- openWindow(windowKey, data)          // Opens window, sets z-index
+- openWindow(windowKey, data?)         // Opens window, sets z-index
 - closeWindow(windowKey)               // Closes window, resets z-index
 - focusWindow(windowKey)               // Brings window to front
 - minimizeWindow(windowKey)            // Hides window, animates to dock
-- restoreWindow(windowKey)             // Unhides minimized window
+- maximizeWindow(windowKey)            // Maximizes window to fullscreen
+- restoreWindow(windowKey)             // Unhides minimized/maximized window
 ```
 
 **Window Object Structure:**
 
-```javascript
+```typescript
 {
   windowKey: {
     isOpen: boolean,              // Is window visible?
     zIndex: number,               // Stacking order (higher = on top)
     isMinimized: boolean,         // Is window minimized?
+    isMaximized: boolean,         // Is window maximized?
     data: any,                    // Data passed to window
-    // ... other metadata
   }
 }
 ```
@@ -335,12 +343,13 @@ useWindowStore provides:
 
 1. Window state is the single source of truth
 2. Z-index incremented on focus to maintain stacking order
-3. Data passed to windows is immutable during transit
+3. Immer middleware allows "mutation-like" syntax for immutable updates
 4. Minimize animates window to dock; restore brings it back
+5. Maximize expands to fullscreen; restore returns to saved position
 
-### Location Store (`src/store/Location.js`)
+### Location Store (`src/store/Location.ts`)
 
-```javascript
+```typescript
 useLocationStore provides:
 - activeLocation: object               // Current folder/section in Finder
 - setActiveLocation(location)          // Navigate to folder
@@ -349,61 +358,107 @@ useLocationStore provides:
 
 Used primarily by **Finder** window for hierarchical navigation.
 
+### Wallpaper Store (`src/store/Wallpaper.ts`)
+
+```typescript
+useWallpaperStore provides:
+- wallpaper: string                    // Current wallpaper path
+- setWallpaper(path)                   // Change wallpaper
+```
+
+**Features:**
+- Uses `persist` middleware to save wallpaper choice in localStorage
+- Default wallpaper: `/images/wallpaper-3.webp`
+- Persists across browser sessions
+- Integrated with main App background
+
 ### Why Zustand?
 
 - Lightweight and minimal boilerplate
 - Great TypeScript support
 - Immer middleware for immutable updates
+- Persist middleware for local storage
 - Minimal bundle size impact
 - Perfect for this project's state needs (not Redux-level complexity)
 
 ---
 
-## 🪟 Window System & HOC
+## 🪟 Window System & Animation Behavior
 
-### WindowWrapper HOC (`src/hoc/WindowWrapper.jsx`)
+### useWindow Hook (`src/hooks/useWindow.ts`)
 
-The `WindowWrapper` is a higher-order component that enhances any window component with:
+The `useWindow` hook encapsulates all window animation and drag behavior logic for individual window components. This custom hook approach is more flexible and testable than the HOC pattern.
+
+**Key Features:**
 
 1. **Animation Lifecycle**
-   - **Open Animation**: Scale 0.8→1, opacity 0→1, y: 40→0 (duration: 0.45s)
-   - **Minimize Animation**: Scale 1→0.3, opacity 1→0, animate to dock center
-   - **Restore Animation**: Reverse of minimize
+   - **Open Animation** (Desktop): Scale 0.8→1, opacity 0→1, from doc target to final position (0.45s)
+   - **Open Animation** (Mobile): Slide up from bottom with fade-in (0.35s)
+   - **Minimize Animation**: Animates to dock location and hides window
+   - **Restore Animation**: Smoothly returns from dock to last saved position
+   - **Maximize Animation**: Expands to full screen
+   - **Restore from Maximize**: Returns to saved window size/position
 
 2. **Drag Behavior**
-   - Uses GSAP Draggable plugin
-   - Automatic focus on drag (brings to front)
-   - Cleanup on component unmount
+   - Uses GSAP Draggable plugin for GPU-accelerated dragging
+   - Saves last position in refs for restore functionality
+   - Only enabled on desktop (automatically disabled on mobile)
+   - Automatic focus on drag (brings window to front)
 
 3. **Z-Index Management**
-   - Always applies correct z-index from store
-   - Window stays at correct stacking order
+   - Applies correct z-index from Window Store
+   - `focusWindow()` increments z-index counter
+   - Window always renders at correct stacking order
 
-4. **Visibility Handling**
-   - Sets `visibility: hidden` when closed
+4. **Visibility & Pointer Events**
+   - Sets `pointerEvents: "none"` when closed/minimized
+   - Sets `display: block` only when open
    - Prevents interaction with hidden windows
 
-**Usage:**
+5. **Responsive Behavior**
+   - Desktop: Full draggability, smooth animations
+   - Mobile: Full-screen windows, slide-up animations
+   - Uses `useDevice()` hook for responsive detection
 
-```javascript
-const MyWindow = (props) => {
-  return <div>{/* window content */}</div>;
+**Usage in Window Component:**
+
+```tsx
+import { useWindow } from "#hooks/useWindow";
+import { WindowControls } from "#components";
+
+const MyWindow = () => {
+  const { containerRef, headerRef } = useWindow("mywindow");
+
+  return (
+    <section ref={containerRef} id="mywindow" className="window">
+      <div ref={headerRef} id="window-header">
+        <WindowControls target="mywindow" />
+        <h2>My Window</h2>
+      </div>
+      {/* Window content */}
+    </section>
+  );
 };
 
-const MyWindowWrapped = WindowWrapper(MyWindow, "mywindow");
-export default MyWindowWrapped;
+export default MyWindow;
 ```
+
+**Hook Returns:**
+
+- `containerRef` — Attach to window container (receives all animations)
+- `headerRef` — Attach to window header (drag handle)
 
 ### Window Lifecycle
 
 ```
 1. User clicks dock app or nav link
-2. openWindow(windowKey) called
-3. WindowWrapper detects isOpen change
-4. Animation plays: scale 0.8→1, opacity 0→1
-5. Window becomes draggable
-6. On minimize: animates to dock
-7. On close: reverses animation, sets hidden
+2. openWindow(windowKey) called in Window Store
+3. useWindow hook detects isOpen change
+4. Animation plays based on context (minimize, restore, new open)
+5. Window becomes draggable (on desktop only)
+6. On minimize: animates to dock, sets isMinimized = true
+7. On restore: animates from dock back to saved position
+8. On close: reverses opening animation, hides window
 ```
 
 ---
@@ -759,6 +814,7 @@ INITIAL_Z_INDEX = 10
    - Fast refresh on file changes
 
 3. **Lint Code**
+
    ```bash
    npm run lint
    ```
@@ -779,6 +835,7 @@ INITIAL_Z_INDEX = 10
    - Minified and optimized assets
 
 2. **Preview Production Build**
+
    ```bash
    npm preview
    ```

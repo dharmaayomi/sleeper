@@ -22,11 +22,12 @@ npm run lint
 
 ```
 src/
-├── components/       # Navbar, Dock, Welcome, Home, WindowControls
-├── windows/          # Finder, Safari, Terminal, Resume, Contact, Photos, Text, Image
-├── store/            # Window.js, Location.js (Zustand state)
-├── hoc/              # WindowWrapper.jsx (animation + drag HOC)
-├── constants/        # Configuration & data
+├── components/       # Navbar, Dock, Welcome, Home, WindowControls (TSX)
+├── windows/          # Finder, Safari, Terminal, Resume, Contact, Photos, Text, Image (TSX)
+├── store/            # Window.ts, Location.ts, Wallpaper.ts (Zustand + TypeScript)
+├── hooks/            # useWindow.ts, useDevice.ts (custom hooks - replaces HOC)
+├── constants/        # Split modules: system.ts, finder.ts, safari.ts, etc. (TypeScript)
+├── types.ts          # TypeScript type definitions (FileItem, FolderItem, WindowState, etc.)
 └── assets/           # Static assets
 ```
 
@@ -36,51 +37,97 @@ src/
 
 ### Add a New Window
 
-1. Create `src/windows/MyWindow.jsx`:
+1. Create `src/windows/MyWindow.tsx`:
 
-```jsx
-import WindowWrapper from "#hoc/WindowWrapper";
+```tsx
+import { useWindow } from "#hooks/useWindow";
 import { WindowControls } from "#components";
 
 const MyWindow = () => {
+  const { containerRef, headerRef } = useWindow("mywindow");
+
   return (
-    <>
-      <div id="window-header">
+    <section ref={containerRef} id="mywindow" className="window">
+      <div ref={headerRef} id="window-header">
         <WindowControls target="mywindow" />
         <h2>My Window</h2>
       </div>
-      <div>Content here</div>
-    </>
+      <div className="window-content">Content here</div>
+    </section>
   );
 };
 
-const MyWindowWrapped = WindowWrapper(MyWindow, "mywindow");
-export default MyWindowWrapped;
+export default MyWindow;
 ```
 
-2. Update `src/constants/index.js`:
+2. Update `src/constants/system.ts`:
 
-```javascript
+```typescript
 // Add to WINDOW_CONFIG
+export const WINDOW_CONFIG: WindowConfig = {
+  mywindow: {
+    isOpen: false,
+    zIndex: 0,
+    isMinimized: false,
+    isMaximized: false,
+    data: null,
+  },
+  // ... other windows
+};
+
+// Add to dockApps
+export const dockApps: DockApp[] = [
+  // ...existing apps...
+  {
+    id: "mywindow",
+    name: "My App",
+    icon: "myapp.png",
+    canOpen: true,
+  },
+];
+```
+
+3. Update `src/constants/index.ts`:
+
+```typescript
+export * from "./system"; // Already includes mywindow in WINDOW_CONFIG and dockApps
+```
+
+4. Import and render in `src/App.tsx`:
+
+```tsx
+import { MyWindow } from "#windows";
+
+const App = () => {
+  return (
+    <main>
+      {/* ...other components... */}
+      <MyWindow />
+    </main>
+  );
+};
+```
+
 mywindow: { isOpen: false, zIndex: 0, isMinimized: false, data: null }
 
 // Add to dockApps
 { id: "mywindow", name: "My App", icon: "myapp.png", canOpen: true }
-```
+
+````
 
 3. Import in `src/App.jsx`:
 
 ```jsx
 import { MyWindow } from "#windows";
 // Add to JSX: <MyWindow />
-```
+````
 
 ### Update Social Links
 
-Edit `src/constants/index.js`:
+Edit `src/constants/contact.ts`:
 
-```javascript
-const socials = [
+```typescript
+export const socials = [
   {
     id: 1,
     text: "Github",
@@ -94,10 +141,10 @@ const socials = [
 
 ### Add Blog Posts
 
-Edit `src/constants/index.js`:
+Edit `src/constants/safari.ts`:
 
-```javascript
-const blogPosts = [
+```typescript
+export const blogPosts = [
   {
     id: 1,
     date: "Sep 2, 2025",
@@ -111,10 +158,10 @@ const blogPosts = [
 
 ### Modify Tech Stack
 
-Edit `src/constants/index.js`:
+Edit `src/constants/terminal.ts`:
 
-```javascript
-const techStack = [
+```typescript
+export const techStack = [
   {
     category: "Frontend",
     items: ["React.js", "Next.js", "TypeScript"],
@@ -133,12 +180,13 @@ Edit `src/index.css`:
 
 ### Add Navigation Link
 
-Edit `src/constants/index.js`:
+Edit `src/constants/system.ts`:
 
-```javascript
-const navLinks = [
+```typescript
+export const navLinks: NavLink[] = [
   { id: 1, name: "Projects", type: "finder" },
   { id: 2, name: "My New Link", type: "mywindow" }, // Add this
+  { id: 3, name: "Contact", type: "contact" },
 ];
 ```
 
@@ -430,40 +478,58 @@ netlify deploy --prod --dir=dist
 
 ## 🎯 Important Patterns
 
-### Always wrap windows with WindowWrapper
+### Always use useWindow hook in window components
 
-```jsx
+```tsx
 // ✅ Correct
-const MyWindowWrapped = WindowWrapper(MyWindow, "mywindow");
-export default MyWindowWrapped;
+import { useWindow } from "#hooks/useWindow";
 
-// ❌ Wrong
+const MyWindow = () => {
+  const { containerRef, headerRef } = useWindow("mywindow");
+  return (
+    <section ref={containerRef} id="mywindow">
+      <div ref={headerRef}>...</div>
+    </section>
+  );
+};
+
 export default MyWindow;
+
+// ❌ Wrong - No hook, animations won't work
+const MyWindow = () => {
+  return <section id="mywindow">...</section>;
+};
 ```
 
 ### Use store methods, not direct state mutation
 
-```jsx
+```typescript
 // ✅ Correct
+import useWindowStore from "#store/Window";
+const { openWindow } = useWindowStore();
 openWindow("finder");
 
-// ❌ Wrong
+// ❌ Wrong - Direct mutation
 useWindowStore.setState((state) => {
   state.windows.finder.isOpen = true;
 });
 ```
 
-### Clean up GSAP instances
+### useWindow hook manages cleanup automatically
 
-```jsx
-// ✅ Correct
+```tsx
+// ✅ Correct - Hook handles all cleanup
+const MyWindow = () => {
+  const { containerRef, headerRef } = useWindow("mywindow");
+  // useWindow handles GSAP cleanup, Draggable instances, etc.
+  return <section ref={containerRef}>...</section>;
+};
+
+// ❌ Wrong - Manual cleanup (unnecessary with hook)
 useGSAP(() => {
-  const [instance] = Draggable.create(el);
+  const instance = Draggable.create(el);
   return () => instance.kill();
 }, []);
-
-// ❌ Wrong
-Draggable.create(el); // Memory leak!
 ```
 
 ---
@@ -480,15 +546,19 @@ Draggable.create(el); // Memory leak!
 
 ## 🔑 Key Files to Know
 
-| File                        | Purpose                           |
-| --------------------------- | --------------------------------- |
-| `src/App.jsx`               | Main component, renders all parts |
-| `src/store/Window.js`       | Window state management           |
-| `src/store/Location.js`     | Navigation state                  |
-| `src/hoc/WindowWrapper.jsx` | Animation & drag HOC              |
-| `src/constants/index.js`    | All configuration data            |
-| `src/index.css`             | Global styles & Tailwind          |
-| `vite.config.js`            | Build configuration               |
+| File                      | Purpose                           |
+| ------------------------- | --------------------------------- |
+| `src/App.tsx`             | Main component, renders all parts |
+| `src/types.ts`            | TypeScript type definitions       |
+| `src/hooks/useWindow.ts`  | Animation & drag behavior hook    |
+| `src/hooks/useDevice.ts`  | Mobile detection & responsive     |
+| `src/store/Window.ts`     | Window state management           |
+| `src/store/Location.ts`   | Navigation/folder state           |
+| `src/store/Wallpaper.ts`  | Wallpaper selection state         |
+| `src/constants/system.ts` | Navigation, dock, window config   |
+| `src/constants/index.ts`  | Central exports for all constants |
+| `src/index.css`           | Global styles & Tailwind          |
+| `vite.config.js`          | Build configuration               |
 
 ---
 
