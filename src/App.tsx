@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
-import { Navbar, Welcome, Dock, Home } from "#components";
+import { Navbar, Dock, Home, Welcome } from "#components";
 import {
   Terminal,
   Safari,

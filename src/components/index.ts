@@ -4,6 +4,7 @@ import Dock from "./Dock";
 import WindowControls from "./WindowControls";
 import Home from "./Home";
 import ThemePanel from "./ThemePanel";
+import BootScreen from "./BootScreen";
 
-export { Navbar, Welcome, Dock, WindowControls, Home, ThemePanel };
+export { Navbar, Welcome, Dock, WindowControls, Home, ThemePanel, BootScreen };
 
