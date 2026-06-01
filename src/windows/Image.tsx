@@ -9,9 +9,8 @@ const Image = () => {
   const data = useWindowStore((state) => state.windows.imgfile.data) as FileItem | null;
   const { isMobile } = useDevice();
 
-  if (!data) return null;
-
-  const { name, imageUrl } = data;
+  const name = data?.name ?? "";
+  const imageUrl = data?.imageUrl ?? "";
 
   return (
     <section ref={containerRef} id="imgfile" className="window">

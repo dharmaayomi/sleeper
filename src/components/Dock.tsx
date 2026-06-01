@@ -129,6 +129,8 @@ const Dock = () => {
             // Jika memang sudah di Finder biasa, toggle minimize/close
             if (finderWindow.isMinimized) {
               restoreWindow("finder");
+            } else if (!isFinderActive) {
+              focusWindow("finder");
             } else {
               closeWindow("finder");
             }
@@ -150,6 +152,8 @@ const Dock = () => {
     if (window.isOpen) {
       if (window.isMinimized) {
         restoreWindow(app.id);
+      } else if (activeWindowKey !== app.id) {
+        focusWindow(app.id);
       } else {
         closeWindow(app.id);
       }

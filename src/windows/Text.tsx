@@ -11,9 +11,10 @@ const Text = () => {
   ) as FileItem | null;
   const { isMobile } = useDevice();
 
-  if (!data) return null;
-
-  const { name, image, subtitle, description } = data;
+  const name = data?.name ?? "";
+  const image = data?.image ?? "";
+  const subtitle = data?.subtitle ?? "";
+  const description = data?.description ?? [];
 
   return (
     <section ref={containerRef} id="txtfile" className="window">
