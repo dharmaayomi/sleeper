@@ -202,15 +202,19 @@ export default function ThemePanel() {
             <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 select-none">
               Display
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center w-full gap-2">
               <SunDim
                 size={16}
                 className="text-neutral-600 dark:text-neutral-400"
               />
-              <div className="relative flex-1 h-5 bg-black/10 dark:bg-black/30 rounded-full overflow-hidden group">
+              <div className="relative w-full flex-1 h-5 bg-black/15 dark:bg-black/40 rounded-full group">
                 <div
-                  className="absolute left-0 top-0 h-full bg-white/70 dark:bg-white/40 transition-all duration-75"
+                  className="absolute left-0 top-0 h-full bg-white dark:bg-white/90 rounded-full transition-all duration-75"
                   style={{ width: `${brightness}%` }}
+                />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 bg-white rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.35)] pointer-events-none transition-all duration-75"
+                  style={{ left: `calc(${brightness}% - 9px)` }}
                 />
                 <input
                   type="range"
@@ -229,15 +233,19 @@ export default function ThemePanel() {
             <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 select-none">
               Sound
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center w-full gap-2">
               <Volume2
                 size={16}
                 className="text-neutral-600 dark:text-neutral-400"
               />
-              <div className="relative flex-1 h-5 bg-black/10 dark:bg-black/30 rounded-full overflow-hidden group">
+              <div className="relative w-full flex-1 h-5 bg-black/15 dark:bg-black/40 rounded-full group">
                 <div
-                  className="absolute left-0 top-0 h-full bg-white/70 dark:bg-white/40 transition-all duration-75"
+                  className="absolute left-0 top-0 h-full bg-white dark:bg-white/90 rounded-full transition-all duration-75"
                   style={{ width: `${volume}%` }}
+                />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 bg-white rounded-full shadow-[0_1.5px_3.5px_rgba(0,0,0,0.3)] pointer-events-none transition-all duration-75"
+                  style={{ left: `calc(${volume}% - 9px)` }}
                 />
                 <input
                   type="range"

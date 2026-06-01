@@ -49,7 +49,7 @@ const Navbar = () => {
             onClick={() => setIslandExpanded(!islandExpanded)}
             className={`bg-black text-white h-7 flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer shadow-lg select-none px-3 overflow-hidden ${
               islandExpanded
-                ? "w-[240px] rounded-[18px] bg-neutral-900 border border-neutral-800"
+                ? "w-[180px] rounded-[18px] bg-neutral-900 "
                 : "w-28 rounded-full"
             }`}
           >
@@ -101,7 +101,7 @@ const Navbar = () => {
       </div>
 
       <div>
-        <ul>
+        <ul className="gap-2">
           {navIcons.map(({ id, img }) => (
             <li key={id}>
               {id === 4 ? (
