@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import useWindowStore from "#store/Window";
 import useDevice from "#hooks/useDevice";
 import { Wifi, Battery, Signal } from "lucide-react";
+import ThemePanel from "./ThemePanel";
 
 const Navbar = () => {
   const { openWindow, windows } = useWindowStore();
@@ -33,8 +34,8 @@ const Navbar = () => {
     return (
       <nav
         id="iphone-status-bar"
-        className={`w-full h-13 flex items-center justify-between px-6 select-none z-[9999] absolute top-0 left-0 text-black text-sm font-semibold font-inter transition-all duration-300 ${
-          hasOpenWindow ? "bg-white" : "bg-transparent"
+        className={`w-full h-13 flex items-center justify-between px-6 select-none z-[9999] absolute top-0 left-0 text-sm font-semibold font-inter transition-all duration-300  ${
+          hasOpenWindow ? "text-black bg-white" : "text-white bg-transparent"
         }`}
       >
         {/* Left Side: Time */}
@@ -75,8 +76,8 @@ const Navbar = () => {
 
         {/* Right Side: Status Icons */}
         <div className="flex items-center justify-end gap-2.5 min-w-[70px]">
-          <Signal size={14} strokeWidth={2.5} />
-          <Wifi size={14} strokeWidth={2.5} />
+          <Signal size={18} strokeWidth={2.5} />
+          <Wifi size={18} strokeWidth={2.5} />
           <Battery size={18} strokeWidth={2} className="rotate-0" />
         </div>
       </nav>
@@ -103,7 +104,19 @@ const Navbar = () => {
         <ul>
           {navIcons.map(({ id, img }) => (
             <li key={id}>
-              <img src={img} className="icon-hover" alt={`${id}`} />
+              {id === 4 ? (
+                <ThemePanel />
+              ) : (
+                <button className="navbar-icon relative flex items-center justify-center py-1 px-1.5 rounded hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors cursor-pointer">
+                  <img
+                    src={img}
+                    className="icon-hover"
+                    alt={`${id}`}
+                    width={14}
+                    height={14}
+                  />
+                </button>
+              )}
             </li>
           ))}
         </ul>

@@ -10,7 +10,7 @@
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │              React Application (App.jsx)                     │  │
+│  │              React Application (App.tsx)                     │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │           │                                                         │
 │           ├─── Components Layer ──────────────────────────┐         │
@@ -30,34 +30,40 @@
 │           │    ├── Text                                  │         │
 │           │    └── Image                                 │         │
 │           │                                              │         │
-│           ├─── HOC Layer ────────────────────────────────┤         │
-│           │    └── WindowWrapper (Animation + Drag)      │         │
+│           ├─── Hooks Layer (useWindow) ─────────────────┤         │
+│           │    └── useWindow (Animation + Drag + State)  │         │
 │           │                                              │         │
 │           ├─── State Management Layer (Zustand) ────────┤         │
 │           │    ├── Window Store                          │         │
 │           │    │   ├── windows: {}                       │         │
 │           │    │   ├── nextZIndex                        │         │
 │           │    │   └── methods                           │         │
+│           │    ├── Location Store                        │         │
+│           │    │   ├── activeLocation                    │         │
+│           │    │   └── methods                           │         │
 │           │    │                                         │         │
-│           │    └── Location Store                        │         │
-│           │        ├── activeLocation                    │         │
-│           │        └── methods                           │         │
+│           │    └── Wallpaper Store                       │         │
+│           │        ├── wallpaper path                    │         │
+│           │        └── setWallpaper()                    │         │
 │           │                                              │         │
 │           ├─── Animation Layer (GSAP) ─────────────────┤         │
 │           │    ├── Draggable Plugin                      │         │
-│           │    ├── Timeline & Tweens                     │         │
-│           │    └── useGSAP Hook                          │         │
+│           │    ├── Desktop animations (0.35-0.5s)       │         │
+│           │    ├── Mobile animations (0.25-0.35s)       │         │
+│           │    └── useGSAP Hook integration              │         │
 │           │                                              │         │
 │           ├─── Styling Layer ──────────────────────────┤         │
-│           │    ├── Tailwind CSS                          │         │
-│           │    └── CSS Modules                           │         │
+│           │    ├── Tailwind CSS (v4.2.4)                │         │
+│           │    └── CSS Modules (legacy)                  │         │
 │           │                                              │         │
 │           └─── Constants & Configuration ───────────────┤         │
 │                ├── Window Config                         │         │
 │                ├── Navigation Links                      │         │
 │                ├── Blog Posts                            │         │
 │                ├── Tech Stack                            │         │
-│                └── Socials                               │         │
+│                ├── Photos                                │         │
+│                ├── Contact/Socials                       │         │
+│                └── Terminal Commands                     │         │
 │                                                          │         │
 └──────────────────────────────────────────────────────────────────┘
 
@@ -88,7 +94,7 @@
                        ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │  COMPONENT DISPATCH                                              │
-│  Example: Dock.jsx calls openWindow("finder")                   │
+│  Example: Dock.tsx calls openWindow("finder")                   │
 └──────────────────────┬───────────────────────────────────────────┘
                        │
                        ▼
@@ -101,22 +107,37 @@
                        ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │  RE-RENDER (React)                                               │
-│  Component receives new props from store                          │
-│  WindowWrapper detects isOpen change                             │
+│  Component receives updated state from Zustand                   │
+│  useWindow hook dependencies trigger (isOpen, isMinimized)       │
+└──────────────────────┬───────────────────────────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  useWindow HOOK LOGIC                                            │
+│  useGSAP detects state changes and runs appropriate animation    │
+│  Animation type determined: open, restore, minimize, maximize    │
 └──────────────────────┬───────────────────────────────────────────┘
                        │
                        ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │  GSAP ANIMATION                                                  │
-│  WindowWrapper triggers: scale 0.8→1, opacity 0→1               │
-│  Duration: 0.45s, Easing: power3.out                            │
+│  useWindow hook triggers animation via useGSAP                   │
+│  Desktop: scale 0.8→1, opacity 0→1 (0.35-0.5s, power3.out)      │
+│  Mobile: slide from bottom y: 100dvh→0 (0.25s)                  │
+└──────────────────────┬───────────────────────────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  DRAGGABLE SETUP                                                 │
+│  useWindow creates Draggable instance on window container        │
+│  onPress triggers focusWindow() to bring to front               │
 └──────────────────────┬───────────────────────────────────────────┘
                        │
                        ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │  WINDOW APPEARS                                                  │
 │  User sees animated window on screen                             │
-│  Window is now draggable (Draggable.create())                   │
+│  Window is now draggable and interactive                         │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
@@ -125,94 +146,103 @@
 ## 📊 Component Dependency Tree
 
 ```
-App.jsx (Root)
+App.tsx (Root)
 │
 ├── Layout Components
-│   ├── Navbar.jsx
+│   ├── Navbar.tsx
 │   │   ├── dayjs (time formatting)
 │   │   └── useWindowStore (openWindow)
 │   │
-│   ├── Welcome.jsx
+│   ├── Welcome.tsx
 │   │   └── useGSAP (font weight animation)
 │   │
-│   ├── Dock.jsx
+│   ├── Dock.tsx
 │   │   ├── useWindowStore (windows state)
 │   │   ├── useGSAP (icon hover scaling)
 │   │   └── gsap (animations)
 │   │
-│   └── Home.jsx
+│   └── Home.tsx
 │       ├── useLocationStore (folder navigation)
 │       ├── useWindowStore (openWindow)
 │       └── useGSAP (draggable folders)
 │
 ├── Window Components
-│   ├── Finder.jsx
-│   │   ├── WindowWrapper HOC
+│   ├── Finder.tsx
+│   │   ├── useWindow Hook
 │   │   ├── WindowControls
 │   │   ├── useLocationStore (folder hierarchy)
 │   │   └── useWindowStore (open windows)
 │   │
-│   ├── Safari.jsx
-│   │   ├── WindowWrapper HOC
+│   ├── Safari.tsx
+│   │   ├── useWindow Hook
 │   │   ├── WindowControls
 │   │   └── lucide-react (icons)
 │   │
-│   ├── Terminal.jsx
-│   │   ├── WindowWrapper HOC
-│   │   └── WindowControls
+│   ├── Terminal.tsx
+│   │   ├── useWindow Hook
+│   │   ├── WindowControls
+│   │   └── techStack constants
 │   │
-│   ├── Resume.jsx
-│   │   ├── WindowWrapper HOC
+│   ├── Resume.tsx
+│   │   ├── useWindow Hook
 │   │   ├── WindowControls
 │   │   ├── react-pdf (PDF viewer)
 │   │   └── lucide-react (download icon)
 │   │
-│   ├── Contact.jsx
-│   │   ├── WindowWrapper HOC
+│   ├── Contact.tsx
+│   │   ├── useWindow Hook
+│   │   ├── WindowControls
+│   │   └── socials constants
+│   │
+│   ├── Photos.tsx
+│   │   ├── useWindow Hook
 │   │   └── WindowControls
 │   │
-│   ├── Photos.jsx
-│   │   ├── WindowWrapper HOC
+│   ├── Text.tsx
+│   │   ├── useWindow Hook
 │   │   └── WindowControls
 │   │
-│   ├── Text.jsx
-│   │   ├── WindowWrapper HOC
-│   │   └── WindowControls
-│   │
-│   └── Image.jsx
-│       ├── WindowWrapper HOC
+│   └── Image.tsx
+│       ├── useWindow Hook
 │       └── WindowControls
 │
-├── HOC Components
-│   └── WindowWrapper.jsx
-│       ├── useWindowStore (window state)
-│       ├── useGSAP (animations)
-│       ├── Draggable (drag behavior)
-│       └── useLayoutEffect (visibility)
+├── Custom Hooks
+│   ├── useWindow (Animation + Draggable + State)
+│   │   ├── useGSAP for animations
+│   │   ├── Draggable.create() for drag behavior
+│   │   ├── useLayoutEffect for z-index
+│   │   └── useDevice for responsive behavior
+│   │
+│   ├── useDevice (Mobile/responsive detection)
+│   │
+│   └── Hooks from @gsap/react
 │
 ├── Global State (Zustand)
-│   ├── Window.js
+│   ├── Window.ts (useWindowStore)
 │   │   ├── WINDOW_CONFIG (initial state)
 │   │   ├── INITIAL_Z_INDEX
 │   │   └── Immer middleware
 │   │
-│   └── Location.js
-│       ├── locations (from constants)
-│       └── Immer middleware
+│   ├── Location.ts (useLocationStore)
+│   │   ├── activeLocation
+│   │   └── Immer middleware
+│   │
+│   └── Wallpaper.ts (useWallpaperStore)
+│       ├── wallpaper path
+│       └── Persist middleware
 │
 ├── Constants
-│   └── index.js
-│       ├── navLinks
-│       ├── dockApps
-│       ├── blogPosts
-│       ├── techStack
-│       ├── socials
-│       ├── WINDOW_CONFIG
-│       └── INITIAL_Z_INDEX
+│   ├── system.ts (INITIAL_Z_INDEX, WINDOW_CONFIG)
+│   ├── finder.ts (location hierarchy, projects)
+│   ├── safari.ts (blog posts)
+│   ├── terminal.ts (tech stack)
+│   ├── photos.ts (gallery categories)
+│   ├── contact.ts (socials, email)
+│   └── index.ts (re-exports)
 │
 ├── Styling
-│   ├── index.css (Tailwind + custom)
-│   └── App.css (legacy)
+│   ├── index.css (Tailwind + custom utilities)
+│   └── App.css (legacy styles)
 │
 └── Assets
     └── src/assets/ (bundled images, fonts)
@@ -225,43 +255,107 @@ App.jsx (Root)
 ### Window Lifecycle with Animations
 
 ```
-[CLOSED] ─────────────────────────────────────────────────── [MINIMIZED]
-  │                                                              ▲
-  │ openWindow(key)                                 minimizeWindow(key)
-  │ • isOpen = true                                 • isMinimized = true
-  │ • zIndex = nextZIndex++                         • Animation: 0.4s
-  │                                                  • Animate to dock
-  │                                                  │
-  ▼                                                  │
-[OPENING ANIMATION]                                  │
-  │ scale: 0.8 → 1 (0.45s)                          │
-  │ opacity: 0 → 1 (0.45s)                          │
-  │ y: 40 → 0 (0.45s)                               │
-  │ ease: power3.out                                │
-  ▼                                                  │
-[OPEN] ─────────────────────────────────────────────────── [RESTORING]
-  │ • isOpen = true                                     restoreWindow(key)
-  │ • isMinimized = false                              • isMinimized = false
-  │ • Draggable enabled                                • Animation: 0.4s
-  │ • User can drag window                             • Animate from dock
-  │                                                     │
-  │ focusWindow(key)                                   │
-  │ • zIndex = nextZIndex++ ◄──────────────────────────┘
-  │ (brings to front)
+[CLOSED] ──────────────────────────────────────────────────────── [MINIMIZED]
+  │                                                                  ▲
+  │ openWindow(key)                                    minimizeWindow(key)
+  │ • isOpen = true, isMinimized = false              • isMinimized = true
+  │ • zIndex = nextZIndex++                           • animateToDock(): 0.4s
+  │ • Animation: Desktop/Mobile                       • Saves lastPosition
+  │                                                    │
+  ▼                                                    │
+[OPENING ANIMATION]                                    │
+  │                                                    │
+  ├─ DESKTOP (not mobile, not maximized):            │
+  │  • scale: 0.8 → 1 (0.35s)                        │
+  │  • opacity: 0 → 1 (0.35s)                        │
+  │  • y: depends on position (40px offset)          │
+  │  • ease: power3.out                              │
+  │                                                   │
+  ├─ MOBILE: ─────────────────────────────────────────┤
+  │  • slide up from bottom: y: 100dvh → 0           │
+  │  • opacity: 0 → 1 (0.25s)                        │
+  │  • width: 100dvw, height: calc(100dvh - navbar)  │
+  │  • ease: power3.out                              │
+  │                                                   │
+  └─ or FROM DOCK (restore):                          │
+     • animateFromDock(): 0.4s back to lastPosition   │
+                                                       │
+  ▼                                                   │
+[OPEN - NORMAL]                                        │
+  │ • isOpen = true, isMinimized = false             │
+  │ • Draggable enabled                              │
+  │ • User can drag window                           │
+  │ • focusWindow(key) brings to front               │
+  │ • zIndex = nextZIndex++ (on drag press)          │
+  │                                                   │
+  ├─ maximizeWindow(key)                             │
+  │ • isMaximized = true                             │
+  │ • Animation: 0.35s scale to fullscreen           │
+  │ • Draggable disabled                             │
+  ▼                                                   │
+[OPEN - MAXIMIZED]                                    │
+  │ • width: 100vw, height: 100vh                    │
+  │ • position: 0, 0 (top-left)                      │
+  │ • borderRadius: 12px                             │
+  │ • Draggable disabled                             │
+  │                                                   │
+  ├─ Un-maximize by clicking green button             │
+  │ • Restores to savedWindowConfig                  │
+  │ • lastPosition retrieved                         │
+  │ • Duration: 0.5s (power4.out)                    │
+  │ • Draggable re-enabled                           │
+  ▼                                                   │
+[OPEN - NORMAL]                                       │
+  │ Back to normal window mode ◄─────────────────────┘
+  │
+  │ Or: minimizeWindow(key)
+  │ • isMinimized = true
+  │ • animateToDock(): 0.4s
+  │
+  ├─ restoreWindow(key) ◄─────────────────────────────┤
+  │ • isMinimized = false                             │ Minimized
+  │ • zIndex = nextZIndex++                           │
+  │ • animateFromDock(): 0.4s back to lastPosition    │
+  │ • Duration: 0.4s (power3.out)                     │
+  │
+  └─────────────────────────────────────────────────→ [OPEN]
   │
   │ closeWindow(key)
   │ • isOpen = false
+  │ • isMinimized = false
   │ • zIndex = INITIAL_Z_INDEX
+  │ • data = null
+  │
   ▼
 [CLOSING ANIMATION]
-  │ Reverses opening animation
-  │ scale: 1 → 0.8 (0.45s)
-  │ opacity: 1 → 0 (0.45s)
-  │ y: 0 → 40 (0.45s)
-  │ ease: power3.out
+  │
+  ├─ DESKTOP: Reverses opening animation
+  │  • scale: 1 → 0.8 (0.35s)
+  │  • opacity: 1 → 0 (0.35s)
+  │  • y: return to origin (0 → 40px offset)
+  │  • ease: power3.out
+  │
+  └─ MOBILE: Slide down to bottom
+     • y: 0 → 100dvh (0.25s)
+     • opacity: 1 → 0
+     • ease: power3.out
+     • display: none, visibility: hidden
+  │
   ▼
-[CLOSED] ◄─────────────────────────────────────────────────────
+[CLOSED] ◄─────────────────────────────────────────────────────────────
 ```
+
+**Key Animation Differences:**
+
+| Scenario          | Duration  | Easing       | Platform       |
+| ----------------- | --------- | ------------ | -------------- |
+| Open (new)        | 0.35-0.5s | power3.out   | Desktop        |
+| Open (mobile)     | 0.25s     | power3.out   | Mobile         |
+| Restore from dock | 0.4s      | power3.out   | Desktop/Mobile |
+| Minimize to dock  | 0.4s      | power3.out   | Desktop/Mobile |
+| Maximize          | 0.35s     | power3.inOut | Desktop        |
+| Un-maximize       | 0.5s      | power4.out   | Desktop        |
+| Close             | 0.35-0.5s | power3.out   | Desktop/Mobile |
 
 ---
 
@@ -328,6 +422,23 @@ App.jsx (Root)
 │  └── resetActiveLocation() → Go back to default                 │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                  useWallpaperStore                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  wallpaper: "/images/wallpaper-3.webp"                         │
+│  (Current background image path)                               │
+│                                                                 │
+│  Methods:                                                       │
+│  └── setWallpaper(path) → Changes background wallpaper         │
+│                                                                 │
+│  Persistence:                                                   │
+│  ├── Uses Zustand persist middleware                            │
+│  ├── Stored in localStorage as "wallpaper-storage"             │
+│  └── Survives page refresh                                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -337,30 +448,54 @@ App.jsx (Root)
 ### Component Rendering Sequence
 
 ```
-1. App.jsx renders all components
-   ├── Navbar
-   ├── Welcome
-   ├── Dock
-   ├── Home
-   └── All Window Components (wrapped with WindowWrapper)
+1. App.tsx renders all window components directly
+   ├── No wrapper or HOC pattern
+   ├── Each window component imported and rendered
+   ├── componentRef passed to useWindow hook
+   └── All window components mounted (display: hidden initially)
 
-2. Each Window Component → WindowWrapper HOC
-   ├── Checks: isOpen, isMinimized, zIndex from store
-   ├── Applies z-index: style={{ zIndex }}
-   ├── Manages visibility: visibility/display
-   └── Wraps with animation ref
+2. Each Window Component → useWindow Hook
+   ├── Subscribes to: isOpen, isMinimized, isMaximized, zIndex
+   ├── Calls useWindow("windowKey") for containerRef and headerRef
+   ├── containerRef gets ref for main container element
+   └── headerRef gets ref for window header (for dragging)
 
-3. WindowWrapper useGSAP Hook
-   ├── Monitors: isOpen, isMinimized changes
-   ├── Triggers: GSAP animations
-   ├── Creates: Draggable instance
-   └── Cleanup: Kill animations on unmount
+3. useWindow Hook Setup
+   ├── Sets up multiple useLayoutEffect hooks:
+   │   ├── Z-index management
+   │   ├── Pointer events (disabled when minimized)
+   │   └── Draggable.create() setup
+   │
+   ├── useGSAP hook monitors dependencies:
+   │   ├── isOpen, isMinimized, isMaximized
+   │   ├── isMobile (responsive behavior)
+   │   └── previousState tracking
+   │
+   └── Applies different animations based on state:
+       ├── Desktop: scale 0.8→1, opacity 0→1 (0.35-0.5s)
+       ├── Mobile: slide up from bottom (0.25-0.35s)
+       ├── Maximize: full screen transition
+       └── Minimize: animate to dock position
 
-4. User Interaction
-   ├── Click dock → dispatch openWindow()
+4. GSAP Animation Execution
+   ├── gsap.killTweensOf() - cleans previous animations
+   ├── Checks previousState vs current state
+   ├── Gets target dock rect if minimizing/restoring
+   ├── Runs appropriate animation sequence
+   └── Calls draggable.update() or .enable()/.disable()
+
+5. User Interaction
+   ├── Click dock → toggleApp() in store
    ├── Store updates → component re-renders
+   ├── useGSAP hook dependencies trigger
    ├── GSAP animation plays
    └── Window appears with smooth animation
+
+6. Screen Update Complete
+   ├── useLayoutEffect sets z-index
+   ├── useLayoutEffect enables pointer events
+   ├── Draggable makes window draggable
+   └── User can interact with window
 ```
 
 ---
@@ -372,7 +507,7 @@ App.jsx (Root)
 ```
 User Clicks Dock Icon
 │
-├─ Event: onClick handler in Dock.jsx
+├─ Event: onClick handler in Dock.tsx
 │
 ├─ Action Dispatch: toggleApp({ id: "finder", canOpen: true })
 │  │
@@ -386,36 +521,51 @@ User Clicks Dock Icon
 │  │
 │  └─ set((state) => {
 │      state.windows.finder.isOpen = true;
+│      state.windows.finder.isMinimized = false;
 │      state.windows.finder.zIndex = state.nextZIndex;
 │      state.nextZIndex++;
 │    })
 │
 ├─ React Re-render:
 │  │
-│  ├─ Finder component receives new zIndex
-│  ├─ WindowWrapper detects isOpen change
-│  └─ Component updates visibility style
+│  ├─ Finder component receives updated state from useWindowStore
+│  ├─ useWindow hook dependencies trigger (isOpen, isMinimized)
+│  └─ Component updates via useState/useLayoutEffect in hook
 │
-├─ useGSAP Hook Detects Change:
+├─ useWindow Hook Detects Change:
 │  │
-│  └─ [isOpen, isMinimized] dependency triggered
+│  ├─ previousStateRef tracks: wasOpen, wasMinimized
+│  ├─ getTargetRect() finds dock element for animation origin
+│  └─ Determines animation type (open, restore, maximize, minimize)
 │
 ├─ GSAP Animation:
 │  │
-│  └─ gsap.fromTo(windowRef, {
-│       scale: 0.8, opacity: 0, y: 40
-│     }, {
-│       scale: 1, opacity: 1, y: 0,
-│       duration: 0.45, ease: "power3.out"
-│     })
-│
-├─ Draggable.create():
+│  ├─ Desktop (not minimized): scale 0.8→1, opacity 0→1, duration 0.35-0.5s
 │  │
-│  └─ Window becomes draggable, onPress triggers focusWindow()
+│  ├─ Mobile: slide from bottom (y: 100dvh→0), duration 0.25s
+│  │
+│  ├─ Maximize: full screen transition, duration 0.35s
+│  │
+│  └─ Minimize: animate from current position to dock, duration 0.4s
+│
+├─ Draggable Setup:
+│  │
+│  ├─ Creates Draggable instance on window container
+│  ├─ onPress triggers focusWindow(key) to bring to front
+│  ├─ Stores lastPositionRef for restore/un-maximize
+│  └─ Enable/disable based on state
+│
+├─ Z-Index Update:
+│  │
+│  └─ useLayoutEffect applies z-index: style={{ zIndex }}
+│
+├─ Pointer Events:
+│  │
+│  └─ useLayoutEffect sets: pointerEvents = "auto" or "none"
 │
 └─ Screen Update:
    │
-   └─ User sees animated window appearing on screen
+   └─ User sees animated window appearing on screen with smooth physics-based animation
 ```
 
 ---
@@ -428,57 +578,73 @@ User Clicks Dock Icon
 src/
 ├── components/
 │   └── Purpose: Shared, reusable UI components
-│       ├── Navbar.jsx (Navigation bar at top)
-│       ├── Dock.jsx (App launcher at bottom)
-│       ├── Welcome.jsx (Splash screen)
-│       ├── Home.jsx (Desktop folders)
-│       ├── WindowControls.jsx (Window buttons)
-│       └── index.js (Re-exports)
+│       ├── Navbar.tsx (Navigation bar at top)
+│       ├── Dock.tsx (App launcher at bottom)
+│       ├── Welcome.tsx (Splash screen)
+│       ├── Home.tsx (Desktop folders)
+│       ├── WindowControls.tsx (Window buttons)
+│       └── index.ts (Re-exports)
 │
 ├── windows/
 │   └── Purpose: Individual draggable window applications
-│       ├── Finder.jsx (File browser)
-│       ├── Safari.jsx (Browser/Articles)
-│       ├── Terminal.jsx (Tech stack)
-│       ├── Resume.jsx (PDF viewer)
-│       ├── Contact.jsx (Contact + social)
-│       ├── Photos.jsx (Gallery)
-│       ├── Text.jsx (Notes)
-│       ├── Image.jsx (Image viewer)
-│       └── index.js (Re-exports)
+│       ├── Finder.tsx (File browser)
+│       ├── Safari.tsx (Browser/Articles)
+│       ├── Terminal.tsx (Tech stack)
+│       ├── Resume.tsx (PDF viewer)
+│       ├── Contact.tsx (Contact + social)
+│       ├── Photos.tsx (Gallery)
+│       ├── Text.tsx (Notes)
+│       ├── Image.tsx (Image viewer)
+│       └── index.ts (Re-exports)
 │
 ├── store/
 │   └── Purpose: Zustand global state management
-│       ├── Window.js (Window lifecycle state)
-│       ├── Location.js (Navigation state)
+│       ├── Window.ts (Window lifecycle state)
+│       ├── Location.ts (Navigation state)
+│       ├── Wallpaper.ts (Wallpaper selection with persist)
 │       └── (Each store uses Immer for immutable updates)
 │
-├── hoc/
-│   └── Purpose: Higher-order components for cross-cutting concerns
-│       └── WindowWrapper.jsx
-│           ├── Wraps window components
-│           ├── Adds GSAP animations
-│           ├── Adds Draggable behavior
-│           └── Manages visibility & z-index
+├── hooks/
+│   └── Purpose: Custom React hooks for reusable logic
+│       ├── useWindow.ts (Window animation, drag, state - core hook)
+│       ├── useDevice.ts (Mobile/responsive detection)
+│       └── (Integrated with @gsap/react)
 │
 ├── constants/
 │   └── Purpose: Configuration and data
-│       └── index.js
-│           ├── Navigation configuration
-│           ├── Window definitions
-│           ├── Blog posts
-│           ├── Tech stack
-│           ├── Social media links
-│           └── Gallery data
+│       ├── system.ts (WINDOW_CONFIG, INITIAL_Z_INDEX)
+│       ├── finder.ts (Project folders, files hierarchy)
+│       ├── safari.ts (Blog posts data)
+│       ├── terminal.ts (Tech stack categories)
+│       ├── photos.ts (Gallery categories and images)
+│       ├── contact.ts (Social links, email)
+│       └── index.ts (Re-exports)
+│
+├── types.ts
+│   └── Purpose: TypeScript type definitions
+│       ├── FileItem (file type definition)
+│       ├── FolderItem (folder type definition)
+│       ├── WindowState (window state shape)
+│       ├── WindowConfig (windows collection type)
+│       └── LocationItem (location hierarchy type)
 │
 ├── assets/
 │   └── Purpose: Bundled static assets
 │       └── (images, fonts, etc.)
 │
-└── Styling
-    ├── index.css (Global styles, Tailwind, custom utilities)
-    └── App.css (Legacy styles)
+├── index.css (Global styles, Tailwind, custom utilities)
+├── App.css (Legacy styles)
+├── App.tsx (Root component)
+├── main.tsx (Entry point)
+└── vite-env.d.ts (Vite type definitions)
 ```
+
+**Key Design Principle:**
+
+- **No HOC pattern** — Replaced with `useWindow` custom hook for better composability
+- **Direct hook usage** — Each window component calls `useWindow(windowKey)` directly
+- **Separation of concerns** — Animation logic in hook, UI in component
+- **TypeScript throughout** — Type-safe codebase
 
 ---
 
@@ -490,59 +656,81 @@ src/
 React 19.2.5
 │
 ├─ ReactDOM → Mounts app to DOM
-├─ useRef, useState, useLayoutEffect → React hooks
+├─ useRef, useLayoutEffect → Custom hook integration
 └─ Concurrent rendering features
+
+@gsap/react 2.1.2
+│
+├─ useGSAP hook → Safe GSAP integration with React
+├─ Dependency tracking → Triggers animations on state change
+└─ Cleanup → Automatic animation killing on unmount
 
 Vite 8.0.10
 │
-├─ Module resolution → Path aliases (#components, #store, etc.)
+├─ Module resolution → Path aliases (#components, #store, hooks, etc.)
 ├─ Hot Module Replacement → Dev server updates
 ├─ Code splitting → Separate chunks for GSAP, PDF, vendor
 └─ Build optimization → Production bundle
 
-Tailwind CSS 4.2.4
+@tailwindcss/vite 4.2.4 + tailwindcss 4.2.4
 │
 ├─ Utility classes → Styling
-├─ Custom @theme → Custom fonts, breakpoints
-├─ Custom @utility → flex-center, col-center, abs-center
-└─ Responsive design → Mobile-first approach
+├─ Custom @theme → Custom fonts, colors, breakpoints
+├─ Custom @utility → Responsive flex layouts
+└─ Mobile-first approach → Desktop and mobile optimizations
 
 Zustand 5.0.13
 │
-├─ Store creation → useWindowStore, useLocationStore
+├─ Store creation → useWindowStore, useLocationStore, useWallpaperStore
 ├─ Immer middleware → Immutable state updates
+├─ Persist middleware → localStorage persistence (wallpaper)
 └─ Selector hooks → Component subscriptions
+
+Immer 11.1.8
+│
+└─ Immutable state management → Zustand integration for safe mutations
 
 GSAP 3.15.0
 │
-├─ Tweens → Property animations (scale, opacity, etc.)
-├─ Draggable → Window drag behavior
-├─ useGSAP Hook → React integration
-└─ Timeline → Sequenced animations
+├─ Draggable Plugin → Window drag behavior
+├─ Tweens → Property animations (scale, opacity, x, y, width, height)
+├─ Physics-based easing → power3.out, power4.out, power3.inOut
+└─ Animation timelines → Complex sequenced animations
 
 Lucide React 1.3.0
 │
-└─ Icon components → UI icons
+└─ Icon components → UI icons (Check, Flag, etc.)
 
 react-pdf 10.4.1
 │
-└─ PDF viewing → Resume display
+├─ PDF viewing → Resume window display
+├─ Multi-page support → Document navigation
+└─ On-demand loading → Only loaded when Resume opens
+
+react-to-pdf 3.2.2
+│
+└─ PDF export → Download/print functionality
 
 dayjs 1.11.20
 │
-└─ Date/time → Clock in navbar
+└─ Date/time → Real-time clock in navbar
 
 clsx 2.1.1
 │
-└─ Conditional classes → Dynamic CSS
+└─ Conditional classes → Dynamic CSS class generation
 
 react-tooltip 6.0.2
 │
-└─ Tooltips → Dock icon labels
+└─ Tooltips → Dock icon labels on hover
 
-Other
-├─ ESLint → Code quality
-└─ Prettier → Code formatting
+ESLint & Prettier
+├─ ESLint → Code quality and consistency
+├─ react-hooks plugin → Hook dependency validation
+└─ Prettier → Code formatting (v3.8.3)
+
+TypeScript 6.0.3
+│
+└─ Type safety → Full codebase type checking
 ```
 
 ---
@@ -612,16 +800,18 @@ Static Assets
 
 ### Why This Architecture?
 
-| Decision               | Why                              | Benefit                           |
-| ---------------------- | -------------------------------- | --------------------------------- |
-| **Zustand over Redux** | Lightweight, minimal boilerplate | Faster dev, smaller bundle        |
-| **Immer middleware**   | Immutable updates pattern        | Predictable state changes         |
-| **WindowWrapper HOC**  | DRY principle for animations     | Reusable animation logic          |
-| **GSAP over CSS**      | Advanced physics, better control | Smooth, physics-based animations  |
-| **Tailwind CSS**       | Utility-first approach           | Rapid styling, consistent design  |
-| **Vite over Webpack**  | Fast HMR, optimized build        | Better dev experience             |
-| **Code splitting**     | Load chunks on demand            | Smaller initial bundle            |
-| **Immer + Zustand**    | Immutable state pattern          | Easier debugging, undo/redo ready |
+| Decision                   | Why                                 | Benefit                              |
+| -------------------------- | ----------------------------------- | ------------------------------------ |
+| **Zustand over Redux**     | Lightweight, minimal boilerplate    | Faster dev, smaller bundle           |
+| **Immer middleware**       | Immutable updates pattern           | Predictable state changes            |
+| **useWindow Hook Pattern** | DRY principle, better composability | Shared animation logic, testable     |
+| **GSAP over CSS**          | Advanced physics, better control    | Smooth, physics-based animations     |
+| **Tailwind CSS**           | Utility-first approach              | Rapid styling, consistent design     |
+| **Vite over Webpack**      | Fast HMR, optimized build           | Better dev experience                |
+| **TypeScript**             | Type safety throughout              | Fewer runtime errors, better DX      |
+| **@gsap/react useGSAP**    | Safe React integration              | Automatic cleanup, dependency track. |
+| **Persist middleware**     | Browser storage for preferences     | Wallpaper choice persists            |
+| **Mobile-first CSS**       | Responsive from ground up           | Works on all devices                 |
 
 ---
 
@@ -630,26 +820,39 @@ Static Assets
 ### Component Complexity
 
 ```
-Simple Components (No State)
-├─ Welcome.jsx (animation only)
-├─ Contact.jsx (static display)
-└─ Terminal.jsx (static display)
+Simple Components (Static UI)
+├─ Welcome.tsx (animation only, no state)
+├─ Contact.tsx (static display with links)
+├─ Terminal.tsx (static tech stack display)
+└─ Photos.tsx (static gallery display)
 
-Medium Complexity (Local State + Store)
-├─ Navbar.jsx (store dispatch)
-├─ Dock.jsx (store dispatch + local animation)
-└─ Home.jsx (store dispatch + Draggable)
+Medium Complexity (State + Store Dispatch)
+├─ Navbar.tsx (store dispatch + time formatting)
+├─ Dock.tsx (store dispatch + icon hover animation)
+└─ Home.tsx (store dispatch + folder interaction)
 
-High Complexity (Store + HOC + Animation)
-├─ All Window Components → Wrapped with WindowWrapper
-├─ WindowWrapper → Animation + Draggable
-└─ State management → Multiple concerns
+High Complexity (Multiple States + Store + Animations)
+├─ Finder.tsx (useWindow + location state + nested navigation)
+├─ Resume.tsx (useWindow + PDF viewing state)
+├─ Safari.tsx (useWindow + article filtering)
+└─ All Window Components (useWindow hook integration)
 
-Architectural Complexity
-└─ Acceptable:
-    • Clear separation of concerns
-    • Single responsibility principle
-    • DRY through HOCs
+useWindow Hook Complexity
+├─ Multiple useLayoutEffect hooks for z-index, pointer events
+├─ useGSAP with complex conditional animation logic
+├─ Draggable instance creation and state management
+├─ Mobile vs desktop responsive behavior
+├─ Maximize/restore functionality
+├─ Minimize to dock with target position tracking
+└─ Acceptable complexity justified by reusability
+
+Architectural Complexity Assessment
+└─ Well-managed:
+    • Clear separation of concerns (UI vs animation vs state)
+    • Single responsibility principle maintained
+    • DRY through useWindow custom hook
+    • Type-safe with TypeScript throughout
+    • Testable logic isolated in hook
 ```
 
 ---
@@ -658,10 +861,12 @@ Architectural Complexity
 
 The macOS Porto architecture is designed for:
 
-- **Clarity** — Each component has single responsibility
-- **Reusability** — WindowWrapper prevents code duplication
-- **Maintainability** — Clear data flow and state management
-- **Performance** — Optimized animations and code splitting
+- **Clarity** — Each component has clear responsibilities
+- **Reusability** — useWindow hook prevents code duplication across windows
+- **Maintainability** — Clear data flow and centralized state management
+- **Performance** — GPU-accelerated animations and optimized rendering
 - **Scalability** — Easy to add new windows or features
+- **Type Safety** — Full TypeScript coverage prevents runtime errors
+- **Responsiveness** — Mobile-first CSS and adaptive animations
 
-The architectural decisions favor **pragmatism** over theoretical purity, making it both powerful and easy to understand for new developers.
+The architectural decisions favor **pragmatism** over theoretical purity, using modern React patterns (hooks over HOCs) while maintaining both power and clarity for new developers.

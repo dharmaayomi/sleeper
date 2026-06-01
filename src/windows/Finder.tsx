@@ -67,17 +67,17 @@ const Finder = () => {
         <div
           ref={headerRef}
           id="window-header"
-          className="relative  flex items-center justify-between w-full px-4 py-2 bg-white md:bg-gray-50 border-none md:border-b md:border-gray-200  h-11 select-none"
+          className="relative flex items-center justify-between w-full px-4 py-2 bg-white dark:bg-zinc-900 md:bg-gray-50 dark:md:bg-zinc-800 border-none md:border-b md:border-gray-200 dark:md:border-zinc-800 h-11 select-none"
         >
           <WindowControls target="finder" />
-          <h2 className="text-neutral-800 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
+          <h2 className="text-neutral-800 dark:text-zinc-100 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
             {activeLocation ? activeLocation.name : "Portfolio"}
           </h2>
-          <Search className="icon cursor-pointer text-gray-500" size={18} />
+          <Search className="icon cursor-pointer text-gray-500 dark:text-zinc-400" size={18} />
         </div>
 
         {/* Mobile Content Pane */}
-        <div className="bg-white h-[calc(100%-2.75rem)] overflow-y-auto pb-10">
+        <div className="bg-white dark:bg-zinc-900 h-[calc(100%-2.75rem)] overflow-y-auto pb-10">
           {!activeLocation ? (
             // Root View: Work, About me, Resume, Trash
             <ul className="grid grid-cols-3 gap-y-8 gap-x-4 p-6 justify-items-center">
@@ -87,14 +87,14 @@ const Finder = () => {
                   onClick={() => openItem(item)}
                   className="flex flex-col items-center justify-center cursor-pointer select-none text-center"
                 >
-                  <div className="w-16 h-16 flex items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-2xl p-1 transition-all active:scale-90">
+                  <div className="w-16 h-16 flex items-center justify-center bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-2xl p-1 transition-all active:scale-90">
                     <img
                       src="/images/folder.png"
                       alt={item.name}
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="font-inter text-[11px] text-gray-800 mt-2.5 font-medium truncate w-[76px] px-0.5">
+                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium truncate w-[76px] px-0.5">
                     {item.name}
                   </p>
                 </li>
@@ -109,14 +109,14 @@ const Finder = () => {
                   onClick={() => openItem(item)}
                   className="flex flex-col items-center justify-center cursor-pointer select-none text-center"
                 >
-                  <div className="w-16 h-16 flex items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-2xl p-1 transition-all active:scale-90">
+                  <div className="w-16 h-16 flex items-center justify-center bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-2xl p-1 transition-all active:scale-90">
                     <img
                       src={item.icon}
                       alt={item.name}
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="font-inter text-[11px] text-gray-800 mt-2.5 font-medium leading-tight truncate w-[76px] px-0.5">
+                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium leading-tight truncate w-[76px] px-0.5">
                     {item.name}
                   </p>
                 </li>

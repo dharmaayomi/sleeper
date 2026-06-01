@@ -13,6 +13,7 @@ It's a **portfolio website** — but designed as an interactive **macOS desktop*
 - ✅ Drag windows around the screen
 - ✅ Open and close applications
 - ✅ Minimize windows to the dock
+- ✅ Maximize windows to fullscreen
 - ✅ Explore projects in folders
 - ✅ View tech skills and blog posts
 - ✅ Get contact information
@@ -30,9 +31,10 @@ It's a **portfolio website** — but designed as an interactive **macOS desktop*
 
 ### On Mobile
 
-- The experience is optimized for desktop
-- You'll see a notification suggesting desktop view
-- Responsive layout available, but some features may be limited
+- The experience is fully responsive and optimized for mobile devices
+- Touch-friendly window animations (slide up from bottom)
+- Dock and navigation fully functional on mobile
+- Full-screen windows recommended for best mobile experience
 
 ---
 
@@ -75,11 +77,11 @@ Windows are like **applications** on a Mac. Each window shows different content:
 
 Each window has three colored buttons:
 
-| Button       | Color  | Action                      |
-| ------------ | ------ | --------------------------- |
-| **Close**    | Red    | Closes the window           |
-| **Minimize** | Yellow | Hides window, moves to dock |
-| **Maximize** | Green  | (Currently for decoration)  |
+| Button       | Color  | Action                                                |
+| ------------ | ------ | ----------------------------------------------------- |
+| **Close**    | Red    | Closes the window                                     |
+| **Minimize** | Yellow | Hides window, moves to dock                           |
+| **Maximize** | Green  | Expands window to fullscreen (click again to restore) |
 
 ### Moving Windows
 
@@ -96,8 +98,16 @@ Each window has three colored buttons:
 ### Minimizing Windows
 
 - Click the **yellow minimize button** (−)
-- Window shrinks and moves to the dock
-- Click dock icon again to bring it back
+- Window smoothly animates to the dock (0.4s animation)
+- Click dock icon again to restore it to its original position
+
+### Maximizing Windows
+
+- Click the **green maximize button** (□)
+- Window expands to fill the entire screen with smooth animation
+- Dock and navigation remain accessible
+- Click green button again to restore the window to its original size and position
+- Perfect for viewing full-screen content like PDFs or projects
 
 ---
 
@@ -343,9 +353,17 @@ The main desktop background showing project folders you can interact with.
 
 ### Hovering Effects
 
-- Dock icons scale on hover (physics-based!)
+- Dock icons scale on hover with physics-based animation
 - Navigation buttons have visual feedback
 - Smooth, responsive interactions
+- All animations optimized for 60fps performance
+
+### Animation Speeds
+
+- **Desktop**: Windows open/close with 0.35-0.5s animation (smooth easing)
+- **Mobile**: Windows slide from bottom with 0.25s animation (faster for mobile)
+- **Minimize/Restore**: 0.4s animation with physics-based easing
+- **Maximize**: 0.35s smooth fullscreen transition
 
 ---
 
@@ -479,34 +497,36 @@ The main desktop background showing project folders you can interact with.
 
 **Best Experience On:**
 
-- Chrome/Chromium (latest)
-- Safari (on Mac)
-- Firefox (latest)
-- Edge (latest)
+- Chrome/Chromium (latest) — Excellent performance
+- Safari (on Mac) — Native support for animations
+- Firefox (latest) — Great compatibility
+- Edge (latest) — Excellent performance
 
 **Mobile Browsers:**
 
-- Chrome Mobile
-- Safari Mobile
-- Firefox Mobile
-  (Experience optimized for desktop, but functional)
+- Chrome Mobile — Full responsive support
+- Safari Mobile — Full responsive support
+- Firefox Mobile — Full responsive support
+- (All mobile browsers now fully support responsive animations and drag gestures)
 
 ---
 
 ## 🎬 Features at a Glance
 
-| Feature           | Where       | How                    |
-| ----------------- | ----------- | ---------------------- |
-| Project Portfolio | Finder      | Open from dock/menu    |
-| Blog Reading      | Safari      | Open from dock/menu    |
-| Resume Download   | Resume      | Open + Click Download  |
-| Tech Skills       | Terminal    | Open from dock/menu    |
-| Contact Info      | Contact     | Open from dock/menu    |
-| Photo Gallery     | Photos      | Open from dock/menu    |
-| Window Dragging   | All windows | Click & drag title bar |
-| Minimize          | All windows | Click yellow button    |
-| Close             | All windows | Click red button       |
-| Desktop Folders   | Desktop     | Click or drag folders  |
+| Feature                | Where       | How                                |
+| ---------------------- | ----------- | ---------------------------------- |
+| Project Portfolio      | Finder      | Open from dock/menu                |
+| Blog Reading           | Safari      | Open from dock/menu                |
+| Resume Download        | Resume      | Open + Click Download              |
+| Tech Skills            | Terminal    | Open from dock/menu                |
+| Contact Info           | Contact     | Open from dock/menu                |
+| Photo Gallery          | Photos      | Open from dock/menu                |
+| Window Dragging        | All windows | Click & drag title bar             |
+| Minimize to Dock       | All windows | Click yellow button                |
+| Maximize to Fullscreen | All windows | Click green button                 |
+| Close                  | All windows | Click red button                   |
+| Desktop Folders        | Desktop     | Click or drag folders              |
+| Z-index Management     | All windows | Click any window to bring to front |
 
 ---
 

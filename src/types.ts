@@ -36,3 +36,12 @@ export interface WindowState {
 export interface WindowConfig {
   [key: string]: WindowState;
 }
+
+export type Theme = "light" | "dark" | "system";
+
+export interface ThemeConfig {
+  id: Theme;
+  label: string;
+  icon: string;
+}
+

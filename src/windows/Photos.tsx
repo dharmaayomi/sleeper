@@ -25,16 +25,16 @@ const Photos = () => {
       {/* Responsive Header */}
       <div ref={headerRef} id="window-header" className="relative flex items-center justify-between select-none">
         <WindowControls target="photos" />
-        <h2 className="text-black font-semibold text-[16px] font-inter absolute left-1/2 -translate-x-1/2">
+        <h2 className="text-black dark:text-zinc-100 font-semibold text-[16px] font-inter absolute left-1/2 -translate-x-1/2">
           Gallery
         </h2>
-        <div className="flex items-center justify-end gap-3 text-gray-500 z-10">
+        <div className="flex items-center justify-end gap-3 text-gray-500 dark:text-zinc-400 z-10">
           <Mail className="icon cursor-pointer" size={18} />
           <Search className="icon cursor-pointer" size={18} />
         </div>
       </div>
 
-      <div className="bg-white flex w-full h-[calc(100%-2.75rem)] overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 flex w-full h-[calc(100%-2.75rem)] overflow-hidden">
         {/* Sidebar: Hidden on Mobile */}
         {!isMobile && (
           <div className="sidebar">

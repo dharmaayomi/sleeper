@@ -39,7 +39,7 @@ const Resume = () => {
       {/* Responsive Header */}
       <div ref={headerRef} id="window-header" className="relative flex items-center justify-between select-none">
         <WindowControls target="resume" />
-        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
+        <h2 className="text-black dark:text-zinc-100 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
           Resume
         </h2>
 

@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body {
   width: 100dvw;
@@ -404,3 +406,191 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* === DARK THEME — overrides and components === */
+
+.dark {
+  /* Main layout elements */
+  nav {
+    background-color: rgba(30, 30, 30, 0.4) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  nav time {
+    color: #ffffff !important;
+  }
+
+  nav ul p {
+    color: #ffffff !important;
+  }
+  
+  .icon-hover {
+    filter: invert(0.9);
+  }
+  
+  /* Window Headers */
+  #window-header {
+    background-color: #2c2c2e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #a1a1aa !important;
+  }
+  
+  /* Window Backgrounds & Borders */
+  .window,
+  #safari,
+  #terminal,
+  #contact,
+  #photos,
+  #resume,
+  #finder,
+  #txtfile,
+  #imgfile {
+    background-color: #1c1c1e !important;
+    color: #f3f4f6 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  /* Sidebars */
+  .sidebar {
+    background-color: #161618 !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  
+  .sidebar ul .not-active {
+    color: #d4d4d8 !important;
+  }
+  .sidebar ul .not-active:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  .sidebar ul .active {
+    background-color: rgba(10, 132, 255, 0.2) !important;
+    color: #40a0ff !important;
+  }
+  
+  /* Input Search Areas */
+  .search {
+    background-color: #2c2c2e !important;
+    border-color: #48484a !important;
+  }
+  .search input {
+    color: #f3f4f6 !important;
+  }
+  
+  /* Blog Layout (Safari) */
+  .blog {
+    background-color: #1c1c1e !important;
+  }
+  .blog-post .content h3 {
+    color: #f3f4f6 !important;
+  }
+  .blog-post .content p {
+    color: #a1a1aa !important;
+  }
+  
+  /* Terminal text overlays */
+  .techstack {
+    color: #34c759 !important; /* brighter green for dark mode tech stack */
+  }
+  .techstack .content {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .content {
+    background-color: #1c1c1e !important;
+  }
+  
+  .preview {
+    background-color: #101010 !important;
+  }
+  
+  /* Thumbnail photo wrappers */
+  .thumbnail-wrapper {
+    background-color: #2c2c2e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .gallery ul li p {
+    color: #e4e4e7 !important;
+  }
+  .gallery ul li p:hover {
+    color: #0a84ff !important;
+  }
+  
+  /* Dock container */
+  #dock .dock-container {
+    background-color: rgba(30, 30, 30, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+}
+
+/* Theme Panel Styling & High-Fidelity macOS Control Center */
+.theme-panel-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.control-center-panel {
+  position: fixed;
+  top: 48px; /* Sits right below the top navbar in the screen corner */
+  right: 12px;
+  width: 320px;
+  background: rgba(240, 240, 240, 0.72);
+  backdrop-filter: blur(35px) saturate(190%);
+  -webkit-backdrop-filter: blur(35px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  padding: 12px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform-origin: top right;
+  animation: panelIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark .control-center-panel {
+  background: rgba(28, 28, 30, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.control-card {
+  background: rgba(255, 255, 255, 0.45);
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.dark .control-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.icon-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
