@@ -88,9 +88,9 @@ const dockApps: DockApp[] = [
   },
   {
     id: "trash",
-    name: "Archive", // was "Trash"
+    name: "Trash", // was "Trash"
     icon: "trash.png",
-    canOpen: false,
+    canOpen: true,
   },
 ];
 

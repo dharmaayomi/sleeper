@@ -46,7 +46,9 @@ const Finder = () => {
             key={item.id}
             onClick={() => setActiveLocation(item)}
             className={clsx(
-              item.id === activeLocation?.id ? "active" : "not-active",
+              item.id === activeLocation?.id
+                ? "active cursor-pointer"
+                : "not-active cursor-pointer",
             )}
           >
             <img src={item.icon} className="w-4" alt={item.name} />
@@ -73,7 +75,10 @@ const Finder = () => {
           <h2 className="text-neutral-800 dark:text-zinc-100 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2">
             {activeLocation ? activeLocation.name : "Portfolio"}
           </h2>
-          <Search className="icon cursor-pointer text-gray-500 dark:text-zinc-400" size={18} />
+          <Search
+            className="icon cursor-pointer text-gray-500 dark:text-zinc-400"
+            size={18}
+          />
         </div>
 
         {/* Mobile Content Pane */}
@@ -141,11 +146,11 @@ const Finder = () => {
           {renderList("Favorites", Object.values(locations))}
           {renderList("My Projects", locations.work.children as FolderItem[])}
         </div>
-        <ul className="content">
+        <ul className="content w-full">
           {activeLocation?.children.map((item) => (
             <li
               key={item.id}
-              className={item.position}
+              className={item.position + " cursor-pointer"}
               onClick={() => openItem(item)}
             >
               <img src={item.icon} alt={item.name} />
