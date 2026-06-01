@@ -87,7 +87,7 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 8,
-    img: "/images/omi.jpeg",
+    img: "/images/omi-1.webp",
     name: "Omi's Portrait",
     categoryIds: [2, 4],
   },

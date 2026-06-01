@@ -193,18 +193,10 @@ const WORK_LOCATION: FolderItem = {
           icon: "/images/safari.png",
           kind: "file",
           fileType: "url",
-          href: "https://github.com",
+          href: "https://www.youtube.com/playlist?list=PLJUXa3eR-4GbOXUQD7iE-r4D4Q--jMx7Z",
           position: "top-10 right-20",
         },
-        {
-          id: 3,
-          name: "meatlover-webseries.com",
-          icon: "/images/safari.png",
-          kind: "file",
-          fileType: "url",
-          href: "https://github.com",
-          position: "top-40 left-50",
-        },
+
         {
           id: 4,
           name: "meatlover.png",
@@ -217,10 +209,9 @@ const WORK_LOCATION: FolderItem = {
         {
           id: 5,
           name: "Script.celtx",
-          icon: "/images/plain.png",
+          icon: "/images/pdf.png",
           kind: "file",
-          fileType: "fig",
-          href: "https://google.com",
+          fileType: "pdfviewer",
           position: "top-60 right-20",
         },
       ],
@@ -242,7 +233,7 @@ const ABOUT_LOCATION: FolderItem = {
       kind: "file",
       fileType: "img",
       position: "top-10 left-5",
-      imageUrl: "/images/user-icon.png",
+      imageUrl: "/images/omi-1.webp",
     },
     {
       id: 2,
@@ -270,7 +261,7 @@ const ABOUT_LOCATION: FolderItem = {
       fileType: "txt",
       position: "top-60 left-5",
       subtitle: "Meet the Developer Behind the Code",
-      image: "/images/omi.jpeg",
+      image: "/images/omi-1.webp",
       description: [
         "Hey! I’m omi 👋, a web developer who enjoys building sleek, interactive websites that actually work well.",
         "Full-Stack Web Developer with hands-on experience building scalable web applications using React, Node.js, and modern frameworks. ",

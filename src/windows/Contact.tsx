@@ -20,11 +20,13 @@ const Contact = () => {
         <div className="w-[30px]" />
       </div>
       <div className="p-5 space-y-5">
-        <img
-          src="/images/user-icon.png"
-          alt="omi"
-          className="w-20 rounded-full"
-        />
+        <div className="w-20 h-20 overflow-hidden rounded-full shadow-lg">
+          <img
+            src="/images/omi-1.webp"
+            alt="omi"
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
         <h3 className="font-inter">Let's Connect!</h3>
         <p className="font-inter">
           Got an Idea? A Bug to solve? Or just wanna say hi? Shoot me a message!
