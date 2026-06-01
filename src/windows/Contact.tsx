@@ -14,7 +14,7 @@ const Contact = () => {
         className="relative flex items-center justify-between select-none"
       >
         <WindowControls target="contact" />
-        <h2 className="text-black font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2 pointer-events-none">
+        <h2 className="text-black dark:text-zinc-100 font-semibold text-[15px] font-inter absolute left-1/2 -translate-x-1/2 pointer-events-none">
           Contact
         </h2>
         <div className="w-[30px]" />

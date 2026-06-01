@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { navIcons, navLinks } from "#constants";
+import { navIcons, navLinks, ABOUT_LOCATION } from "#constants";
 import dayjs from "dayjs";
 import useWindowStore from "#store/Window";
 import useDevice from "#hooks/useDevice";
@@ -123,7 +123,19 @@ const Navbar = () => {
               {id === 4 ? (
                 <ThemePanel />
               ) : (
-                <button className="navbar-icon relative flex items-center justify-center py-1 px-1.5 rounded hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors cursor-pointer">
+                <button
+                  onClick={() => {
+                    if (id === 3) {
+                      const aboutMeFile = ABOUT_LOCATION.children?.find(
+                        (child) => child.name === "about-me.txt",
+                      );
+                      if (aboutMeFile) {
+                        openWindow("txtfile", aboutMeFile);
+                      }
+                    }
+                  }}
+                  className="navbar-icon relative flex items-center justify-center py-1 px-1.5 rounded hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                >
                   <img
                     src={img}
                     className="icon-hover"

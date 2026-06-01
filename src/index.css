@@ -347,7 +347,17 @@ body {
   }
 
   #txtfile {
-    @apply w-full md:w-md absolute top-11 md:top-36 left-0 md:left-auto md:right-32 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
+    @apply w-full md:w-md
+         absolute
+         top-11 md:top-36
+         left-0 md:left-auto md:right-32
+         bg-white
+         shadow-2xl
+         drop-shadow-2xl
+         rounded-none md:rounded-xl
+         overflow-hidden
+         h-[550px]
+         flex flex-col;
 
     h2 {
       @apply font-bold text-sm text-center pointer-events-none w-full;
@@ -688,4 +698,47 @@ body {
   to {
     opacity: 0;
   }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 120, 0.4) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.55);
+  background-clip: content-box;
+}
+.dark {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+  background-clip: content-box;
 }

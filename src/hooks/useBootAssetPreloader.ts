@@ -6,7 +6,10 @@ interface PreloadProgress {
   percentage: number;
 }
 
-export const useBootAssetPreloader = (minDuration = 2500, maxDuration = 5500) => {
+export const useBootAssetPreloader = (
+  minDuration = 2500,
+  maxDuration = 5500,
+) => {
   const [progress, setProgress] = useState<PreloadProgress>({
     loaded: 0,
     total: 0,
@@ -18,7 +21,11 @@ export const useBootAssetPreloader = (minDuration = 2500, maxDuration = 5500) =>
     const criticalAssets = [
       // Wallpapers
       "/images/wallpaper-3.webp",
-      
+      "/images/wallpaper-4.webp",
+      "/images/wallpaper.webp",
+      "/images/wallpaper-2.webp",
+      "/images/wallpaper-1.webp",
+
       // Core Icons
       "/images/finder.png",
       "/images/safari.png",
@@ -28,10 +35,10 @@ export const useBootAssetPreloader = (minDuration = 2500, maxDuration = 5500) =>
       "/images/trash.png",
       "/images/logo.svg",
       "/images/logo_white.svg",
-      
+
       // Core PDFs
       "/files/resume.pdf",
-      
+
       // Secondary highlights
       "/images/blog1.png",
       "/images/blog2.png",
@@ -69,7 +76,7 @@ export const useBootAssetPreloader = (minDuration = 2500, maxDuration = 5500) =>
         loadedCount++;
         const percentage = Math.round((loadedCount / total) * 100);
         setProgress({ loaded: loadedCount, total, percentage });
-      })
+      }),
     );
 
     // Dynamic completion trigger
@@ -80,7 +87,9 @@ export const useBootAssetPreloader = (minDuration = 2500, maxDuration = 5500) =>
     });
 
     // Safety timeout (prevent infinite loading)
-    const safetyTimeout = new Promise((resolve) => setTimeout(resolve, maxDuration));
+    const safetyTimeout = new Promise((resolve) =>
+      setTimeout(resolve, maxDuration),
+    );
 
     Promise.race([bootTimer, safetyTimeout]).then(() => {
       setProgress({ loaded: total, total, percentage: 100 });
