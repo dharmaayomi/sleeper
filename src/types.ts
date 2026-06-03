@@ -7,7 +7,10 @@ export interface FileItem {
   position?: string;
   imageUrl?: string;
   image?: string;
+  videoUrl?: string;
+  posterUrl?: string;
   href?: string;
+  pdfUrl?: string;
   subtitle?: string;
   description?: string[];
 }
@@ -44,4 +47,3 @@ export interface ThemeConfig {
   label: string;
   icon: string;
 }
-

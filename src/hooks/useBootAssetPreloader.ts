@@ -38,6 +38,7 @@ export const useBootAssetPreloader = (
 
       // Core PDFs
       "/files/resume.pdf",
+      "/files/bubblify.pdf",
       "/files/meatlovers-eps-1.pdf",
       "/files/meatlovers-eps-2.pdf",
       "/files/meatlovers-eps-3.pdf",

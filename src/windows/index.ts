@@ -7,5 +7,17 @@ import Image from "#windows/Image";
 import Contact from "#windows/Contact";
 import Photos from "#windows/Photos";
 import PdfViewer from "#windows/PdfViewer";
+import Video from "#windows/Video";
 
-export { Terminal, Safari, Resume, Finder, Text, Image, Contact, Photos, PdfViewer };
+export {
+  Terminal,
+  Safari,
+  Resume,
+  Finder,
+  Text,
+  Image,
+  Contact,
+  Photos,
+  PdfViewer,
+  Video,
+};

@@ -312,6 +312,16 @@ body {
     }
   }
 
+  #videofile {
+    @apply w-full md:w-3xl h-full md:h-[520px] max-h-full md:max-h-[85vh] absolute top-11 md:top-16 left-0 md:left-1/4 bg-black shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
+
+    #window-header {
+      h2 {
+        @apply font-bold text-sm font-inter text-center flex-1;
+      }
+    }
+  }
+
   #finder {
     @apply absolute w-full md:w-3xl h-full md:h-[480px] left-0 md:left-40 top-11 md:top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-none md:rounded-xl;
 
@@ -464,6 +474,7 @@ body {
   #photos,
   #resume,
   #pdfviewerfile,
+  #videofile,
   #finder,
   #txtfile,
   #imgfile {

@@ -99,7 +99,7 @@ const Finder = () => {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium truncate w-[76px] px-0.5">
+                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium truncate w-19 px-0.5">
                     {item.name}
                   </p>
                 </li>
@@ -121,7 +121,7 @@ const Finder = () => {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium leading-tight truncate w-[76px] px-0.5">
+                  <p className="font-inter text-[11px] text-gray-800 dark:text-zinc-200 mt-2.5 font-medium leading-tight truncate w-19 px-0.5">
                     {item.name}
                   </p>
                 </li>
