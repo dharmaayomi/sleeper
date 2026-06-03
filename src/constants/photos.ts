@@ -63,7 +63,7 @@ const gallery: GalleryImage[] = [
     id: 4,
     img: "/images/gal4.png",
     name: "Flowers",
-    categoryIds: [1],
+    categoryIds: [1], // hai
   },
 
   // --- Memories & People ---
