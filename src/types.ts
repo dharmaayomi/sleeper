@@ -8,6 +8,7 @@ export interface FileItem {
   imageUrl?: string;
   image?: string;
   href?: string;
+  pdfUrl?: string;
   subtitle?: string;
   description?: string[];
 }
@@ -44,4 +45,3 @@ export interface ThemeConfig {
   label: string;
   icon: string;
 }
-

@@ -5,6 +5,7 @@ import { Clapperboard, Loader2, PanelLeft } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import useDevice from "#hooks/useDevice";
 import clsx from "clsx";
+import { FileItem } from "../types";
 
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -55,15 +56,28 @@ const EPISODES: Episode[] = [
 const PdfViewer = () => {
   const { containerRef, headerRef } = useWindow("pdfviewerfile");
   const { isMobile } = useDevice();
+  const data = useWindowStore(
+    (state) => state.windows.pdfviewerfile.data,
+  ) as FileItem | null;
 
-  const isMaximized = useWindowStore(
-    (state) => state.windows.pdfviewerfile?.isMaximized ?? false,
-  );
+  const customPdf =
+    data?.pdfUrl !== undefined
+      ? {
+          id: 0,
+          title: data.name,
+          file: data.pdfUrl,
+          label: "PDF",
+          duration: "",
+          synopsis: "",
+        }
+      : null;
+  const episodes = customPdf ? [customPdf] : EPISODES;
+  const isSingleDocument = customPdf !== null;
 
   // Layout states
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
   const [activeEpisode, setActiveEpisode] = useState<Episode | null>(
-    isMobile ? null : EPISODES[0],
+    customPdf ?? (isMobile ? null : EPISODES[0]),
   );
 
   // PDF Rendering states
@@ -94,6 +108,10 @@ const PdfViewer = () => {
     setNumPages(0);
     setIsPdfLoading(true);
   }, [activeEpisode]);
+
+  useEffect(() => {
+    setActiveEpisode(customPdf ?? (isMobile ? null : EPISODES[0]));
+  }, [data?.name, data?.pdfUrl, isMobile]);
 
   const handleDocumentLoadSuccess = ({
     numPages: totalPages,
@@ -130,6 +148,7 @@ const PdfViewer = () => {
             <PanelLeft
               className={clsx(
                 "icon cursor-pointer transition-colors ml-4",
+                isSingleDocument && "invisible pointer-events-none",
                 showSidebar && "text-blue-600 dark:text-blue-400",
               )}
               onClick={() => setShowSidebar(!showSidebar)}
@@ -142,7 +161,9 @@ const PdfViewer = () => {
 
           <div className="flex items-center gap-2 text-xs font-inter text-neutral-400 dark:text-zinc-500 mr-2">
             <Clapperboard size={14} />
-            <span>Meatlovers Production</span>
+            <span>
+              {isSingleDocument ? "PDF Document" : "Meatlovers Production"}
+            </span>
           </div>
         </div>
       )}
@@ -150,49 +171,50 @@ const PdfViewer = () => {
       {/* Main Split Window Pane */}
       <div className="flex h-[calc(100%-2.75rem)] overflow-hidden w-full bg-white dark:bg-zinc-900 rounded-b-xl">
         {/* SIDEBAR: Desktop Only, or Mobile when no episode is selected */}
-        {((!isMobile && showSidebar) || (isMobile && !activeEpisode)) && (
-          <aside className="w-full md:w-64 border-r border-gray-100 dark:border-zinc-800 bg-neutral-50/50 dark:bg-zinc-900/50 h-full flex flex-col select-none animate-fadeIn flex-shrink-0">
-            <div className="p-4 border-b border-gray-100 dark:border-zinc-800">
-              <h3 className="text-[10px] font-bold font-inter text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                <Clapperboard size={12} className="text-blue-500" /> Webseries
-                Scripts
-              </h3>
-            </div>
+        {!isSingleDocument &&
+          ((!isMobile && showSidebar) || (isMobile && !activeEpisode)) && (
+            <aside className="w-full md:w-64 border-r border-gray-100 dark:border-zinc-800 bg-neutral-50/50 dark:bg-zinc-900/50 h-full flex flex-col select-none animate-fadeIn flex-shrink-0">
+              <div className="p-4 border-b border-gray-100 dark:border-zinc-800">
+                <h3 className="text-[10px] font-bold font-inter text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                  <Clapperboard size={12} className="text-blue-500" /> Webseries
+                  Scripts
+                </h3>
+              </div>
 
-            <ul className="flex-1 overflow-y-auto p-2.5 space-y-1">
-              {EPISODES.map((ep) => (
-                <li
-                  key={ep.id}
-                  onClick={() => setActiveEpisode(ep)}
-                  className={clsx(
-                    "flex flex-col gap-1 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-inter transition-all group border border-transparent",
-                    activeEpisode?.id === ep.id
-                      ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-medium border-blue-100 dark:border-blue-900/30"
-                      : "text-gray-600 dark:text-zinc-400 hover:bg-gray-100/60 dark:hover:bg-zinc-800/40",
-                  )}
-                >
-                  <div className="flex justify-between items-center w-full">
-                    <span className="font-semibold text-[11px] px-1.5 py-0.5 rounded bg-neutral-200/60 dark:bg-zinc-800 text-neutral-600 dark:text-zinc-300 group-hover:bg-blue-100 dark:group-hover:bg-blue-950/80 transition-colors">
-                      {ep.label}
+              <ul className="flex-1 overflow-y-auto p-2.5 space-y-1">
+                {episodes.map((ep) => (
+                  <li
+                    key={ep.id}
+                    onClick={() => setActiveEpisode(ep)}
+                    className={clsx(
+                      "flex flex-col gap-1 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-inter transition-all group border border-transparent",
+                      activeEpisode?.id === ep.id
+                        ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-medium border-blue-100 dark:border-blue-900/30"
+                        : "text-gray-600 dark:text-zinc-400 hover:bg-gray-100/60 dark:hover:bg-zinc-800/40",
+                    )}
+                  >
+                    <div className="flex justify-between items-center w-full">
+                      <span className="font-semibold text-[11px] px-1.5 py-0.5 rounded bg-neutral-200/60 dark:bg-zinc-800 text-neutral-600 dark:text-zinc-300 group-hover:bg-blue-100 dark:group-hover:bg-blue-950/80 transition-colors">
+                        {ep.label}
+                      </span>
+                      <span className="text-[10px] text-neutral-400 dark:text-zinc-500">
+                        {ep.duration}
+                      </span>
+                    </div>
+                    <span className="font-medium truncate text-gray-900 dark:text-zinc-100 mt-1">
+                      {ep.title.split(": ")[1]}
                     </span>
-                    <span className="text-[10px] text-neutral-400 dark:text-zinc-500">
-                      {ep.duration}
-                    </span>
-                  </div>
-                  <span className="font-medium truncate text-gray-900 dark:text-zinc-100 mt-1">
-                    {ep.title.split(": ")[1]}
-                  </span>
-                  <p className="text-[10px] text-gray-400 dark:text-zinc-500 mt-0.5 line-clamp-2 leading-relaxed">
-                    {ep.synopsis}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        )}
+                    <p className="text-[10px] text-gray-400 dark:text-zinc-500 mt-0.5 line-clamp-2 leading-relaxed">
+                      {ep.synopsis}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          )}
 
         {/* CONTENT PDF VIEWER: Rendered when an episode is selected or always on Desktop */}
-        {(!isMobile || (isMobile && activeEpisode)) && (
+        {(!isMobile || isSingleDocument || (isMobile && activeEpisode)) && (
           <div className="flex-1 flex flex-col h-full bg-neutral-100/50 dark:bg-zinc-950/20 relative">
             {/* Mobile Header / Navigation Controls */}
             {isMobile && activeEpisode && (
