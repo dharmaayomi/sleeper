@@ -151,6 +151,12 @@ const WINDOW_CONFIG: WindowConfig = {
     zIndex: INITIAL_Z_INDEX,
     data: null,
   },
+  videofile: {
+    isOpen: false,
+    isMinimized: false,
+    zIndex: INITIAL_Z_INDEX,
+    data: null,
+  },
 };
 
 export { navLinks, navIcons, dockApps, INITIAL_Z_INDEX, WINDOW_CONFIG };

@@ -7,6 +7,8 @@ export interface FileItem {
   position?: string;
   imageUrl?: string;
   image?: string;
+  videoUrl?: string;
+  posterUrl?: string;
   href?: string;
   pdfUrl?: string;
   subtitle?: string;

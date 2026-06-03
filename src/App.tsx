@@ -11,6 +11,7 @@ import {
   Contact,
   Photos,
   PdfViewer,
+  Video,
 } from "#windows";
 import useWallpaperStore from "#store/Wallpaper";
 
@@ -41,6 +42,7 @@ const App = () => {
       <Home />
       <Photos />
       <PdfViewer />
+      <Video />
     </main>
   );
 };

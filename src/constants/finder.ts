@@ -172,6 +172,16 @@ const WORK_LOCATION: FolderItem = {
           imageUrl: "/images/project-3.png",
         },
         {
+          id: 3,
+          name: "custom.mkv",
+          icon: "/images/quicktime.png",
+          kind: "file",
+          fileType: "video",
+          position: "top-32 left-56",
+          videoUrl: "/videos/custom.mkv",
+          posterUrl: "/images/project-3.png",
+        },
+        {
           id: 5,
           name: "Design.fig",
           icon: "/images/plain.png",
