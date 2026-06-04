@@ -50,9 +50,11 @@ const Text = () => {
         )}
         <div className="space-y-4">
           {description?.map((paragraph, index) => (
-            <p key={index} className="text-sm leading-relaxed text-gray-600 dark:text-zinc-300">
-              {paragraph}
-            </p>
+            <p
+              key={index}
+              className="text-sm leading-relaxed text-gray-600 dark:text-zinc-300"
+              dangerouslySetInnerHTML={{ __html: paragraph }}
+            />
           ))}
         </div>
       </div>

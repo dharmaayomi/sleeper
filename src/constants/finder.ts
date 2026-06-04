@@ -18,15 +18,17 @@ const WORK_LOCATION: FolderItem = {
       children: [
         {
           id: 1,
-          name: "Bubblify Project.txt",
+          name: "Laundry Web App – Bubblify.txt",
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
+          subtitle: "Group Project — Team of 3 | Bootcamp | Jun–Jul 2025",
           description: [
-            "Bubblify is a mobile-first e-commerce platform that allows users to request laundry pickup and delivery based on their location.",
-            " It supports five user roles: customer, super admin, outlet admin, worker, and driver.",
-            "I was responsible for developing operational features for workers and drivers, including task management, job history, and daily attendance tracking with integrated admin reporting.",
+            `A multi-role e-commerce laundry platform with real-time order tracking and role-based workflows. The system handles <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 px-1.5 py-0.5 rounded font-medium">5 distinct roles</span> — customer, admin, driver, worker, and outlet — all connected through a <span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 px-1.5 py-0.5 rounded font-medium">single transaction flow</span>.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">What I built:</strong><br/>Attendance tracking system with daily check-in/check-out, role-specific dashboards, <span class="bg-purple-100 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 px-1.5 py-0.5 rounded font-medium">single-task enforcement logic</span> to prevent drivers from handling multiple orders simultaneously, washing/ironing/packing station workflows with input verification, admin-approved bypass mechanism for edge cases, and job history logs per user.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Role:</strong> Full Stack Developer — Driver & Worker Management`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Tech Stack:</strong><br/><div class="flex flex-wrap gap-2 mt-1.5"><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Next.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Node.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Express.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">PostgreSQL</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Tailwind CSS</span></div>`,
           ],
         },
         {
@@ -79,16 +81,17 @@ const WORK_LOCATION: FolderItem = {
       children: [
         {
           id: 1,
-          name: "Eventure Project.txt",
+          name: "Event Management Platform – Eventure.txt",
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
           position: "top-5 right-10",
+          subtitle: "Group Project — Team of 2 | Bootcamp | Mar–Apr 2025",
           description: [
-            "Eventure is a web-based event management platform that allows organizers to create and promote events while enabling attendees to browse and register for them. ",
-            "It supports two user roles: customer and event organizer. ",
-            "I was responsible for developing core features related to user authentication, referral system, and organizer dashboard",
-            " including role-based access, referral reward logic, profile management, and transaction monitoring with real-time status updates and automatic point/voucher handling.",
+            `A full-stack event management platform with <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 px-1.5 py-0.5 rounded font-medium">role-based access</span> for customers and organizers, built end-to-end with dynamic event creation, transaction flow, and a <span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 px-1.5 py-0.5 rounded font-medium">referral-reward system</span>.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">What I built:</strong><br/>Authentication and protected routes, event creation update transaction system, checking of proof upload, and status updates, referral system with <span class="bg-purple-100 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 px-1.5 py-0.5 rounded font-medium">reward points and coupon discounts</span> including expiration logic, organizer dashboard for event and transaction management, homepage.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Role:</strong> Full Stack Developer — Frontend lead, shared Backend`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Tech Stack:</strong><br/><div class="flex flex-wrap gap-2 mt-1.5"><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Next.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Node.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Express.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">PostgreSQL</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Tailwind CSS</span></div>`,
           ],
         },
         {
@@ -141,16 +144,17 @@ const WORK_LOCATION: FolderItem = {
       children: [
         {
           id: 1,
-          name: "Custom Furniture App Project.txt",
+          name: "3D Furniture Configurator.txt",
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
+          subtitle: "Work Assignment — Solo | 2025–Present",
           description: [
-            "Our Food Delivery App is a fast and convenient way to order meals from your favorite restaurants.",
-            "Instead of making calls or waiting in line, you can browse menus, customize orders, and track deliveries in real time.",
-            "Think of it like having your favorite restaurants in your pocket—ready to deliver anytime, anywhere.",
-            "It’s built with React Native, so it works smoothly on both iOS and Android with a clean, modern design.",
+            `A web-based custom furniture configurator built for a real client, inspired by <strong class="font-semibold text-zinc-900 dark:text-white">IKEA's Pax Planner</strong>. Users can customize furniture dimensions, materials, and configurations with a <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 px-1.5 py-0.5 rounded font-medium">live 3D preview</span> before purchasing.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">What I built:</strong><br/>End-to-end — backend architecture, order management system, product configuration logic, and a <span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 px-1.5 py-0.5 rounded font-medium">4-phase payment flow</span> tied to production progress. The 3D layer is built with <span class="bg-purple-100 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 px-1.5 py-0.5 rounded font-medium">Three.js</span> and actively in development.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Role:</strong> Full Stack Developer — handled everything from database design to frontend rendering, <em class="text-zinc-800 dark:text-zinc-200">solo, no senior guidance</em>.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Tech Stack:</strong><br/><div class="flex flex-wrap gap-2 mt-1.5"><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">React</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Three.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Node.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Express.js</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">PostgreSQL</span></div>`,
           ],
         },
         {
@@ -204,15 +208,16 @@ const WORK_LOCATION: FolderItem = {
       children: [
         {
           id: 1,
-          name: "Meatlover Webseries Project.txt",
+          name: "Meatlovers – Web Series.txt",
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
+          subtitle: "Class Assignment | Sep 2022–Jan 2023",
           description: [
-            "Meatlover Webseries is an interactive video streaming and community platform dedicated to meat enthusiasts, featuring recipe webseries, culinary masterclasses, and cooking tutorials.",
-            "Developed the fully responsive video streaming portal, optimized video delivery, and integrated interactive comment sections and live forums for viewers.",
-            "Designed the database schema, user subscription flows, and built a custom admin dashboard for content creators to manage video uploads, analytics, and community moderation.",
+            `A three-episode psychological thriller web series following a college student who lures victims through <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 px-1.5 py-0.5 rounded font-medium">dating apps</span>. Built around themes of <span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 px-1.5 py-0.5 rounded font-medium">trauma, obsession, and moral ambiguity</span> — the horror is almost entirely <span class="bg-purple-100 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 px-1.5 py-0.5 rounded font-medium">implied rather than shown</span>.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">What I did:</strong><br/>Developed the full narrative concept and character arcs across all three episodes, wrote all scripts, conducted research for character psychology and authenticity, and handled casting — selecting actors to match characters whose impact depended entirely on how they were played.`,
+            `<strong class="font-semibold text-zinc-900 dark:text-white">Role:</strong><br/><div class="flex flex-wrap gap-2 mt-1.5"><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Scriptwriter</span><span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/50 dark:border-zinc-700/50">Casting</span></div>`,
           ],
         },
         {
