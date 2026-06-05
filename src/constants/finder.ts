@@ -279,12 +279,12 @@ const ABOUT_LOCATION: FolderItem = {
     },
     {
       id: 3,
-      name: "conference-me.png",
+      name: "at-purwadhika.png",
       icon: "/images/image.png",
       kind: "file",
       fileType: "img",
       position: "top-52 left-80",
-      imageUrl: "/images/adrian-3.jpeg",
+      imageUrl: "/images/at-purwadhika.jpeg",
     },
     {
       id: 4,
