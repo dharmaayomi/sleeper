@@ -31,7 +31,7 @@ const EPISODES: Episode[] = [
     label: "EP 01",
     duration: "12 Pages",
     synopsis:
-      "The pilot episode introduces our main characters and their shared, burning obsession with the ultimate culinary cut.",
+      "Adam, a college student, lures women from dating apps to his home under the pretense of a home-cooked meal. His best friend Galih unknowingly discusses the missing women case — not realizing Adam is behind it.",
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ const EPISODES: Episode[] = [
     label: "EP 02",
     duration: "18 Pages",
     synopsis:
-      "Tensions flare in the kitchen as a legendary secret recipe goes missing, causing chaos and cooking rivalries.",
+      "Adam brings his next victim, Maura — who happens to be Galih's girlfriend — to dinner. When Maura stumbles into Adam's secret room, she discovers the truth. Adam traps her, and reveals the details of his previous victims over dinner she has already eaten.",
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const EPISODES: Episode[] = [
     label: "EP 03",
     duration: "16 Pages",
     synopsis:
-      "The season finale brings the culinary competition to a sizzling climax. Success is rare, but achievement is well done.",
+      "Galih visits Adam's house with friends for a barbecue. Midway through, he recognizes Maura's necklace near the secret room. He finds her — too late. What follows is a confrontation that leaves no one clean.",
   },
 ];
 

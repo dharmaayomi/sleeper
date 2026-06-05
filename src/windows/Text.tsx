@@ -34,26 +34,30 @@ const Text = () => {
       <div
         className={`bg-white dark:bg-zinc-900 h-[calc(100%-2.75rem)] overflow-y-auto font-inter text-gray-800 dark:text-zinc-100 rounded-b-xl pb-12 ${isMobile ? "p-5" : "p-8"}`}
       >
-        {image && (
-          <img
-            src={image}
-            alt={name}
-            className={`w-full object-cover object-center rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-48" : "max-h-64"}`}
-          />
-        )}
-        {subtitle && (
-          <h3
-            className={`font-semibold mb-4 text-gray-700 dark:text-zinc-200 leading-snug ${isMobile ? "text-lg" : "text-xl"}`}
-          >
-            {subtitle}
-          </h3>
-        )}
-        <div className="space-y-4">
-          {description?.map((paragraph, index) => (
-            <p key={index} className="text-sm leading-relaxed text-gray-600 dark:text-zinc-300">
-              {paragraph}
-            </p>
-          ))}
+        <div className="max-w-7xl mx-auto w-full">
+          {image && (
+            <img
+              src={image}
+              alt={name}
+              className={`w-full object-cover object-center rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-48" : "max-h-64"}`}
+            />
+          )}
+          {subtitle && (
+            <h3
+              className={`font-semibold mb-4 text-gray-700 dark:text-zinc-200 leading-snug ${isMobile ? "text-lg" : "text-xl"}`}
+            >
+              {subtitle}
+            </h3>
+          )}
+          <div className="space-y-4">
+            {description?.map((paragraph, index) => (
+              <p
+                key={index}
+                className="text-sm leading-relaxed text-gray-600 dark:text-zinc-300"
+                dangerouslySetInnerHTML={{ __html: paragraph }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
