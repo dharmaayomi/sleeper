@@ -227,7 +227,7 @@ export default function ThemePanel() {
                   />
                   <input
                     type="range"
-                    min="10"
+                    min="5"
                     max="100"
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
@@ -258,7 +258,7 @@ export default function ThemePanel() {
                   />
                   <input
                     type="range"
-                    min="0"
+                    min="5"
                     max="100"
                     value={volume}
                     onChange={(e) => setVolume(Number(e.target.value))}
