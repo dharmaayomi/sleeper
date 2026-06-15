@@ -47,10 +47,12 @@ export const useBootAssetPreloader = (
       "/images/blog1.png",
       "/images/blog2.png",
       "/images/blog3.png",
-      "/images/gal1.png",
-      "/images/gal2.png",
-      "/images/gal3.png",
-      "/images/gal4.png",
+      "/images/gal2.webp",
+      "/images/custom-furniture.webp",
+      "/images/meatlover.webp",
+      "/images/omi-1.webp",
+      "/images/omi.webp",
+      "/videos/custom.mkv",
     ];
 
     const total = criticalAssets.length;
