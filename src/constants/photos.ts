@@ -49,14 +49,14 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 2,
-    img: "/images/blog1.png",
-    name: "Tech Blog",
+    img: "/images/bubblify-driver-1.webp",
+    name: "Bubblify App",
     categoryIds: [1],
   },
   {
     id: 3,
-    img: "/images/project-1.png",
-    name: "Laundry App",
+    img: "/images/bubblify-driver.webp",
+    name: "Bubblify Driver",
     categoryIds: [1],
   },
 
@@ -69,13 +69,13 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 5,
-    img: "/images/blog2.png",
-    name: "Reflections",
+    img: "/images/eventure-1.webp",
+    name: "Eventure",
     categoryIds: [2],
   },
   {
     id: 6,
-    img: "/images/project-2.png",
+    img: "/images/eventure-2.webp",
     name: "Eventure Platform",
     categoryIds: [2],
   },
@@ -89,14 +89,14 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 8,
-    img: "/images/blog3.png",
-    name: "Classroom",
+    img: "/images/custom-furniture.webp",
+    name: "Custom Furniture",
     categoryIds: [3],
   },
   {
     id: 9,
-    img: "/images/custom-furni.png",
-    name: "3D Planner",
+    img: "/images/meatlover.webp",
+    name: "Meatlover Series",
     categoryIds: [3],
   },
 
@@ -109,8 +109,8 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 11,
-    img: "/images/gal1.png",
-    name: "Group Photo",
+    img: "/images/omi-1.webp",
+    name: "omi",
     categoryIds: [4],
   },
   {

@@ -31,8 +31,10 @@ export default function ThemePanel() {
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       const target = e.target as Node;
-      const clickedInsideTrigger = panelRef.current && panelRef.current.contains(target);
-      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(target);
+      const clickedInsideTrigger =
+        panelRef.current && panelRef.current.contains(target);
+      const clickedInsideDropdown =
+        dropdownRef.current && dropdownRef.current.contains(target);
 
       if (!clickedInsideTrigger && !clickedInsideDropdown) {
         setOpen(false);
@@ -225,7 +227,7 @@ export default function ThemePanel() {
                   />
                   <input
                     type="range"
-                    min="10"
+                    min="5"
                     max="100"
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
@@ -256,7 +258,7 @@ export default function ThemePanel() {
                   />
                   <input
                     type="range"
-                    min="0"
+                    min="5"
                     max="100"
                     value={volume}
                     onChange={(e) => setVolume(Number(e.target.value))}
@@ -278,10 +280,10 @@ export default function ThemePanel() {
                 </div>
                 <div className="flex items-start justify-start gap-2 flex-col">
                   <span className="text-[11px] font-bold text-neutral-800 dark:text-white leading-tight">
-                    Dragonball Durag
+                    You're On Your Own, Kid
                   </span>
                   <span className="text-[9px] text-neutral-500 dark:text-neutral-400 leading-none mt-0.5">
-                    Thundercat
+                    Taylor Swift
                   </span>
                 </div>
               </div>
@@ -304,7 +306,7 @@ export default function ThemePanel() {
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </div>
   );
