@@ -5,9 +5,9 @@ import useWindowStore from "#store/Window";
 import { FileItem } from "../types";
 
 const DEFAULT_VIDEO = {
-  name: "custom.mkv",
-  videoUrl: "/videos/custom.mkv",
-  posterUrl: "/images/project-3.png",
+  name: "custom-furni.webm",
+  videoUrl: "/videos/custom-furni.webm",
+  posterUrl: "/images/custom-furni.png",
 };
 
 const getVideoType = (url: string) => {
