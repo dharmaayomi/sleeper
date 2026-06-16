@@ -39,7 +39,7 @@ const Text = () => {
             <img
               src={image}
               alt={name}
-              className={`w-full object-cover object-center rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-48" : "max-h-64"}`}
+              className={`w-full object-cover object-center rounded-lg mb-6 shadow-sm ${isMobile ? "max-h-64" : "max-h-[420px]"}`}
             />
           )}
           {subtitle && (

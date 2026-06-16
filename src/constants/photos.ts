@@ -95,7 +95,7 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 9,
-    img: "/images/project-3.png",
+    img: "/images/custom-furni.png",
     name: "3D Planner",
     categoryIds: [3],
   },
@@ -109,8 +109,8 @@ const gallery: GalleryImage[] = [
   },
   {
     id: 11,
-    img: "/images/adrian.jpg",
-    name: "Adrian",
+    img: "/images/gal1.png",
+    name: "Group Photo",
     categoryIds: [4],
   },
   {

@@ -11,14 +11,24 @@ import {
   Share,
   ShieldHalf,
   BookOpen,
+  ShieldCheck,
+  Globe,
+  Folder,
+  Image as ImageIcon,
+  Terminal as TerminalIcon,
+  Mail,
+  ArrowRight,
+  PenTool,
 } from "lucide-react";
 import { blogPosts, BlogPost } from "#constants";
 import useDevice from "#hooks/useDevice";
+import useWindowStore from "#store/Window";
 import clsx from "clsx";
 
 const Safari = () => {
   const { containerRef, headerRef } = useWindow("safari");
   const { isMobile } = useDevice();
+  const { openWindow } = useWindowStore();
 
   // New state for sidebar & internal article reading
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -35,7 +45,7 @@ const Safari = () => {
         >
           <WindowControls target="safari" />
           <div className="search flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 rounded-lg px-2.5 py-1 w-[55%] truncate mr-2 select-none">
-            <Search size={12} className="text-gray-400 flex-shrink-0" />
+            <Search size={12} className="text-gray-400 shrink-0" />
             <span className="text-[11px] text-gray-500 font-inter truncate">
               {activePost ? "articles.com/blog" : "articles.com"}
             </span>
@@ -113,7 +123,7 @@ const Safari = () => {
                     : "text-gray-600 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50"
                 )}
               >
-                <span>🏠 All Articles</span>
+                <span>🏠 Start Page</span>
               </li>
 
               <div className="h-px bg-gray-100 dark:bg-zinc-800 my-2 mx-2" />
@@ -134,12 +144,18 @@ const Safari = () => {
                   <span className="text-[10px] text-gray-400">{post.date}</span>
                 </li>
               ))}
+
+              {blogPosts.length === 0 && (
+                <li className="px-3 py-4 text-center text-[10px] text-gray-400 dark:text-zinc-500 font-inter leading-relaxed select-none">
+                  No articles yet
+                </li>
+              )}
             </ul>
           </aside>
         )}
 
         {/* MAIN CONTENT AREA */}
-        <div className="flex-1 overflow-y-auto p-6 pb-16">
+        <div className="flex-1 overflow-y-auto p-6 pb-16 bg-white dark:bg-zinc-900">
           <div className="max-w-2xl mx-auto">
             
             {/* ARTICLE VIEW */}
@@ -151,7 +167,7 @@ const Safari = () => {
                     onClick={() => setActivePost(null)}
                     className="text-xs font-semibold text-blue-600 mb-4 inline-flex items-center gap-1 cursor-pointer"
                   >
-                    &larr; Back to Blog
+                    &larr; Back to Start Page
                   </button>
                 )}
 
@@ -176,51 +192,171 @@ const Safari = () => {
               </article>
             ) : (
               
-              /* BLOG LIST VIEW */
-              <div className="animate-fadeIn">
-                <h2 className="text-xl font-inter font-bold text-zinc-800 dark:text-zinc-200 mb-8">
-                  My Blog
-                </h2>
-
-                <div className="space-y-8">
-                  {blogPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className={
-                        isMobile
-                          ? "flex flex-col gap-3 cursor-pointer"
-                          : "blog-post grid grid-cols-12 space-x-5 cursor-pointer group"
-                      }
-                      onClick={() => setActivePost(post)}
+              /* MACOS SAFARI START PAGE */
+              <div className="animate-fadeIn font-inter py-2">
+                
+                {/* Favorites Section */}
+                <div className="mb-10">
+                  <h2 className="text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-4 flex items-center gap-2 select-none">
+                    <Globe size={13} className="text-blue-500" /> Favorites
+                  </h2>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-items-center">
+                    {/* Favorite Item: Finder (Portfolio) */}
+                    <button
+                      onClick={() => openWindow("finder")}
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer"
                     >
-                      <div
-                        className={
-                          isMobile ? "w-full rounded-lg overflow-hidden" : "col-span-3"
-                        }
-                      >
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-40 md:h-24 object-cover rounded-md group-hover:opacity-90 transition-opacity"
-                        />
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <Folder size={20} className="text-blue-500 dark:text-blue-400" />
                       </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        Portfolio
+                      </span>
+                    </button>
 
-                      <div
-                        className={`content ${isMobile ? "space-y-1.5" : "col-span-9 space-y-1.5"}`}
-                      >
-                        <p className="text-[11px] font-inter text-gray-400">
-                          {post.date}
+                    {/* Favorite Item: Photos (Gallery) */}
+                    <button
+                      onClick={() => openWindow("photos")}
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <ImageIcon size={20} className="text-rose-500 dark:text-rose-400" />
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        Gallery
+                      </span>
+                    </button>
+
+                    {/* Favorite Item: Contact */}
+                    <button
+                      onClick={() => openWindow("contact")}
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <Mail size={20} className="text-emerald-500 dark:text-emerald-400" />
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        Contact
+                      </span>
+                    </button>
+
+                    {/* Favorite Item: Terminal (Skills) */}
+                    <button
+                      onClick={() => openWindow("terminal")}
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <TerminalIcon size={20} className="text-zinc-700 dark:text-zinc-300" />
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        Skills
+                      </span>
+                    </button>
+
+                    {/* Favorite Item: GitHub */}
+                    <a
+                      href="https://github.com/dharmaayomi"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer text-decoration-none"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <img src="/icons/github.svg" alt="GitHub" className="w-5 h-5 dark:invert-[0.9]" />
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        GitHub
+                      </span>
+                    </a>
+
+                    {/* Favorite Item: LinkedIn */}
+                    <a
+                      href="https://www.linkedin.com/in/dharma-ayomi-ramadhani/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col items-center gap-2 focus:outline-none cursor-pointer text-decoration-none"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-neutral-50 dark:bg-zinc-800/80 flex items-center justify-center shadow-sm border border-neutral-200/60 dark:border-zinc-700/60 group-hover:scale-105 group-active:scale-95 transition-all duration-200">
+                        <img src="/icons/linkedin.svg" alt="LinkedIn" className="w-5 h-5" />
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-600 dark:text-zinc-400 text-center truncate w-16 select-none">
+                        LinkedIn
+                      </span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Privacy Report Section */}
+                <div className="mb-10">
+                  <h2 className="text-xs font-bold text-gray-400 font-inter dark:text-zinc-500 uppercase tracking-wider mb-3 flex items-center gap-2 select-none">
+                    <ShieldCheck size={13} className="text-emerald-500" /> Privacy Report
+                  </h2>
+                  <div className="bg-neutral-50 dark:bg-zinc-800/30 border border-neutral-200/60 dark:border-zinc-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-100/50 dark:bg-emerald-950/20 flex items-center justify-center shrink-0">
+                        <ShieldCheck size={20} className="text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-800 dark:text-zinc-200">
+                          Safari prevented 47 trackers from profiling you on this portfolio.
                         </p>
-                        <h3 className="font-semibold text-sm text-gray-800 dark:text-zinc-200 leading-snug group-hover:text-blue-600 transition-colors">
-                          {post.title}
-                        </h3>
-                        <span className="text-blue-600 text-xs font-semibold inline-flex items-center gap-1 mt-1">
-                          Read Inside &rarr;
-                        </span>
+                        <p className="text-[11px] text-gray-400 dark:text-zinc-500 mt-0.5">
+                          Your connection is encrypted. Privacy report data is generated locally.
+                        </p>
                       </div>
                     </div>
-                  ))}
+                    <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold cursor-default hover:underline flex items-center gap-1 shrink-0">
+                      Details
+                    </div>
+                  </div>
                 </div>
+
+                {/* Reading List / Blog Posts Section */}
+                <div>
+                  <h2 className="text-xs font-bold text-gray-400 font-inter dark:text-zinc-500 uppercase tracking-wider mb-4 flex items-center gap-2 select-none">
+                    <BookOpen size={13} className="text-indigo-500" /> Reading List
+                  </h2>
+
+                  {blogPosts.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {blogPosts.map((post) => (
+                        <div
+                          key={post.id}
+                          className="group cursor-pointer p-3 rounded-xl bg-neutral-50 dark:bg-zinc-800/30 hover:bg-neutral-100/60 dark:hover:bg-zinc-800/60 border border-neutral-200/60 dark:border-zinc-800 hover:border-neutral-300 dark:hover:border-zinc-700 transition-all duration-200 flex gap-4 items-center"
+                          onClick={() => setActivePost(post)}
+                        >
+                          <div className="w-16 h-12 overflow-hidden rounded-lg bg-gray-100 dark:bg-zinc-700 shrink-0">
+                            <img
+                              src={post.image}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] text-gray-400 mb-0.5">{post.date}</p>
+                            <h3 className="font-semibold text-xs text-gray-800 dark:text-zinc-200 truncate group-hover:text-blue-600 transition-colors">
+                              {post.title}
+                            </h3>
+                          </div>
+                          <ArrowRight size={14} className="text-gray-300 group-hover:text-blue-500 transition-colors mr-1 shrink-0" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    /* macOS-style Empty Condition */
+                    <div className="flex flex-col items-center justify-center text-center p-8 bg-neutral-50/30 dark:bg-zinc-800/10 border border-dashed border-neutral-200 dark:border-zinc-800/60 rounded-2xl animate-fadeIn">
+                      <div className="w-10 h-10 rounded-full bg-neutral-100 dark:bg-zinc-800/60 flex items-center justify-center mb-3">
+                        <PenTool size={18} className="text-gray-400 dark:text-zinc-500" />
+                      </div>
+                      <h3 className="text-xs font-semibold text-gray-800 dark:text-zinc-200 mb-1 select-none">
+                        No Articles Published
+                      </h3>
+                      <p className="text-[11px] text-gray-400 dark:text-zinc-500 max-w-[280px] leading-relaxed select-none">
+                        The author hasn't written any articles yet. When tutorials or blog updates are published, they'll appear here.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
               </div>
             )}
 
