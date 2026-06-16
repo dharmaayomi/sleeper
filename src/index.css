@@ -166,7 +166,7 @@ body {
     @apply w-full md:w-xl absolute top-11 md:top-32 left-0 md:left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-none md:rounded-xl overflow-hidden;
 
     h2 {
-      @apply font-bold text-sm text-center w-full;
+      @apply font-bold text-sm text-center w-full dark:text-white;
     }
 
     .techstack {

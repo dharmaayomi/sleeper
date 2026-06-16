@@ -17,7 +17,7 @@ const Terminal = () => {
         className="relative flex items-center justify-between "
       >
         <WindowControls target="terminal" />
-        <h2 className="text-black font-semibold text-[16px] font-inter absolute left-1/2 pointer-events-none -translate-x-1/2">
+        <h2 className="font-bold text-[16px] font-inter absolute left-1/2 pointer-events-none -translate-x-1/2 dark:text-white">
           Skills
         </h2>
         <div className="w-[30px]" />

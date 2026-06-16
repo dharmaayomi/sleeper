@@ -8,17 +8,17 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    date: "Jun 12, 2026",
-    title: "How I Built My Interactive macOS Portfolio",
-    image: "/images/blog1.png",
-    content: `
-      <p>This is a custom article describing the development process of this high-fidelity macOS simulation.</p>
-      <h4>Technologies Used</h4>
-      <p>Built with React, TypeScript, TailwindCSS, and GSAP for animations.</p>
-    `,
-  }
+  // {
+  //   id: 1,
+  //   date: "Jun 12, 2026",
+  //   title: "How I Built My Interactive macOS Portfolio",
+  //   image: "/images/blog1.png",
+  //   content: `
+  //     <p>This is a custom article describing the development process of this high-fidelity macOS simulation.</p>
+  //     <h4>Technologies Used</h4>
+  //     <p>Built with React, TypeScript, TailwindCSS, and GSAP for animations.</p>
+  //   `,
+  // }
 ];
 
 export { blogPosts };
