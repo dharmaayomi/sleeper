@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { navIcons, navLinks, ABOUT_LOCATION } from "#constants";
 import dayjs from "dayjs";
 import useWindowStore from "#store/Window";
+import useSpotlightStore from "#store/Spotlight";
 import useDevice from "#hooks/useDevice";
 import { Wifi, Battery, Signal } from "lucide-react";
 import ThemePanel from "./ThemePanel";
@@ -9,6 +10,7 @@ import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const { openWindow, windows } = useWindowStore();
+  const toggleSpotlight = useSpotlightStore((state) => state.toggleSpotlight);
   const { isMobile } = useDevice();
   const [time, setTime] = useState(dayjs());
   const [islandExpanded, setIslandExpanded] = useState(false);
@@ -46,7 +48,7 @@ const Navbar = () => {
     return (
       <nav
         id="iphone-status-bar"
-        className={`w-full h-13 flex items-center justify-between px-6 select-none z-[9999] absolute top-0 left-0 text-sm font-semibold font-inter transition-all duration-300  ${
+        className={`w-full h-13 flex items-center justify-between px-6 select-none z-9999 absolute top-0 left-0 text-sm font-semibold font-inter transition-all duration-300  ${
           hasOpenWindow ? "text-black bg-white" : "text-white bg-transparent"
         }`}
       >
@@ -125,7 +127,9 @@ const Navbar = () => {
               ) : (
                 <button
                   onClick={() => {
-                    if (id === 3) {
+                    if (id === 2) {
+                      toggleSpotlight();
+                    } else if (id === 3) {
                       const aboutMeFile = ABOUT_LOCATION.children?.find(
                         (child) => child.name === "about-me.txt",
                       );

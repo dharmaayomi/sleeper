@@ -6,12 +6,14 @@ import useLocationStore from "#store/Location";
 import { locations } from "#constants";
 import clsx from "clsx";
 import useWindowStore from "#store/Window";
+import useSpotlightStore from "#store/Spotlight";
 import useDevice from "#hooks/useDevice";
 import { FileItem, FolderItem } from "../types";
 
 const Finder = () => {
   const { containerRef, headerRef } = useWindow("finder");
   const { openWindow } = useWindowStore();
+  const toggleSpotlight = useSpotlightStore((state) => state.toggleSpotlight);
   const { activeLocation, setActiveLocation } = useLocationStore();
   const { isMobile } = useDevice();
 
@@ -76,6 +78,7 @@ const Finder = () => {
             {activeLocation ? activeLocation.name : "Portfolio"}
           </h2>
           <Search
+            onClick={toggleSpotlight}
             className="icon cursor-pointer text-gray-500 dark:text-zinc-400"
             size={18}
           />
@@ -138,7 +141,7 @@ const Finder = () => {
     <section ref={containerRef} id="finder" className="window">
       <div ref={headerRef} id="window-header">
         <WindowControls target="finder" />
-        <Search className="icon" />
+        <Search onClick={toggleSpotlight} className="icon cursor-pointer" />
       </div>
 
       <div className="bg-white flex h-full">
