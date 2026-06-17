@@ -56,7 +56,7 @@ const WORK_LOCATION: FolderItem = {
           kind: "file",
           fileType: "img",
           position: "top-52 right-90",
-          imageUrl: "/images/bubblify-driver-1.webp",
+          imageUrl: "/images/bubblify-worker.webp",
         },
         {
           id: 5,
@@ -356,7 +356,7 @@ const TRASH_LOCATION: FolderItem = {
       kind: "file",
       fileType: "img",
       position: "top-10 left-10",
-      imageUrl: "/images/trash-1.png",
+      imageUrl: "/images/user-icon.png",
     },
     {
       id: 2,
@@ -365,7 +365,7 @@ const TRASH_LOCATION: FolderItem = {
       kind: "file",
       fileType: "img",
       position: "top-40 left-80",
-      imageUrl: "/images/trash-2.png",
+      imageUrl: "/images/placeholder-image.webp",
     },
   ],
 };
